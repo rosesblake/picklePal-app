@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<div id="home-page" class="container">
+  <div id="welcome-container" class="center-content">
+    <h1 class="text-center">PicklePal</h1>
+    <p id="partner-finder" class="text-center">PARTNER FINDER</p>
+    <form action="/login" class="center-form">
+      <button id="login-btn" type="submit">Login</button>
+    </form>
+    <form action="/register" class="center-form">
+      <button id="register-btn" type="submit">Register Here</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

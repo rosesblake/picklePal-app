@@ -1,0 +1,151 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  text-align: center;
+}
+
+.h1-container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-width: 100%;
+  top: 24%;
+  font-family: roboto;
+}
+
+h1 {
+  text-align: center;
+  padding: 15px 30px;
+  color: rgb(0, 71, 0);
+  background-color: rgb(181, 255, 181);
+  border-radius: 70px;
+  letter-spacing: 10px;
+  font-size: 50px;
+}
+
+p,
+label {
+  text-align: center;
+  padding: 17px 30px;
+  color: rgb(181, 255, 181);
+  background-color: rgb(0, 71, 0);
+  border-radius: 30px;
+  letter-spacing: 8px;
+  font-size: 12px;
+}
+
+h1 span {
+  font-size: 30px;
+  font-weight: 300;
+}
+
+#split-bg {
+  position: absolute;
+  background: rgb(0, 71, 0);
+  width: 50%;
+  height: 100%;
+  padding: 1rem;
+  border-radius: 0 50% 0 0;
+  z-index: -1;
+}
+
+#split-bg-right {
+  position: absolute;
+  background: rgb(181, 255, 181);
+  /* left: 50%; */
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  z-index: -2;
+}
+
+button {
+  position: relative;
+  text-align: center;
+  padding: 20px 30px;
+  color: rgb(181, 255, 181);
+  background-color: rgb(0, 71, 0);
+  border-radius: 50px;
+  font-family: sans-serif;
+  letter-spacing: 5px;
+  font-size: 20px;
+  border: none;
+  font-weight: 800;
+  border: 8px solid rgb(181, 255, 181);
+}
+
+button:hover {
+  background-color: rgb(181, 255, 181);
+  color: rgb(0, 71, 0);
+  /* border: none; */
+}
+
+/* page 2  */
+label {
+  font-family: roboto;
+  display: block;
+  margin: 0;
+}
+
+input {
+  position: relative;
+  padding: 17px;
+  background: rgb(181, 255, 181);
+  border: 4px solid rgb(0, 71, 0);
+  width: 100%;
+  margin: 0;
+  bottom: 20.2px;
+  border-radius: 30px;
+  text-align: center;
+  font-family: roboto;
+  font-size: 13px;
+}
+
+input::placeholder {
+  color: rgba(0, 71, 0, 0.534);
+}
+
+#p-label {
+  position: relative;
+  bottom: 21px;
+}
+
+#login-btn {
+  position: relative;
+  padding: 20px 30px;
+  letter-spacing: 5px;
+  bottom: 21px;
+}
+
+#password {
+  bottom: 21.1px;
+}
+
+input:focus {
+  border: 4px solid white;
+}
+
+a {
+  position: relative;
+  top: 20px;
+  text-decoration: none;
+  background: rgb(181, 255, 181);
+  color: rgb(0, 71, 0);
+  padding: 12px 13px;
+  border-radius: 30px;
+  /* border: 4px solid rgb(0, 71, 0); */
+  font-size: 13px;
+}
+
+a:hover {
+  border: 4px solid rgb(181, 255, 181);
+  background: rgb(0, 71, 0);
+  color: rgb(181, 255, 181);
+}
