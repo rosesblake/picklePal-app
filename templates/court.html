@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+<div id="court-page" class="container">
+  <div id="court-landing-container">
+    <div id="profile-friends-container">
+      <p><a href="">Members</a></p>
+    </div>
+    <h2 id="court-name" class="profile-details">{{ court.name }}</h2>
+    <h3 id="court-address">{{ court.address }}</h3>
+    <div id="profile-details-container">
+      <ul>
+        <li id="profile-user-location" class="profile-details"><i class="fas fa-map-pin"></i> {{ court.city }}, {{ court.state }}, {{ court.zip_code }}</li>
+      </ul>
+    </div>
+  </div>
+
+  <aside id="court-container">
+    <div id="court-social-feed">
+      <h2 id="make-a-court-post" class="text-center">Make a Post</h2>
+      <form method="POST" id="court-post-form">
+        {{ form.hidden_tag() }}
+
+        {% for field in form if field.widget.input_type != 'hidden' %}
+          {% for error in field.errors %}
+            <span class="text-danger">{{ error }}</span>
+          {% endfor %}
+          {{ field(placeholder=field.label.text) }}
+        {% endfor %}
+
+        <button id="court-post-btn" type="submit">Submit Post</button>
+      </form>
+      <ul>
+        {% for post in posts %}
+        <div id="court-post-card">
+          <img src="{{ post.user.profile_image }}" alt="user image" class="post-user-img">
+        <li><strong>@{{ post.user.username }}</strong></li>
+        <li class="post-content">{{ post.content }}</li>
+        <li class="post-content"><small>{{ post.timestamp.strftime('%B %d, %Y %H:%M') }}</small></li>
+        </div>
+        {% endfor %}
+      </ul>
+    </div>
+  </aside>
