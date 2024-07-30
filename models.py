@@ -112,6 +112,8 @@ class Post(db.Model):
     content = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
 
+    user = db.relationship('User', backref='posts')
+
 class Like(db.Model):
     __tablename__ = 'likes'
     id = db.Column(db.Integer, primary_key=True)

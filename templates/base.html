@@ -15,6 +15,7 @@
   </head>
   <body>
     <nav id="nav-bar">
+      <div id="nav-container">
       <div id="nav-left">
         <a href="/" id="picklepal-home">PicklePal</a>
       </div>
@@ -38,6 +39,7 @@
         <li><form action="/logout" method="POST" class="nav-right"><button type="submit" id="logout-btn">Log out</button></form></li>
         {% endif %}
       </ul>
+    </div>
   </nav>
   {% for category, message in get_flashed_messages(with_categories=True) %}
   <div class="alert alert-{{ category }}">{{ message }}</div>

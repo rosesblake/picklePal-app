@@ -10,6 +10,15 @@ html, body {
     padding: 0;
 }
 
+img {
+    width: 200px;
+    border-radius: 50%;
+}
+
+.post-user-img {
+    width: 50px;
+}
+
 #split-bg {
     position: fixed;
     top: 0; 
@@ -66,6 +75,7 @@ li {
 
 a {
     text-decoration: none;
+    color: black;
 }
 
 #nav-bar {
@@ -81,6 +91,11 @@ a {
     margin: 0;
 }
 
+#nav-container {
+    display: flex;
+    align-items: center;
+}
+
 #picklepal-home {
     text-decoration: none;
     color: rgba(107, 146, 107, 0.589);
@@ -90,7 +105,6 @@ a {
 #nav-list li {
     display: flex;
     align-items: center;
-    /* margin-left: 250px; */
 }
 
 #nav-list a {
@@ -191,6 +205,29 @@ button:hover {
     justify-content: flex-start;
     padding: 20px;
 }
+
+#post-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto;
+    padding: 20px;
+    outline: 5px solid rgba(4, 8, 4, 0.61);
+    background-color: white;
+    font-size: 25px;
+    max-width: 600px; /* Set a max width for the post card */
+    width: 100%; /* Ensure the card doesn't exceed the max width */
+}
+
+.post-content {
+    overflow-wrap: break-word; /* Modern property to handle long words */
+    word-wrap: break-word; /* Fallback for older browsers */
+    margin-top: 10px; /* Space between content and other elements */
+    width: 100%; /* Ensure content wraps within the card */
+}
+
+
 
 .form-container {
     display: flex;

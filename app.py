@@ -3,7 +3,7 @@ from flask import Flask, render_template, redirect, flash, session, g, request
 from sqlalchemy.exc import IntegrityError
 from werkzeug.utils import secure_filename
 
-from models import db, connect_db, User
+from models import db, connect_db, User, Post
 from forms import UserRegisterForm, UserLoginForm, MakePostForm
 
 from dotenv import load_dotenv
@@ -55,13 +55,24 @@ def login_user(user):
     session[CURR_USER_KEY] = user.id
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home_page():
+    """get user home page and handle new user posts"""
+    form = MakePostForm()
     if g.user:
         user = g.user
-        form = MakePostForm()
-        return render_template('home.html', user=user, form=form)
+        if form.validate_on_submit():
+            content = form.content.data
+            new_post = Post(content=content, user_id=user.id)
+            db.session.add(new_post)
+            db.session.commit()
+            redirect('/')
+        
+        posts = Post.query.order_by(Post.timestamp.desc()).all()
+        return render_template('home.html', user=user, form=form, posts=posts)
+    
     return render_template('landing.html')
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def show_register_form():
@@ -138,3 +149,10 @@ def get_user_list():
 
     return render_template('users.html', users=users)
 
+@app.route('/users/<int:user_id>')
+def show_user_details(user_id):
+    """show a user's profile page"""
+    user = User.query.get_or_404(user_id)
+    form = MakePostForm()
+    posts = Post.query.filter_by(user_id=user.id).all()
+    return render_template('home.html', user=user, form=form, posts=posts)

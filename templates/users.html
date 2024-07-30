@@ -5,11 +5,13 @@
     <div class="user-list-container">
         {% for user in users %}
         <div class="user-list">
+            <a href="/users/{{ user.id }}">
             <img src="{{ user.profile_image }}" alt="Profile Photo" style="width: 200px; border-radius: 50%;" class="user-list-photos">
+             </a>
             <div class="user-friends">
                 <p><a href="">Friends</a></p>
             </div>
-            <h2 class="profile-details">@{{ user.username }} <a href=""><i class="fa-solid fa-message"></i></a></h2>
+            <h2 class="profile-details"><a href="/users/{{ user.id }}">@{{ user.username }}</a> <a href=""><i class="fa-solid fa-message"></i></a></h2>
             <h3>{{ user.full_name.capitalize() }}</h3>
             <div class="user-details-container">
                 <ul>
