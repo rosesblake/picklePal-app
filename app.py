@@ -6,6 +6,8 @@ from werkzeug.utils import secure_filename
 from models import db, connect_db, User, Post
 from forms import UserRegisterForm, UserLoginForm, MakePostForm
 
+from flask_bootstrap import Bootstrap
+
 from dotenv import load_dotenv
 import os
 
@@ -15,6 +17,7 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 load_dotenv()
 
 app = Flask(__name__)
+Bootstrap(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///picklepal-app'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

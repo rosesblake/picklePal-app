@@ -1,151 +1,315 @@
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-body {
-  text-align: center;
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
-.h1-container {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  min-width: 100%;
-  top: 24%;
-  font-family: roboto;
+img {
+    width: 200px;
+    border-radius: 50%;
 }
 
-h1 {
-  text-align: center;
-  padding: 15px 30px;
-  color: rgb(0, 71, 0);
-  background-color: rgb(181, 255, 181);
-  border-radius: 70px;
-  letter-spacing: 10px;
-  font-size: 50px;
-}
-
-p,
-label {
-  text-align: center;
-  padding: 17px 30px;
-  color: rgb(181, 255, 181);
-  background-color: rgb(0, 71, 0);
-  border-radius: 30px;
-  letter-spacing: 8px;
-  font-size: 12px;
-}
-
-h1 span {
-  font-size: 30px;
-  font-weight: 300;
+.post-user-img {
+    width: 50px;
 }
 
 #split-bg {
-  position: absolute;
-  background: rgb(0, 71, 0);
-  width: 50%;
-  height: 100%;
-  padding: 1rem;
-  border-radius: 0 50% 0 0;
-  z-index: -1;
+    position: fixed;
+    top: 0; 
+    left: 0; 
+    background: rgb(39, 51, 39);
+    width: 50%;
+    height: 100%;
+    padding: 1rem;
+    border-radius: 0 80% 0 0;
+    z-index: -1; 
 }
 
-#split-bg-right {
-  position: absolute;
-  background: rgb(181, 255, 181);
-  /* left: 50%; */
-  width: 100%;
-  height: 100%;
-  padding: 1rem;
-  z-index: -2;
+body {
+    background-color: rgba(107, 146, 107, 0.589);
+    color: black;
+    font-family: Roboto, sans-serif; /* Ensure proper font family */
 }
 
-button {
-  position: relative;
-  text-align: center;
-  padding: 20px 30px;
-  color: rgb(181, 255, 181);
-  background-color: rgb(0, 71, 0);
-  border-radius: 50px;
-  font-family: sans-serif;
-  letter-spacing: 5px;
-  font-size: 20px;
-  border: none;
-  font-weight: 800;
-  border: 8px solid rgb(181, 255, 181);
+nav {
+    display: flex;
+    background-color: rgb(39, 51, 39);
+    padding: 10px;
+    width: 100%;
+    align-items: center;
 }
 
-button:hover {
-  background-color: rgb(181, 255, 181);
-  color: rgb(0, 71, 0);
-  /* border: none; */
+.text-center {
+    text-align: center;
 }
 
-/* page 2  */
-label {
-  font-family: roboto;
-  display: block;
-  margin: 0;
+#partner-finder {
+    font-size: 25px;
+    color: rgba(74, 100, 74, 0.747);
+    margin: 0 0 240px 0;
 }
 
-input {
-  position: relative;
-  padding: 17px;
-  background: rgb(181, 255, 181);
-  border: 4px solid rgb(0, 71, 0);
-  width: 100%;
-  margin: 0;
-  bottom: 20.2px;
-  border-radius: 30px;
-  text-align: center;
-  font-family: roboto;
-  font-size: 13px;
+h1 {
+    font-size: 75px;
+    color: rgb(39, 51, 39);
+    margin: 50px 0 10px 0;
 }
 
-input::placeholder {
-  color: rgba(0, 71, 0, 0.534);
+h2 {
+    font-size: 45px;
 }
 
-#p-label {
-  position: relative;
-  bottom: 21px;
+h3 {
+    font-size: 30px;
 }
 
-#login-btn {
-  position: relative;
-  padding: 20px 30px;
-  letter-spacing: 5px;
-  bottom: 21px;
-}
-
-#password {
-  bottom: 21.1px;
-}
-
-input:focus {
-  border: 4px solid white;
+li {
+    list-style: none;
 }
 
 a {
-  position: relative;
-  top: 20px;
-  text-decoration: none;
-  background: rgb(181, 255, 181);
-  color: rgb(0, 71, 0);
-  padding: 12px 13px;
-  border-radius: 30px;
-  /* border: 4px solid rgb(0, 71, 0); */
-  font-size: 13px;
+    text-decoration: none;
+    color: black;
 }
 
-a:hover {
-  border: 4px solid rgb(181, 255, 181);
-  background: rgb(0, 71, 0);
-  color: rgb(181, 255, 181);
+#nav-bar {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 25px;
 }
+
+#nav-list {
+    display: flex;
+    padding: 0;
+    margin: 0;
+}
+
+#nav-container {
+    display: flex;
+    align-items: center;
+}
+
+#picklepal-home {
+    text-decoration: none;
+    color: rgba(107, 146, 107, 0.589);
+    font-size: 40px;
+}
+
+#nav-list li {
+    display: flex;
+    align-items: center;
+}
+
+#nav-list a {
+    color: rgb(255, 255, 255);
+    padding: 10px;
+}
+
+#nav-list a:hover {
+    background-color: rgb(65, 88, 65);
+}
+
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the form elements */
+    margin: 0 auto; /* Center the form horizontally */
+    width: 100%; /* Ensure form takes full width of its container */
+}
+
+form input,
+form button,
+form select,
+form textarea {
+    width: 100%; /* Full width of form container */
+    max-width: 400px;
+    padding: 15px; /* Space inside input */
+    border-radius: 5px; /* Rounded corners */
+    border: 1px solid #ccc; /* Border style */
+    margin-bottom: 15px; /* Space between form elements */
+    font-size: 20px; /* Font size */
+    font-family: roboto, sans-serif;
+}
+
+form label {
+    font-size: 25px; /* Adjusted font size for consistency */
+    margin-bottom: 5px; /* Space between label and input */
+    display: block; /* Ensure label is on its own line */
+    font-family: roboto, sans-serif;
+}
+
+form button {
+    background-color: rgb(39, 51, 39);
+    color: white;
+    border: none;
+    padding: 15px 18px;
+    font-size: 20px; /* Adjusted button font size */
+}
+
+form input:focus,
+form textarea:focus {
+    border-color: rgb(65, 88, 65); /* Highlight border color on focus */
+    outline: none; /* Remove default outline */
+}
+
+#logout-btn {
+    /* margin-right: 40px; */
+}
+
+#register-btn, #login-btn {
+    font-size: 30px;
+    color: white;
+    background-color: rgb(39, 51, 39);
+    border-radius: 8px;
+    margin: 10px;
+    padding: 15px 18px;
+}
+
+button {
+    background-color: transparent;
+    color: rgb(107, 146, 107);
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+button:hover {
+    background-color: rgb(65, 88, 65);
+}
+
+.center-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+#home-page, .page-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+#profile-page {
+    display: flex;
+    justify-content: flex-start;
+    padding: 20px;
+}
+
+#post-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto;
+    padding: 20px;
+    outline: 5px solid rgba(4, 8, 4, 0.61);
+    background-color: white;
+    font-size: 25px;
+    max-width: 600px; /* Set a max width for the post card */
+    width: 100%; /* Ensure the card doesn't exceed the max width */
+}
+
+.post-content {
+    overflow-wrap: break-word; /* Modern property to handle long words */
+    word-wrap: break-word; /* Fallback for older browsers */
+    margin-top: 10px; /* Space between content and other elements */
+    width: 100%; /* Ensure content wraps within the card */
+}
+
+
+
+.form-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+#social-landing-container {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin: auto;
+}
+
+#user-list-box {
+    display: flex;
+    /* flex-direction: row; */
+    /* width: 100%; */
+}
+
+.user-list-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.user-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.952);
+    width: 100%;
+    max-width: 600px;
+    margin: 120px;
+    padding: 60px 30px;
+    border-radius: 10px;
+}
+
+div#personal-social-feed {
+    max-width: 100%;
+}
+
+
+#profile-landing-container, .form-container, #personal-social-feed {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(192, 214, 192);
+    width: 100%;
+    max-width: 600px;
+    margin: 120px;
+    padding: 60px 30px;
+    border-radius: 10px;
+}
+
+.profile-details {
+    margin: 10px;
+    text-align: center;
+}
+
+#profile-details-container ul {
+    padding: 0;
+    list-style: none;
+    width: 100%;
+    text-align: center;
+}
+
+#profile-user-location {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#profile-user-location i {
+    margin-right: 5px;
+}
+
+.fa-message {
+    color: rgb(192, 164, 4);
+    font-size: 30px;
+}
+
+

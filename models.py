@@ -14,7 +14,7 @@ class User(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    profile_image = db.Column(db.String, nullable=True, default='/static/images/default-profile-pic.jpg')
+    profile_image = db.Column(db.String, nullable=True)
     username = db.Column(db.String(25), nullable=False, unique=True)
     password = db.Column(db.String(128), nullable=False)
     full_name = db.Column(db.String(35), nullable=False)
@@ -102,7 +102,7 @@ class Post(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    court_id = db.Column(db.Integer, db.ForeignKey('courts.id'), nullable=False)
+    court_id = db.Column(db.Integer, db.ForeignKey('courts.id'), nullable=True)
     content = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
     
