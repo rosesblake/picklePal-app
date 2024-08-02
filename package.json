@@ -1,0 +1,27 @@
+{
+  "name": "picklepal",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tailwindcss -i ./static/src/style.css -o ./static/css/style.css",
+    "watch": "tailwindcss -i ./static/src/style.css -o ./static/css/style.css --watch",
+    "start": "flask run",
+    "dev": "concurrently \"npm run watch\" \"npm run start\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rosesblake/picklePal.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rosesblake/picklePal/issues"
+  },
+  "homepage": "https://github.com/rosesblake/picklePal#readme",
+  "devDependencies": {
+    "tailwindcss": "^3.4.7"
+  }
+}

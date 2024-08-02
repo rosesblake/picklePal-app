@@ -1,3 +1,19 @@
+# Virtual Environment
 venv/
-__pycache__
-.env/
+
+# Node Modules
+node_modules/
+
+# Python Compiled Files
+__pycache__/
+*.pyc
+
+# Environment Files
+.env
+
+# Log and Cache Files
+*.log
+*.cache
+
+# boilerplate/ old files
+boilerplate/

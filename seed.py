@@ -8,23 +8,22 @@ from sqlalchemy import text
 with app.app_context():
     # Connect to the database
     with db.engine.connect() as connection:
-        # Start a transaction
-        with connection.begin():
-            # Drop tables with CASCADE option using SQLAlchemy's text construct
-            connection.execute(text("DROP TABLE IF EXISTS user_games CASCADE;"))
-            connection.execute(text("DROP TABLE IF EXISTS games CASCADE;"))
-            connection.execute(text("DROP TABLE IF EXISTS comments CASCADE;"))
-            connection.execute(text("DROP TABLE IF EXISTS likes CASCADE;"))
-            connection.execute(text("DROP TABLE IF EXISTS posts CASCADE;"))
-            connection.execute(text("DROP TABLE IF EXISTS courts CASCADE;"))
-            connection.execute(text("DROP TABLE IF EXISTS users CASCADE;"))
+        connection.execute(text("DROP TABLE IF EXISTS group_memberships CASCADE;"))
+        connection.execute(text("DROP TABLE IF EXISTS groups CASCADE;"))
+        connection.execute(text("DROP TABLE IF EXISTS reviews CASCADE;"))
+        connection.execute(text("DROP TABLE IF EXISTS comments CASCADE;"))
+        connection.execute(text("DROP TABLE IF EXISTS likes CASCADE;"))
+        connection.execute(text("DROP TABLE IF EXISTS posts CASCADE;"))
+        connection.execute(text("DROP TABLE IF EXISTS courts CASCADE;"))
+        connection.execute(text("DROP TABLE IF EXISTS users CASCADE;"))
     
     # Create all tables defined in the models
+    db.drop_all()
     db.create_all()
     
     # Create test users
-    test_user_1 = User(username='testUser1', password='chickens123', full_name='Test User1', email='testuser1@gmail.com', city='LA', state='CA', skill='Intermediate')
-    test_user_2 = User(username='testUser2', password='tacos321', full_name='Test User2', email='testuser2@gmail.com', city='Dallas', state='TX', skill='Beginner')
+    test_user_1 = User(first_name='chris', last_name='kristen', password='chickens123', email='testuser1@gmail.com', city='LA', state='CA', zip_code='91403', skill='2.0')
+    test_user_2 = User(first_name='jon', last_name='johnson', password='broccoli432', email='jonjonson@gmail.com', city='NYC', state='NY', zip_code='21403', skill='Beginner')
 
     # Add test users to the session
     db.session.add_all([test_user_1, test_user_2])

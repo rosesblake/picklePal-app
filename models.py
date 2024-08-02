@@ -15,17 +15,18 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     profile_image = db.Column(db.String, nullable=True)
-    username = db.Column(db.String(25), nullable=False, unique=True)
     password = db.Column(db.String(128), nullable=False)
-    full_name = db.Column(db.String(35), nullable=False)
+    first_name = db.Column(db.String(35), nullable=False)
+    last_name = db.Column(db.String(35), nullable=False)
     email = db.Column(db.Text, nullable=False, unique=True)
     city = db.Column(db.Text, nullable=True)
     state = db.Column(db.Text, nullable=True)
-    skill = db.Column(db.String(15), nullable=True)
-
+    zip_code = db.Column(db.Text, nullable=True)
+    skill = db.Column(db.String, nullable=False)
+    
     home_court_id = db.Column(db.Integer, db.ForeignKey('courts.id'), nullable=True)
     home_court = db.relationship('Court', backref='users', foreign_keys=[home_court_id])
-    
+
     friends = db.relationship(
         'User',
         secondary='friends',
@@ -35,22 +36,25 @@ class User(db.Model):
     )
     
     posts = db.relationship('Post', back_populates='user')
+    sent_messages = db.relationship('Message', foreign_keys='Message.sender_id', back_populates='sender')
+    received_messages = db.relationship('Message', foreign_keys='Message.receiver_id', back_populates='receiver')
+    groups = db.relationship('GroupMembership', back_populates='user')
     
     def __repr__(self):
-        return f"<User #{self.id}: {self.username}, {self.email}>"
+        return f"<User #{self.id}: {self.first_name} {self.last_name}, {self.email}>"
     
     @classmethod
-    def signup(cls, profile_image, username, password, full_name, email, city, state, skill):
+    def signup(cls, profile_image, first_name, last_name, email, city, state, skill, password):
         hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
         user = User(
             profile_image=profile_image,
-            username=username,
-            password=hashed_pwd,
-            full_name=full_name,
+            first_name=first_name,
+            last_name=last_name,
             email=email,
             city=city,
             state=state,
-            skill=skill
+            skill=skill,
+            password=hashed_pwd
         )
         db.session.add(user)
         return user
@@ -71,31 +75,12 @@ class Court(db.Model):
     city = db.Column(db.String, nullable=False)
     state = db.Column(db.String, nullable=False)
     zip_code = db.Column(db.String, nullable=False)
-    rating = db.Column(db.Float, nullable=True)
     
     posts = db.relationship('Post', back_populates='court')
-    games = db.relationship('Game', back_populates='court')
-
-class Game(db.Model):
-    __tablename__ = 'games'
+    reviews = db.relationship('Review', back_populates='court')
     
-    id = db.Column(db.Integer, primary_key=True)
-    court_id = db.Column(db.Integer, db.ForeignKey('courts.id'), nullable=False)
-    time = db.Column(db.Time, nullable=False)
-    date = db.Column(db.Date, nullable=False)
-    court = db.relationship('Court', back_populates='games')
-    timeslots = db.relationship('Timeslot', back_populates='game')
-
-class Timeslot(db.Model):
-    __tablename__ = 'timeslots'
-    
-    id = db.Column(db.Integer, primary_key=True)
-    game_id = db.Column(db.Integer, db.ForeignKey('games.id'), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    timeslot_start = db.Column(db.Time, nullable=False)
-    timeslot_end = db.Column(db.Time, nullable=False)
-    game = db.relationship('Game', back_populates='timeslots')
-    user = db.relationship('User')
+    def __repr__(self):
+        return f"<Court #{self.id}: {self.name}, {self.address}>"
 
 class Post(db.Model):
     __tablename__ = 'posts'
@@ -128,6 +113,7 @@ class Comment(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     content = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+    
     post = db.relationship('Post', back_populates='comments')
     user = db.relationship('User')
 
@@ -140,8 +126,39 @@ class Message(db.Model):
     content = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
     
-    sender = db.relationship('User', foreign_keys=[sender_id], backref='sent_messages')
-    receiver = db.relationship('User', foreign_keys=[receiver_id], backref='received_messages')
+    sender = db.relationship('User', foreign_keys=[sender_id], back_populates='sent_messages')
+    receiver = db.relationship('User', foreign_keys=[receiver_id], back_populates='received_messages')
+
+class Group(db.Model):
+    __tablename__ = 'groups'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False, unique=True)
+    description = db.Column(db.Text, nullable=True)
+    owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    owner = db.relationship('User', backref='owned_groups')
+    
+    memberships = db.relationship('GroupMembership', back_populates='group')
+    
+class GroupMembership(db.Model):
+    __tablename__ = 'group_memberships'
+    
+    group_id = db.Column(db.Integer, db.ForeignKey('groups.id'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    group = db.relationship('Group', back_populates='memberships')
+    user = db.relationship('User', back_populates='groups')
+
+class Review(db.Model):
+    __tablename__ = 'reviews'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    court_id = db.Column(db.Integer, db.ForeignKey('courts.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    rating = db.Column(db.Integer, nullable=False)  # e.g., rating out of 5
+    
+    court = db.relationship('Court', back_populates='reviews')
+    user = db.relationship('User')
 
 def connect_db(app):
     """Connect to database."""

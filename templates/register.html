@@ -1,21 +1,38 @@
-{% extends 'base.html' %}
-{% block title %}<title>New User</title>{% endblock %}
-{% block content %}
-<div class="page-container">
-    <div class="form-container">
-      <h1 class="text-center">Create Your Profile</h1>
-      <form method="POST" id="register-form">
-        {{ form.hidden_tag() }}
-
-        {% for field in form if field.widget.input_type != 'hidden' %}
-          {% for error in field.errors %}
-            <span class="text-danger">{{ error }}</span>
-          {% endfor %}
-          {{ field.label }}<br>{{ field(placeholder=field.label.text) }} <br>
-        {% endfor %}
-
-        <button id="register-btn">Register</button>
-      </form>
-    </div>
-  </div>
-{% endblock %}
+    {% extends 'base.html' %}
+    {% block title %}Register User{% endblock %}
+    {% block content %}
+    <section class="flex overflow-hidden flex-col items-center pb-40 mx-auto w-full bg-white">
+        <header class="flex gap-2.5 items-end self-stretch px-5 pt-9 pb-2.5 bg-dark-green min-h-[80px]">
+          <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/6ca2bd449a63fb56568b3457b563fcd9f254106bb728a513a7292aeff082a19c?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" class="object-contain aspect-square w-[35px]" alt="" />
+        </header>
+        <main class="flex flex-col justify-center mt-12 w-full max-w-xs text-sm font-semibold tracking-normal leading-none text-neutral-800">
+          <form>
+            <div class="flex flex-col w-full whitespace-nowrap">
+              <label for="email" class="flex-1 shrink gap-2.5 w-full">Email</label>
+              <input id="email" type="email" class="flex mt-2 w-full bg-white rounded-md min-h-[48px] border border-input-gray p-3" required />
+            </div>
+            <div class="flex flex-col mt-10 w-full">
+              <label for="firstName" class="flex-1 shrink gap-2.5 w-full">First Name</label>
+              <input id="firstName" type="text" class="flex mt-2 w-full bg-white rounded-md min-h-[48px] border border-input-gray" required />
+            </div>
+            <div class="flex flex-col mt-10 w-full">
+              <label for="lastName" class="flex-1 shrink gap-2.5 w-full">Last Name</label>
+              <input id="lastName" type="text" class="flex mt-2 w-full bg-white rounded-md min-h-[48px] border border-input-gray" required />
+            </div>
+            <div class="flex flex-col mt-10 w-full whitespace-nowrap">
+              <label for="password" class="flex-1 shrink gap-2.5 w-full">Password</label>
+              <input id="password" type="password" class="flex mt-2 w-full bg-white rounded-md min-h-[48px] border border-input-gray" required />
+            </div>
+            <div class="flex justify-center mt-10">
+                <button type="submit" class="inline-flex items-center justify-center gap-2 px-3.5 py-2.5 text-2xl font-bold tracking-tight leading-none text-white whitespace-nowrap rounded-md bg-green-btn">
+                  Register
+                </button>
+              </div>             
+          </form>
+        </main>
+        <footer class="mt-5 text-base font-bold tracking-normal leading-6 text-center text-neutral-800">
+          <p>Have an account?</p>
+          <a href="#" class="text-xs font-light">Login Here</a>
+        </footer>
+      </section>
+      {% endblock %}

@@ -3,18 +3,14 @@ from wtforms import StringField, PasswordField, TextAreaField, SelectField, File
 from wtforms.validators import InputRequired, Email, DataRequired
 
 class UserRegisterForm(FlaskForm):
-    profile_image = FileField('Profile Photo')
-    username = StringField('Username', validators=[InputRequired()])
-    password = PasswordField('Password', validators=[InputRequired()])
-    full_name = StringField('Full Name', validators=[InputRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
+    first_name = StringField('First Name', validators=[InputRequired()])
+    last_name = StringField('Last Name', validators=[InputRequired()])
+    password = PasswordField('Password', validators=[InputRequired()])
+
+class UserInfoForm(FlaskForm):
     city = StringField('City')
     state = StringField('State')
-    skill = SelectField('Skill Level', choices=['Beginner', 'Intermediate', 'Advanced', 'Expert'])
-
-class UserLoginForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[InputRequired()])
-
-class MakePostForm(FlaskForm):
-    content = TextAreaField('Post', validators=[InputRequired()])
+    zip_code = StringField('Zip Code')
+    skill = SelectField('Skill Level', choices=['Beginner', '2.0', '2.5', '3.0', '3.5', '4.0', '4.5', '5.0'])
+    profile_image = FileField('Profile Photo')

@@ -1,53 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    {% block title %}{% endblock %}
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <nav id="nav-bar">
-      <div id="nav-container">
-      <div id="nav-left">
-        <a href="/" id="picklepal-home">PicklePal</a>
-      </div>
-      <ul id="nav-list">
-        {% if request.endpoint != None %}
-        <li>
-          <form id="search-form" class="center-form" action="/users">
-            <input name="q" placeholder="Search PicklePal" id="search">
-            <button class="search-btn">
-                <span class="fa fa-search"></span>
-            </button>
-        </form>
-        </li>
-        {% endif %}
-        <li><a href="" class="nav-right">Friends</a></li>
-        <li><a href="" class="nav-right">My Court</a></li>
-        {% if not g.user %}
-        <li><a href="/register" class="nav-right">Sign up</a></li>
-        <li><a href="/login" class="nav-right">Log in</a></li>
-        {% else %}
-        <li><form action="/logout" method="POST" class="nav-right"><button type="submit" id="logout-btn">Log out</button></form></li>
-        {% endif %}
-      </ul>
-    </div>
-  </nav>
-  {% for category, message in get_flashed_messages(with_categories=True) %}
-  <div class="alert alert-{{ category }}">{{ message }}</div>
-  {% endfor %}
-
-{% block content %}
-{% endblock %}
-{% block scripts %}
-<script src="/static/scripts/app.js"></script>
-{% endblock %}
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="font-roboto">
+    {% block content %}
+    {% endblock %}
+    </body>
 </html>
