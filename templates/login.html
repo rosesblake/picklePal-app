@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="flex overflow-hidden flex-col items-center pb-40 mx-auto w-full bg-white">
+    <header class="flex gap-2.5 items-end self-stretch px-5 pt-9 pb-2.5 bg-dark-green min-h-[80px]">
+        <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/4c1943fc73655424c4955b1b9f65d1ea15690c429b3aec205cc1d7f685f05190?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" class="object-contain aspect-square w-[35px]" alt="" />
+    </header>
+    <main class="flex flex-col justify-center mt-12 w-full max-w-xs text-sm font-semibold tracking-normal leading-none text-neutral-800">
+        <form id="login-form" method="POST">
+        {{ form.hidden_tag() }}
+             <!-- FLASH MESSAGES  -->
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flex flex-col items-center mb-4">
+                {% for message in messages %}
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-2 w-full text-center" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% endwith %}
+            <!-- FORM CONTENT  -->
+        {% for field in form %}
+            {% if field.widget.input_type != 'hidden' %}
+                <div class="flex flex-col w-full whitespace-nowrap mb-10">
+                    {{ field.label(class_="flex-1 shrink gap-2.5 w-full") }}
+                    {{ field(class_="flex mt-2 w-full bg-white rounded-md min-h-[48px] border border-input-gray p-3", placeholder=field.label.text) }}
+                    {% for error in field.errors %}
+                        <span class="text-red-500">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endfor %}
+        <div class="flex justify-center mt-10">
+            <button id="login-btn" type="submit" class="inline-flex items-center justify-center gap-2 px-3.5 py-2.5 text-2xl font-bold tracking-tight leading-none text-white whitespace-nowrap rounded-md bg-green-btn">
+              Log in
+            </button>
+          </div>  
+      </form>
+      <footer class="mt-5 text-base font-bold tracking-normal leading-6 text-center text-neutral-800">
+        <p>Don't Have An Account?</p>
+        <a href="/register" class="text-xs font-light">Register Here</a>
+      </footer>
+    </main>
+  </section>
+  {% endblock %}

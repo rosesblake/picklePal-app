@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
+from sqlalchemy.dialects.postgresql import JSON 
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
@@ -39,6 +40,16 @@ class User(db.Model):
     sent_messages = db.relationship('Message', foreign_keys='Message.sender_id', back_populates='sender')
     received_messages = db.relationship('Message', foreign_keys='Message.receiver_id', back_populates='receiver')
     groups = db.relationship('GroupMembership', back_populates='user')
+
+    schedule = db.Column(JSON, nullable=False, default={
+        'Sunday': {'AM': False, 'PM': False},
+        'Monday': {'AM': False, 'PM': False},
+        'Tuesday': {'AM': False, 'PM': False},
+        'Wednesday': {'AM': False, 'PM': False},
+        'Thursday': {'AM': False, 'PM': False},
+        'Friday': {'AM': False, 'PM': False},
+        'Saturday': {'AM': False, 'PM': False}
+    })
     
     def __repr__(self):
         return f"<User #{self.id}: {self.first_name} {self.last_name}, {self.email}>"
@@ -53,10 +64,10 @@ class User(db.Model):
             email=email,
             city=city,
             state=state,
+            zip_code=zip_code,
             skill=skill,
             password=hashed_pwd
         )
-        db.session.add(user)
         return user
 
     @classmethod
@@ -75,6 +86,7 @@ class Court(db.Model):
     city = db.Column(db.String, nullable=False)
     state = db.Column(db.String, nullable=False)
     zip_code = db.Column(db.String, nullable=False)
+    num_courts = db.Column(db.String, nullable=True, default='N/A')
     
     posts = db.relationship('Post', back_populates='court')
     reviews = db.relationship('Review', back_populates='court')
@@ -125,7 +137,7 @@ class Message(db.Model):
     receiver_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     content = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
-    
+
     sender = db.relationship('User', foreign_keys=[sender_id], back_populates='sent_messages')
     receiver = db.relationship('User', foreign_keys=[receiver_id], back_populates='received_messages')
 

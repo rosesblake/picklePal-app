@@ -1,0 +1,76 @@
+{% extends 'base-nav.html' %}
+{% block content %}
+<!-- TOP NAV  -->
+<section class="flex overflow-hidden flex-col mx-auto w-full bg-white">
+    <header class="flex overflow-hidden gap-5 justify-between items-end px-5 py-6 w-full text-2xl text-center text-white whitespace-nowrap bg-dark-green min-h-[81px]">
+      <img loading="lazy" src="static/images/icon-bell.png" alt="" class="object-contain shrink-0 aspect-square w-[30px]" />
+      <h1 class="w-[120px]">picklePal</h1>
+      <img loading="lazy" src="static/images/icon-message-circle.png" alt="" class="object-contain shrink-0 aspect-square w-[33px]" />
+    </header>
+<!-- --------------- -->
+ <!-- court specifier  -->
+<div class="flex flex-col justify-center items-center px-4 py-2.5 w-full text-center bg-light-green min-h-[60px] text-neutral-800">
+    <h2 class="text-lg">Vista Canyon Park</h2>
+    <div class="flex items-center mt-1.5 text-xs">
+      <img loading="lazy" src="/static/images/icon-map-pin.png" alt="Map Pin" class="object-contain shrink-0 w-3.5 aspect-square" />
+      <p class="ml-1">Santa Clarita, CA, 91387</p>
+    </div>
+  </div>  
+<!-- -------------------------------->
+ <!-- POST -->
+    <main class="flex overflow-hidden flex-col justify-center w-full text-neutral-800">
+        <article class="flex overflow-hidden flex-col justify-center w-full text-neutral-800">
+            <div class="flex flex-col p-5 w-full">
+              <header class="flex gap-5 justify-between items-start w-full">
+                <div class="flex gap-3 py-px pr-12 min-w-[240px] w-[242px]">
+                  <img loading="lazy" src="static/images/profile-icon.png" alt="User profile picture" class="object-contain shrink-0 aspect-square w-[30px]" />
+                  <div class="flex flex-col my-auto">
+                    <h3 id="user-name-home" class="self-start text-base">{{ user.first_name }} {{ user.last_name }}</h3>
+                    <p id="user-location-home" class="text-xs">{{ user.city }}, {{ user.state }}, {{ user.zip_code }} </p>
+                  </div>
+                </div>
+                <p id="user-skill-home" class="text-xs text-right">skill {{ user.skill }}</p>
+              </header>
+              <!-- POST CONTENT  -->
+              <p class="mt-5 text-base">Looking for some solo games in the Valley!</p>
+              <p class="mt-5 text-base">
+                Searching for Partners <br /> near Los Angeles, CA
+              </p>
+              <!-- --------------  -->
+              <div class="flex mt-5 max-w-full min-h-0 w-full"></div>
+            </div>
+            <footer class="flex overflow-hidden gap-5 justify-between items-center px-5 w-full text-xs whitespace-nowrap bg-light-gray bg-opacity-10 min-h-[38px]">
+              <button class="flex gap-2.5 self-stretch my-auto w-[50px]">
+                <img loading="lazy" src="static/images/like-icon.png" alt="" class="object-contain shrink-0 aspect-square w-[18px]" />
+                <span>Like</span>
+              </button>
+              <button class="flex gap-2.5 self-stretch my-auto w-[81px]">
+                <img loading="lazy" src="static/images/comment-icon.png" alt="" class="object-contain shrink-0 aspect-square w-[18px]" />
+                <span>Comment</span>
+              </button>
+            </footer>
+          </article>
+    </main>
+    <!-- BOT NAV  -->
+    <div class="fixed inset-x-0 bottom-0 bg-dark-green text-white flex w-full h-[100px] p-[15px_19px] justify-between items-start flex-shrink-0">
+        <nav class="flex justify-between items-start w-full text-base whitespace-nowrap">
+            <a href="#courts" class="flex flex-col items-center justify-start w-[50px] h-full">
+                <img loading="lazy" src="/static/images/bot-nav/map-icon.png" alt="Map" class="object-contain w-[30px] h-[30px]" />
+                <p class="mt-1 text-sm">Courts</p>
+            </a>
+            <a href="#groups" class="flex flex-col items-center justify-start w-[50px] h-full">
+                <img loading="lazy" src="/static/images/bot-nav/groups-icon.png" alt="Groups" class="object-contain w-[50px] h-[30px]" />
+                <p class="mt-1 text-sm">Groups</p>
+            </a>
+            <a href="#friends" class="flex flex-col items-center justify-start w-[50px] h-full">
+                <img loading="lazy" src="/static/images/bot-nav/friends-icon.png" alt="Friends" class="object-contain w-[30px] h-[30px]" />
+                <p class="mt-1 text-sm">Friends</p>
+            </a>
+            <a href="#profile" class="flex flex-col items-center justify-start w-[50px] h-full">
+                <img loading="lazy" src="/static/images/profile-icon.png" alt="Profile" class="object-contain rounded-full w-[30px] h-[30px]" />
+                <p class="mt-1 text-sm">Profile</p>
+            </a>
+        </nav>
+    </div>
+  </section>
+  {% endblock %}

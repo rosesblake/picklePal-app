@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}Register User P2{% endblock %}
+{% block content %}
+<section class="flex overflow-hidden flex-col items-center pb-40 mx-auto w-full bg-white">
+    <header class="flex gap-2.5 items-end self-stretch px-5 pt-9 pb-2.5 bg-dark-green min-h-[80px]">
+      <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/6ca2bd449a63fb56568b3457b563fcd9f254106bb728a513a7292aeff082a19c?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" class="object-contain aspect-square w-[35px]" alt="" />
+    </header>
+    <main class="flex flex-col justify-center mt-12 w-full max-w-xs text-sm font-semibold tracking-normal leading-none text-neutral-800">
+        <div class="flex justify-center mb-5">
+            <h1 class="text-2xl font-bold whitespace-nowrap">Additional Information</h1>
+        </div>
+              <form id="register-form-p1" method="POST">
+        {{ form2.hidden_tag() }}
+
+        {% for field in form2 %}
+            {% if field.widget.input_type != 'hidden' %}
+                <div class="flex flex-col w-full whitespace-nowrap mb-10">
+                    {{ field.label(class_="flex-1 shrink gap-2.5 w-full") }}
+                    {{ field(class_="flex mt-2 w-full bg-white rounded-md min-h-[48px] border border-input-gray p-3", placeholder=field.label.text) }}
+                    {% for error in field.errors %}
+                        <span class="text-red-500">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endfor %} 
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/893cd8d56b62efea1c91a36a0aac75acd959548ac694e657ade002a9a8753585?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" class="object-contain w-6 aspect-square" alt="" />
+              </div>
+        <div class="mt-10 text-center">
+          <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/bb4eef1581e2a7df3d2b4900a2dba3f9abc5ad2d476eb0bdd59ed604b8edd407?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" class="object-contain mx-auto aspect-square w-[50px]" alt="Profile photo placeholder" />
+          <h2 class="mt-2 text-xl tracking-normal leading-tight text-neutral-800">Profile Photo</h2>
+        </div>
+        <div class="flex justify-center mt-10">
+        <button class="inline-flex items-center justify-center gap-2 px-3.5 py-2.5 text-2xl font-bold tracking-tight leading-none text-white whitespace-nowrap rounded-md bg-green-btn">
+          Create
+        </button>      
+        </div>     
+      </form>
+    </main>
+  </section>
+  {% endblock %}
+
+      <div class="mt-10">
+        <label for="skillLevel" class="block text-sm font-semibold tracking-normal leading-none text-neutral-800">Skill Level</label>
+        <div class="relative">
+          <select id="skillLevel" name="skillLevel" class="appearance-none w-full mt-2 py-3 pr-8 pl-4 bg-white rounded-md text-base tracking-normal">
+            <option>Select</option>
+          </select>
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/893cd8d56b62efea1c91a36a0aac75acd959548ac694e657ade002a9a8753585?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" class="object-contain w-6 aspect-square" alt="" />
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="mt-10 text-center">
+      <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/bb4eef1581e2a7df3d2b4900a2dba3f9abc5ad2d476eb0bdd59ed604b8edd407?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" class="object-contain mx-auto aspect-square w-[50px]" alt="Profile photo placeholder" />
+      <h2 class="mt-2 text-xl tracking-normal leading-tight text-neutral-800">Profile Photo</h2>
+    </div>
+    <button class="overflow-hidden gap-2 self-stretch px-3.5 py-2.5 mt-14 text-2xl font-bold tracking-tight leading-none text-white whitespace-nowrap rounded-md bg-neutral-800">
+      Create
+    </button>
+  </section>
