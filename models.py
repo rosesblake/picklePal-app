@@ -15,7 +15,7 @@ class User(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    profile_image = db.Column(db.String, nullable=True)
+    profile_image = db.Column(db.String, nullable=False, default='static/images/profile-icon.png')
     password = db.Column(db.String(128), nullable=False)
     first_name = db.Column(db.String(35), nullable=False)
     last_name = db.Column(db.String(35), nullable=False)

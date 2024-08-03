@@ -133,3 +133,54 @@ def show_user_home():
     user = g.user
     
     return render_template('home.html', user=user)
+
+
+@app.route('/courts')
+def show_map_search():
+    """get maps api to find courts"""
+    if not g.user:
+        flash('Please Login First')
+        return redirect('/login')
+
+    user = g.user
+    return render_template('court-finder.html', user=user)
+
+@app.route('/groups')
+def show_groups():
+    """list all groups based on search criteria"""
+    if not g.user:
+        flash('Please Login First')
+        return redirect('/login')
+
+    user = g.user
+    return render_template('groups.html', user=user)
+
+@app.route('/friends')
+def show_friends_list():
+    """list all groups based on search criteria"""
+    if not g.user:
+        flash('Please Login First')
+        return redirect('/login')
+
+    user = g.user
+    return render_template('friends.html', user=user)
+
+@app.route('/profile')
+def show_user_profile():
+    """list all groups based on search criteria"""
+    if not g.user:
+        flash('Please Login First')
+        return redirect('/login')
+
+    user = g.user
+    return render_template('profile.html', user=user)
+
+@app.route('/messages')
+def show_user_messages():
+    """list all groups based on search criteria"""
+    if not g.user:
+        flash('Please Login First')
+        return redirect('/login')
+
+    user = g.user
+    return render_template('messages.html', user=user)

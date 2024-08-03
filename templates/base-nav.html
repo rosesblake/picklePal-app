@@ -10,5 +10,26 @@
 <body class="font-roboto">
     {% block content %}
     {% endblock %}
+        <!-- BOT NAV  -->
+        <div class="fixed inset-x-0 bottom-0 bg-dark-green text-white flex w-full h-[100px] p-[15px_19px] justify-between items-start flex-shrink-0">
+            <nav class="flex justify-between items-start w-full text-base whitespace-nowrap">
+                <a href="/courts" class="flex flex-col items-center justify-start w-[50px] h-full">
+                    <img loading="lazy" src="/static/images/bot-nav/map-icon.png" alt="Map" class="object-contain w-[30px] h-[30px]" />
+                    <p class="mt-1 text-sm">Courts</p>
+                </a>
+                <a href="/groups" class="flex flex-col items-center justify-start w-[50px] h-full">
+                    <img loading="lazy" src="/static/images/bot-nav/groups-icon.png" alt="Groups" class="object-contain w-[50px] h-[30px]" />
+                    <p class="mt-1 text-sm">Groups</p>
+                </a>
+                <a href="/friends" class="flex flex-col items-center justify-start w-[50px] h-full">
+                    <img loading="lazy" src="/static/images/bot-nav/friends-icon.png" alt="Friends" class="object-contain w-[30px] h-[30px]" />
+                    <p class="mt-1 text-sm">Friends</p>
+                </a>
+                <a href="/profile" class="flex flex-col items-center justify-start w-[50px] h-full">
+                    <img loading="lazy" src="{% block user_img_src %}{% endblock %}" alt="Profile" class="object-contain rounded-full w-[30px] h-[30px]" />
+                    <p class="mt-1 text-sm">Profile</p>
+                </a>
+            </nav>
+        </div>
     </body>
 </html>

@@ -1,11 +1,15 @@
 {% extends 'base-nav.html' %}
 {% block content %}
 <!-- TOP NAV  -->
-<section class="flex overflow-hidden flex-col mx-auto w-full bg-white">
-    <header class="flex overflow-hidden gap-5 justify-between items-end px-5 py-6 w-full text-2xl text-center text-white whitespace-nowrap bg-dark-green min-h-[81px]">
-      <img loading="lazy" src="static/images/icon-bell.png" alt="" class="object-contain shrink-0 aspect-square w-[30px]" />
+<section class="flex overflow-hidden flex-col mx-auto w-full bg-white pt-[100px] pb-[100px]">
+    <header class="fixed top-0 left-0 right-0 flex overflow-hidden gap-5 justify-between items-end px-5 py-6 w-full text-2xl text-center text-white whitespace-nowrap bg-dark-green h-[100px] z-10">
+        <a href="#">
+        <img loading="lazy" src="static/images/icon-bell.png" alt="" class="object-contain shrink-0 aspect-square w-[30px]" />
+    </a>
       <h1 class="w-[120px]">picklePal</h1>
+      <a href="/messages">
       <img loading="lazy" src="static/images/icon-message-circle.png" alt="" class="object-contain shrink-0 aspect-square w-[33px]" />
+    </a>
     </header>
 <!-- --------------- -->
  <!-- court specifier  -->
@@ -23,7 +27,7 @@
             <div class="flex flex-col p-5 w-full">
               <header class="flex gap-5 justify-between items-start w-full">
                 <div class="flex gap-3 py-px pr-12 min-w-[240px] w-[242px]">
-                  <img loading="lazy" src="static/images/profile-icon.png" alt="User profile picture" class="object-contain shrink-0 aspect-square w-[30px]" />
+                  <img loading="lazy" src="{{ user.profile_image }}" alt="User profile picture" class="object-contain shrink-0 aspect-square w-[30px]" />
                   <div class="flex flex-col my-auto">
                     <h3 id="user-name-home" class="self-start text-base">{{ user.first_name }} {{ user.last_name }}</h3>
                     <p id="user-location-home" class="text-xs">{{ user.city }}, {{ user.state }}, {{ user.zip_code }} </p>
@@ -51,26 +55,8 @@
             </footer>
           </article>
     </main>
-    <!-- BOT NAV  -->
-    <div class="fixed inset-x-0 bottom-0 bg-dark-green text-white flex w-full h-[100px] p-[15px_19px] justify-between items-start flex-shrink-0">
-        <nav class="flex justify-between items-start w-full text-base whitespace-nowrap">
-            <a href="#courts" class="flex flex-col items-center justify-start w-[50px] h-full">
-                <img loading="lazy" src="/static/images/bot-nav/map-icon.png" alt="Map" class="object-contain w-[30px] h-[30px]" />
-                <p class="mt-1 text-sm">Courts</p>
-            </a>
-            <a href="#groups" class="flex flex-col items-center justify-start w-[50px] h-full">
-                <img loading="lazy" src="/static/images/bot-nav/groups-icon.png" alt="Groups" class="object-contain w-[50px] h-[30px]" />
-                <p class="mt-1 text-sm">Groups</p>
-            </a>
-            <a href="#friends" class="flex flex-col items-center justify-start w-[50px] h-full">
-                <img loading="lazy" src="/static/images/bot-nav/friends-icon.png" alt="Friends" class="object-contain w-[30px] h-[30px]" />
-                <p class="mt-1 text-sm">Friends</p>
-            </a>
-            <a href="#profile" class="flex flex-col items-center justify-start w-[50px] h-full">
-                <img loading="lazy" src="/static/images/profile-icon.png" alt="Profile" class="object-contain rounded-full w-[30px] h-[30px]" />
-                <p class="mt-1 text-sm">Profile</p>
-            </a>
-        </nav>
-    </div>
-  </section>
   {% endblock %}
+  {% block user_img_src %}
+  {{ user.profile_image }}
+  {% endblock %}
+</section>

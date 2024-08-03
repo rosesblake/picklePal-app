@@ -1,0 +1,51 @@
+{% extends 'base-nav.html' %}
+
+{% block content %}
+<section class="flex overflow-hidden flex-col mx-auto w-full bg-white pt-[100px] pb-[100px]">
+    <!-- TOP NAV  -->
+    <header class="fixed top-0 left-0 right-0 flex overflow-hidden gap-5 justify-between items-end px-5 py-6 w-full text-2xl text-center text-white whitespace-nowrap bg-dark-green h-[100px] z-10">
+        <a href="/home">
+          <img loading="lazy" src="static/images/icon-home.png" alt="" class="object-contain shrink-0 aspect-square w-[30px]" />
+      </a>
+        <h1 class="w-[200px]">Find Courts</h1>
+        <div class="flex shrink-0 h-[35px] w-[35px]"></div>
+      </header>
+      <!-- ----------  -->
+    <div class="flex flex-col pr-16 pl-5 mt-5 w-full">
+        <!-- SEARCH INPUT FIELDS  -->
+ 
+        <div class="flex gap-2.5 mt-2">
+          <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/f6b1d85a640d5498efd484ad756d91fb80b843e09b03715861a5704b299900c4?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain shrink-0 my-auto aspect-[1.03] w-[31px]" />
+          <div class="flex flex-col grow shrink-0 basis-0 w-fit">
+            <label for="location-input" class="sr-only">Location</label>
+            <input id="location-input" type="text" class="flex mt-1 w-full bg-white min-h-[24px] border-b border-input-gray p-1" />
+          </div>
+        </div>
+      </form>
+    </div>
+      <!-- MAP PLACEHOLDER -->
+      <div class="mt-5 w-full h-[400px] bg-gray-200 relative z-10">
+        <!-- Replace this with your map API integration -->
+        <p class="text-center text-gray-500 pt-8">Map Placeholder</p>
+      </div>
+    <!-- ADDRESS BAR SECTION -->
+    <section class="fixed bottom-[100px] inset-x-0 bg-light-green text-neutral-800 z-20">
+      <article class="flex gap-2.5 justify-center items-center py-4">
+        <div class="flex flex-col self-stretch my-auto min-w-[240px] w-[380px] text-center">
+          <h2 class="flex gap-2 items-center justify-center text-2xl">
+            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/dc244ff92a9d948a9e06e395851f7a938fabb0499c8fe0c5535d5b00e7c1d9f9?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain w-5 aspect-square" />
+            <span>Vista Canyon Park</span>
+          </h2>
+          <p class="text-xs">16950 Lost Canyon Rd, Santa Clarita, CA, 91387</p>
+          <div class="flex items-center justify-center gap-1 mt-2">
+            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/9b48aad3e611083b2877f60c597259290b99847b2e2a74cce0f56fee53a98455?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain w-[16px] aspect-square" />
+            <span class="text-sm">3.5</span>
+          </div>
+        </div>
+      </article>
+    </section>
+    
+
+{% endblock %}
+{% block user_img_src %}{{ user.profile_image }}{% endblock %}
+</section>

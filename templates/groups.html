@@ -1,0 +1,92 @@
+{% extends 'base-nav.html' %}
+{% block content %}
+
+<section class="flex flex-col mx-auto w-full bg-white pb-[100px] pt-[100px]">
+    <!-- TOP NAV  -->
+    <header class="fixed top-0 left-0 right-0 flex overflow-hidden gap-5 justify-between items-end px-5 py-6 w-full text-2xl text-center text-white whitespace-nowrap bg-dark-green h-[100px] z-10">
+        <a href="/home">
+        <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/539ed51d37d977c20c959d420318ce5243d4e380b02211d551bb885ffa50fd16?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain shrink-0 aspect-square w-[33px]" />
+    </a>
+        <h1 class="w-[120px]">Groups</h1>
+        <a href="">
+      <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/fd77e291b5175858bfef626ea7a5ab896020d25abdf72936d3df19d7b359f690?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain shrink-0 aspect-square w-[35px]" />
+    </a>
+    </header>
+    <!-- ----------------  -->
+    <!-- SEARCH INPUT FIELDS  -->
+    <form class="flex flex-col pr-16 pl-5 mt-5 w-full">
+        <div class="flex gap-3">
+          <img loading="lazy" src="static/images/icon-search.png" alt="" class="object-contain shrink-0 my-auto aspect-square w-[30px]" />
+          <div class="flex flex-col grow shrink-0 basis-0 w-fit">
+            <label for="search-input" class="sr-only">Search</label>
+            <input id="search-input" type="text" class="flex mt-1 w-full bg-white min-h-[24px] border-b border-input-gray p-1" />
+          </div>
+        </div>
+        <div class="flex gap-2.5 mt-2">
+          <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/f6b1d85a640d5498efd484ad756d91fb80b843e09b03715861a5704b299900c4?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain shrink-0 my-auto aspect-[1.03] w-[31px]" />
+          <div class="flex flex-col grow shrink-0 basis-0 w-fit">
+            <label for="location-input" class="sr-only">Location</label>
+            <input id="location-input" type="text" class="flex mt-1 w-full bg-white min-h-[24px] border-b border-input-gray p-1" />
+          </div>
+        </div>
+    </form>
+    <!-- PICKLEBALL GROUP BLOCKS -->
+    <main class="flex flex-col items-center w-full mt-8">
+        <article class="flex flex-col p-5 w-full min-h-[117px] text-neutral-800 border-b border-light-gray">
+            <div class="flex flex-col py-0.5 w-full">
+                <div class="flex gap-3 items-start">
+                    <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/0bf245ff189c3917912b94d815cd8df90bfb243481077adc5e8ec32d9d80bfdb?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="Los Angeles PickleBall Group Logo" class="object-contain aspect-[1.08] w-[54px]" />
+                    <div class="flex flex-col mt-2 text-left">
+                        <h2 class="text-xl">Los Angeles PickleBall Group</h2>
+                        <p class="mt-2 text-sm">Santa Clarita, CA</p>
+                    </div>
+                </div>
+                <p class="mt-3 text-base text-center">12 Members</p>
+            </div>
+        </article>
+        
+        <article class="flex flex-col p-5 w-full min-h-[117px] text-neutral-800 border-b border-light-gray">
+            <div class="flex flex-col py-0.5 w-full">
+                <div class="flex gap-3 items-start">
+                    <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/0bf245ff189c3917912b94d815cd8df90bfb243481077adc5e8ec32d9d80bfdb?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="LA PickleBall Logo" class="object-contain aspect-[1.08] w-[54px]" />
+                    <div class="flex flex-col mt-2 text-left">
+                        <h2 class="text-xl">LA PickleBall</h2>
+                        <p class="mt-3 text-sm">Santa Clarita, CA</p>
+                    </div>
+                </div>
+                <p class="mt-3 text-base text-center">2 Members</p>
+            </div>
+        </article>
+
+        <article class="flex flex-col p-5 w-full min-h-[117px] text-neutral-800 border-b border-light-gray">
+            <div class="flex flex-col py-0.5 w-full">
+                <div class="flex gap-3 items-start">
+                    <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/0bf245ff189c3917912b94d815cd8df90bfb243481077adc5e8ec32d9d80bfdb?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="Santa Clarita PB Logo" class="object-contain aspect-[1.08] w-[54px]" />
+                    <div class="flex flex-col mt-2 text-left">
+                        <h2 class="text-xl">Santa Clarita PB</h2>
+                        <p class="mt-3 text-sm">Santa Clarita, CA</p>
+                    </div>
+                </div>
+                <p class="mt-3 text-base text-center">4 Members</p>
+            </div>
+        </article>
+        
+        <article class="flex flex-col p-5 w-full min-h-[117px] text-neutral-800 border-b border-light-gray">
+            <div class="flex flex-col py-0.5 w-full">
+                <div class="flex gap-3 items-start">
+                    <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/0bf245ff189c3917912b94d815cd8df90bfb243481077adc5e8ec32d9d80bfdb?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="Vista Canyon Group Logo" class="object-contain aspect-[1.08] w-[54px]" />
+                    <div class="flex flex-col mt-2 text-left">
+                        <h2 class="text-xl">Vista Canyon Group</h2>
+                        <p class="mt-2 text-sm">Santa Clarita, CA</p>
+                    </div>
+                </div>
+                <p class="mt-3 text-base text-center">17 Members</p>
+            </div>
+        </article>
+    </main>
+</section>
+{% endblock %}
+
+{% block user_img_src %}
+{{ user.profile_image }}
+{% endblock %}

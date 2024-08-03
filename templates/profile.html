@@ -1,0 +1,133 @@
+{% extends 'base-nav.html' %}
+{% block content %}
+
+<section class="flex overflow-hidden flex-col mx-auto w-full bg-white pb-[100px] pt-[100px]">
+    <!-- TOP NAV  -->
+    <header class="fixed top-0 left-0 right-0 flex overflow-hidden gap-5 justify-between items-end px-5 py-6 w-full text-2xl text-center text-white whitespace-nowrap bg-dark-green h-[100px] z-10">
+        <a href="/home">
+          <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/539ed51d37d977c20c959d420318ce5243d4e380b02211d551bb885ffa50fd16?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain shrink-0 aspect-square w-[33px]" />
+      </a>
+        <h1 class="w-[120px]">Profile</h1>
+      <div class="flex shrink-0 h-[30px] w-[30px]"></div>
+    </header>
+        <!-- MAIN PROFILE SECTION  -->
+        <main class="flex flex-col w-full">
+          <section class="flex overflow-hidden relative flex-col items-start px-5 pt-5 pb-2.5 w-full">
+            <div class="flex z-0 gap-2.5 pr-10 max-w-full w-full">
+              <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/0eb2e871b0daf34d02ede5066bd061794e0210efbbf310262ba58cbd597da905?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="Profile picture" class="object-contain shrink-0 aspect-square w-[50px]" />
+              <div class="flex flex-col my-auto">
+                <h2 class="self-start text-xl">picklePal</h2>
+                <p class="mt-2 text-xs">Santa Clarita, CA</p>
+              </div>
+            </div>
+            <!-- FRIENDS/GROUPS/COURTS  -->
+            <div class="flex absolute z-0 justify-center items-center text-sm tracking-normal text-center whitespace-nowrap right-[20px] top-[20px]">
+              <div class="flex flex-col self-stretch my-auto w-[60px]">
+                <p class="leading-loose">42</p>
+                <p class="leading-5">Friends</p>
+              </div>
+              <div class="flex flex-col self-stretch my-auto w-[60px]">
+                <p class="leading-loose">3</p>
+                <p class="leading-5">Groups</p>
+              </div>
+              <div class="flex flex-col self-stretch my-auto w-[60px]">
+                <p class="leading-loose">3</p>
+                <p class="leading-5">Courts</p>
+              </div>
+            </div>
+            <!-- RATING/HOMECOURT BUTTON  -->
+            <div class="flex z-0 gap-2.5 mt-5 max-w-full text-base tracking-normal leading-relaxed w-full">
+              <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/e78aca1bb9eb379316934c0196e4c179c037320dec68578f83a43a0f0c124f22?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain shrink-0 w-6 aspect-square" />
+              <p class="my-auto">4.0 Rating</p>
+            </div>
+            <div class="flex items-center px-4 mt-5 max-w-fit text-lg tracking-normal leading-none bg-custom-yellow rounded-lg p-4">
+                <img loading="lazy" src="static/images/icon-home.png" alt="Home Court Icon" class="object-contain w-6 aspect-square filter brightness-0 text-dark-gray" />
+                <p class="ml-2">Home Court</p>
+            </div>
+            
+            <a href="/edit-profile" class="absolute bottom-2.5 right-6 flex items-center gap-2.5 self-stretch text-xs font-extralight tracking-normal leading-6 text-center text-gray-600">
+                Edit Profile
+            </a>       
+                 
+          </section>
+          <!-- HOME COURT DIVIDER -->
+          <section class="flex flex-col items-center px-32 py-2.5 w-full text-center bg-light-green">
+            <h3 class="text-lg">Vista Canyon Park</h3>
+            <div class="flex gap-0.5 mt-2.5 max-w-full text-xs w-full">
+              <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/3365cb09626d5919752db127962eca2ef9c45e0a7641316f0f30cf63f7c0c329?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain shrink-0 w-3.5 aspect-square" />
+              <p class="flex-auto">Santa Clarita, CA, 91387</p>
+            </div>
+          </section>
+        </main>
+        <!-- SCHEDULE SECTION  -->
+        <section class="flex overflow-hidden gap-2.5 justify-center items-center py-6 pr-12 pl-5 min-h-[194px]">
+          <div class="flex flex-col self-stretch py-1 my-auto rounded-none min-w-[240px] w-[296px]">
+            <div class="flex flex-col pr-2.5 pl-6 w-full whitespace-nowrap ">
+              <h3 class="self-center ml-2.5 text-2xl">Schedule</h3>
+              <div class="flex gap-3.5 mt-6 text-base font-bold text-center">
+                <p class="grow">Sun</p>
+                <p>Mon</p>
+                <p>Tue</p>
+                <p>Wed</p>
+                <p>Thu</p>
+                <p>Fri</p>
+                <p>Sat</p>
+              </div>
+            </div>
+            <div class="flex gap-1 mt-2 text-sm text-center whitespace-nowrap">
+              <div class="flex flex-col justify-center items-start my-auto">
+                <p>AM</p>
+                <p class="mt-3">PM</p>
+              </div>
+              <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/779090f3-d5d9-4837-af4a-50df729cce50?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="Schedule grid" class="object-contain grow shrink-0 rounded-none aspect-[5.26] basis-0 w-fit" />
+            </div>
+            <a class="self-center mt-5 mx-auto text-xs text-center text-gray-600 pl-6">
+                Edit Availability
+              </a>              
+          </div>
+        </section> 
+        <!-- --------------------  -->
+        <!-- POSTS DIVIDER  -->
+        <section class="gap-2.5 self-stretch px-40 py-2 text-2xl text-center whitespace-nowrap bg-light-green">
+          <h3>Posts</h3>
+        </section>
+ <!-- POST -->
+ <section class="flex overflow-hidden flex-col justify-center w-full text-neutral-800">
+    <article class="flex overflow-hidden flex-col justify-center w-full text-neutral-800">
+        <div class="flex flex-col p-5 w-full">
+          <header class="flex gap-5 justify-between items-start w-full">
+            <div class="flex gap-3 py-px pr-12 min-w-[240px] w-[242px]">
+              <img loading="lazy" src="{{ user.profile_image }}" alt="User profile picture" class="object-contain shrink-0 aspect-square w-[30px]" />
+              <div class="flex flex-col my-auto">
+                <h3 id="user-name-home" class="self-start text-base">{{ user.first_name }} {{ user.last_name }}</h3>
+                <p id="user-location-home" class="text-xs">{{ user.city }}, {{ user.state }}, {{ user.zip_code }} </p>
+              </div>
+            </div>
+            <p id="user-skill-home" class="text-xs text-right">skill {{ user.skill }}</p>
+          </header>
+          <!-- POST CONTENT  -->
+          <p class="mt-5 text-base">Looking for some solo games in the Valley!</p>
+          <p class="mt-5 text-base">
+            Searching for Partners <br /> near Los Angeles, CA
+          </p>
+          <!-- --------------  -->
+          <div class="flex mt-5 max-w-full min-h-0 w-full"></div>
+        </div>
+        <footer class="flex overflow-hidden gap-5 justify-between items-center px-5 w-full text-xs whitespace-nowrap bg-light-gray bg-opacity-10 min-h-[38px]">
+          <button class="flex gap-2.5 self-stretch my-auto w-[50px]">
+            <img loading="lazy" src="static/images/like-icon.png" alt="" class="object-contain shrink-0 aspect-square w-[18px]" />
+            <span>Like</span>
+          </button>
+          <button class="flex gap-2.5 self-stretch my-auto w-[81px]">
+            <img loading="lazy" src="static/images/comment-icon.png" alt="" class="object-contain shrink-0 aspect-square w-[18px]" />
+            <span>Comment</span>
+          </button>
+        </footer>
+      </article>
+ </section>
+    {% endblock %}
+
+{% block user_img_src %}
+{{ user.profile_image }}
+{% endblock %}
+</section>
