@@ -52,13 +52,19 @@ def login_user(user):
     """login user and add them to session"""
     session[CURR_USER_KEY] = user.id
 
+def logout_user():
+    """Logout the current user by popping the user ID from the session."""
+    if CURR_USER_KEY in session:
+        session.pop(CURR_USER_KEY)
+
+
 @app.route('/')
 def get_home_page():
     """get register form and submit user input to db"""
     if g.user:
         return redirect('/home')
 
-    return redirect('/register')
+    return redirect('/login')
 
 @app.route('/register', methods=['GET', 'POST'])
 def get_register_form():
@@ -89,7 +95,17 @@ def get_user_info_form():
 
     if form2.validate_on_submit():
         user_data = session.pop('registration_data')  # Retrieve and remove data from session
-        user = User(
+
+                # Handle file upload
+        profile_image = form2.profile_image.data
+        if profile_image:
+            filename = secure_filename(profile_image.filename)
+            profile_image_path = os.path.join('static/images/', filename)
+            profile_image.save(profile_image_path)
+        else:
+            profile_image_path = '/static/images/profile-icon.png'  # Default image if none uploaded
+            
+        user = User.signup(
             email=user_data['email'],
             first_name=user_data['first_name'],
             last_name=user_data['last_name'],
@@ -98,14 +114,14 @@ def get_user_info_form():
             state=city_caps(form2.state.data),
             zip_code=form2.zip_code.data,
             skill=form2.skill.data,
-            profile_image=form2.profile_image.data
+            profile_image=profile_image_path
         )
         db.session.add(user)
         db.session.commit()
 
         login_user(user)
 
-        flash("Registration successful!", "success")
+        # flash("Registration successful!", "success")
         return redirect('/home')
 
     return render_template('user-info.html', form2=form2)
@@ -119,9 +135,19 @@ def get_login_form():
         password = form.password.data
         user = User.authenticate(email, password)
         if user:
+            login_user(user)
+
             return redirect('/home')
+        
         flash('Invalid Email and/or Password')
     return render_template('login.html', form=form)
+
+@app.route('/logout', methods=['POST'])
+def handle_logout():
+    """handle user logout and redirect to home page"""
+    if CURR_USER_KEY in session:
+        session.pop(CURR_USER_KEY)
+        return redirect('/')
 
 @app.route('/home', methods=['GET', 'POST'])
 def show_user_home():
@@ -141,9 +167,9 @@ def show_map_search():
     if not g.user:
         flash('Please Login First')
         return redirect('/login')
-
+    google_maps_api_key = os.getenv('GOOGLE_MAPS_API_KEY')
     user = g.user
-    return render_template('court-finder.html', user=user)
+    return render_template('court-finder.html', user=user, google_maps_api_key=google_maps_api_key)
 
 @app.route('/groups')
 def show_groups():
@@ -184,3 +210,23 @@ def show_user_messages():
 
     user = g.user
     return render_template('messages.html', user=user)
+
+@app.route('/settings')
+def show_settings_menu():
+    """show settings list"""
+    if not g.user:
+        flash('Please Login First')
+        return redirect('/login')
+
+    user = g.user
+    return render_template('settings.html', user=user)
+
+@app.route('/alerts')
+def show_alerts_menu():
+    """show alerts"""
+    if not g.user:
+        flash('Please Login First')
+        return redirect('/login')
+    
+    user = g.user
+    return render_template('alerts.html', user=user)

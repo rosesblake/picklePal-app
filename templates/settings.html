@@ -1,0 +1,23 @@
+{% extends 'base-nav.html' %}
+{% block content %}
+<section class="flex overflow-hidden flex-col mx-auto w-full bg-white pb-[100px] pt-[100px]">
+    <header class="fixed top-0 left-0 right-0 flex overflow-hidden gap-5 justify-between items-end px-5 py-6 w-full text-2xl text-center text-white whitespace-nowrap bg-dark-green h-[100px] z-10">
+        <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/301a99352172e443598727e0754e538d0a6a1a6d1ef532292992e083a9c04209?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" class="object-contain shrink-0 aspect-square w-[35px]" alt="PicklePal logo" />
+      <h1 class="w-[120px]">picklePal</h1>
+      <div class="flex shrink-0 h-[33px] w-[33px]" aria-hidden="true"></div>
+    </header>
+    <div class="overflow-hidden flex-1 shrink self-stretch px-5 py-7 font-bold tracking-tight leading-none text-center min-h-[76px] text-neutral-800 border-b border-light-gray">
+        <a href="#"><h2>Report An Issue</h2></a>
+      </div>
+      <div class="overflow-hidden flex-1 shrink self-stretch px-5 py-7 font-bold tracking-tight leading-none text-center min-h-[76px] text-neutral-800 border-b border-light-gray">
+        <form action="/logout" method="post">
+          <button type="submit" class="font-bold tracking-tight leading-none text-center text-neutral-800">Log out</button>
+        </form>     
+      </div>
+      
+{% endblock %}
+
+{% block user_img_src %}
+{{ user.profile_image }}
+{% endblock %}
+</section>

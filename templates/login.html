@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
-<section class="flex overflow-hidden flex-col items-center pb-40 mx-auto w-full bg-white">
-    <header class="flex gap-2.5 items-end self-stretch px-5 pt-9 pb-2.5 bg-dark-green min-h-[80px]">
-        <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/4c1943fc73655424c4955b1b9f65d1ea15690c429b3aec205cc1d7f685f05190?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" class="object-contain aspect-square w-[35px]" alt="" />
+<section class="flex overflow-hidden flex-col items-center pb-40 mx-auto w-full bg-white pb-[100px] pt-[100px]">
+    <header class="fixed top-0 left-0 right-0 flex overflow-hidden gap-5 justify-between items-end px-5 py-6 w-full text-2xl text-center text-white whitespace-nowrap bg-dark-green h-[100px] z-10">
+        <div></div>
+        <h1 class="w-[120px]">picklePal</h1>
+        <div></div>
     </header>
     <main class="flex flex-col justify-center mt-12 w-full max-w-xs text-sm font-semibold tracking-normal leading-none text-neutral-800">
         <form id="login-form" method="POST">

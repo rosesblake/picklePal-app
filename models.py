@@ -22,7 +22,7 @@ class User(db.Model):
     email = db.Column(db.Text, nullable=False, unique=True)
     city = db.Column(db.Text, nullable=True)
     state = db.Column(db.Text, nullable=True)
-    zip_code = db.Column(db.Text, nullable=True)
+    zip_code = db.Column(db.String(5), nullable=True)
     skill = db.Column(db.String, nullable=False)
     
     home_court_id = db.Column(db.Integer, db.ForeignKey('courts.id'), nullable=True)
@@ -55,7 +55,7 @@ class User(db.Model):
         return f"<User #{self.id}: {self.first_name} {self.last_name}, {self.email}>"
     
     @classmethod
-    def signup(cls, profile_image, first_name, last_name, email, city, state, skill, password):
+    def signup(cls, profile_image, first_name, last_name, email, city, state, zip_code, skill, password):
         hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
         user = User(
             profile_image=profile_image,
@@ -86,6 +86,8 @@ class Court(db.Model):
     city = db.Column(db.String, nullable=False)
     state = db.Column(db.String, nullable=False)
     zip_code = db.Column(db.String, nullable=False)
+    latitude = db.Column(db.Float, nullable=False)
+    longitude = db.Column(db.Float, nullable=False)
     num_courts = db.Column(db.String, nullable=True, default='N/A')
     
     posts = db.relationship('Post', back_populates='court')
