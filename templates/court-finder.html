@@ -20,7 +20,7 @@
       <label for="location-input" class="sr-only">Location</label>
       <form id="search-form" class="flex items-center">
           <input id="location-input" type="text" class="w-full bg-white min-h-[24px] border-b border-input-gray p-1" placeholder="Enter location" />
-          <button type="submit" class="bg-dark-green text-white p-2 ml-2">Search</button>
+          <button type="submit" class="bg-dark-green text-white p-2 ml-2">+</button>
       </form>
   </div>
 </div>
@@ -48,7 +48,9 @@
     </div>
 </section>
 <script
-    src="https://maps.googleapis.com/maps/api/js?key={{google_maps_api_key}}&loading=async&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key={{google_maps_api_key}}&libraries=places&callback=initMap"
+    async
+    defer>
 </script>
 <script>
   const city = "{{user.city}}"

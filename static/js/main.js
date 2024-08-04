@@ -41,6 +41,7 @@
 
 let currentMarker = null; // Variable to hold the current marker
 let map;
+let autocomplete;
 
 async function initMap() {
   try {
@@ -49,6 +50,34 @@ async function initMap() {
     map = new Map(document.getElementById("map"), {
       center: { lat: 34.0522, lng: -118.2437 }, // Default center if geocode fails
       zoom: 12,
+    });
+    // Initialize Autocomplete for the input field
+    const input = document.getElementById("location-input");
+    autocomplete = new google.maps.places.Autocomplete(input);
+
+    // Set up the listener for place selection
+    autocomplete.addListener("place_changed", function () {
+      const place = autocomplete.getPlace();
+
+      if (!place.geometry) {
+        // User entered the name of a Place that was not suggested and pressed the Enter key
+        console.log("No details available for input: '" + place.name + "'");
+        return;
+      }
+
+      // Center the map on the selected place and add a marker
+      if (place.geometry.viewport) {
+        map.fitBounds(place.geometry.viewport);
+      } else {
+        map.setCenter(place.geometry.location);
+        map.setZoom(15); // Set the zoom level
+      }
+
+      // Add a marker at the selected place
+      new google.maps.Marker({
+        map: map,
+        position: place.geometry.location,
+      });
     });
 
     let geocoder = new google.maps.Geocoder();

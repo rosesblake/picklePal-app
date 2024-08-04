@@ -167,7 +167,10 @@ def show_map_search():
     if not g.user:
         flash('Please Login First')
         return redirect('/login')
+    
     google_maps_api_key = os.getenv('GOOGLE_MAPS_API_KEY')
+    
+
     user = g.user
     return render_template('court-finder.html', user=user, google_maps_api_key=google_maps_api_key)
 
