@@ -47,11 +47,14 @@
     </section> -->
     </div>
 </section>
-<script async src="https://maps.googleapis.com/maps/api/js?key={{google_maps_api_key}}&callback=initMap"></script>
+<script
+    src="https://maps.googleapis.com/maps/api/js?key={{google_maps_api_key}}&loading=async&callback=initMap">
+</script>
 <script>
   const city = "{{user.city}}"
   const state = "{{user.state}}"
   const zipCode = "{{user.zip_code}}"
+  const apiKey = "{{google_maps_api_key}}"
 </script>
 <script src="static/js/main.js"></script>
 
