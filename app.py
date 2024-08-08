@@ -4,8 +4,8 @@ from flask_bcrypt import Bcrypt
 from sqlalchemy.exc import IntegrityError
 from werkzeug.utils import secure_filename
 
-from models import db, connect_db, User
-from forms import UserRegisterForm, UserInfoForm, UserLoginForm
+from models import db, connect_db, User, Group, GroupMembership
+from forms import UserRegisterForm, UserInfoForm, UserLoginForm, CreateGroupForm
 
 from dotenv import load_dotenv
 import os
@@ -183,6 +183,38 @@ def show_groups():
 
     user = g.user
     return render_template('groups.html', user=user)
+
+@app.route('/create-group', methods=['POST', 'GET'])
+def show_create_group_form():
+    if not g.user:
+        flash('Please Login First')
+        return redirect('/login')
+    
+    form = CreateGroupForm()
+    user = g.user
+
+    if form.validate_on_submit():
+        name = form.name.data
+        description = form.description.data
+        email = form.email.data
+        website = form.website.data
+        primary_court = form.primary_court.data
+        play_type = form.play_type.data
+        owner_id = user.id
+
+        new_group = Group(name=name, description=description, email=email, website=website, primary_court=primary_court, play_type=play_type, owner_id=owner_id)
+
+        db.session.add(new_group)
+        db.session.commit()
+        # appened new membership to user groups list
+        new_membership = GroupMembership(user_id=user.id, group_id=new_group.id)
+        user.groups.append(new_membership)
+
+        db.session.commit()
+
+        return redirect('/profile')
+
+    return render_template('create-group.html', form=form, user=user)
 
 @app.route('/friends')
 def show_friends_list():

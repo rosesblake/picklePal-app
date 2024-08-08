@@ -149,6 +149,10 @@ class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False, unique=True)
     description = db.Column(db.Text, nullable=True)
+    email = db.Column(db.Text, nullable=True)
+    website = db.Column(db.Text, nullable=True)
+    primary_court = db.Column(db.Text, nullable=True)
+    play_type = db.Column(db.String, nullable=True) 
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     owner = db.relationship('User', backref='owned_groups')
     

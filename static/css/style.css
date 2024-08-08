@@ -692,6 +692,14 @@ video {
   margin-left: 1rem;
 }
 
+.mr-2{
+  margin-right: 0.5rem;
+}
+
+.mr-4{
+  margin-right: 1rem;
+}
+
 .mt-1{
   margin-top: 0.25rem;
 }
@@ -978,6 +986,10 @@ video {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
+}
+
+.flex-row{
+  flex-direction: row;
 }
 
 .flex-col{
@@ -1300,10 +1312,6 @@ video {
 
 .pt-5{
   padding-top: 1.25rem;
-}
-
-.pt-9{
-  padding-top: 2.25rem;
 }
 
 .pt-\[100px\]{
