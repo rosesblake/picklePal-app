@@ -58,6 +58,8 @@ def logout_user():
         session.pop(CURR_USER_KEY)
 
 
+
+
 @app.route('/')
 def get_home_page():
     """get register form and submit user input to db"""
@@ -218,7 +220,7 @@ def show_create_group_form():
 
 @app.route('/friends')
 def show_friends_list():
-    """list all groups based on search criteria"""
+    """show friends list and user search"""
     if not g.user:
         flash('Please Login First')
         return redirect('/login')
@@ -235,6 +237,59 @@ def show_user_profile():
 
     user = g.user
     return render_template('profile.html', user=user)
+
+@app.route('/edit-profile', methods=['GET', 'POST'])
+def edit_user_profile():
+    """list all groups based on search criteria"""
+    if not g.user:
+        flash('Please Login First')
+        return redirect('/login')
+
+    user = g.user
+    form2 = UserInfoForm(obj=user)
+
+    if form2.validate_on_submit():
+        user.city = form2.city.data
+        user.state = form2.state.data
+        user.zip_code = form2.zip_code.data
+        user.skill = form2.skill.data
+        user.profile_image = form2.profile_image.data
+
+        db.session.commit()
+
+        return redirect('/profile')
+    return render_template('user-info.html', user=user, form2=form2)
+
+@app.route('/users')
+def show_users_list():
+    if not g.user:
+        flash('Please Login First')
+        return redirect('/login')
+    
+    q = request.args.get('search', '')
+    user = g.user
+
+    # Query users based on the search input
+    other_users = User.query.filter(
+        # User.id != user.id,  # Exclude curr user
+        (User.first_name.ilike(f'%{q}%')) |
+        (User.last_name.ilike(f'%{q}%'))
+    ).all()
+
+    return render_template('users-list.html', user=user, other_users=other_users)
+
+@app.route('/users/<int:user_id>')
+def get_user_profile(user_id):
+    """show other user's profile"""
+    if not g.user:
+        flash('Please Login First')
+        return redirect('/login')
+    
+    user = g.user
+    other_user = User.query.get_or_404(user_id)
+    
+    return render_template('other-profile.html', user=user, other_user=other_user)
+
 
 @app.route('/messages')
 def show_user_messages():

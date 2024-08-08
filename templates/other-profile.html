@@ -18,43 +18,45 @@
             <div class="flex z-0 gap-2.5 pr-10 max-w-full w-full">
               <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/0eb2e871b0daf34d02ede5066bd061794e0210efbbf310262ba58cbd597da905?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="Profile picture" class="object-contain shrink-0 aspect-square w-[50px]" />
               <div class="flex flex-col my-auto">
-                <h2 class="self-start text-xl">{{ user.first_name }} {{ user.last_name }}</h2>
-                <p class="mt-2 text-xs">{{ user.city }}, {{ user.state }}</p>
+                <h2 class="self-start text-xl">picklePal</h2>
+                <p class="mt-2 text-xs">Santa Clarita, CA</p>
               </div>
             </div>
             <!-- FRIENDS/GROUPS/COURTS  -->
             <div class="flex absolute z-0 justify-center items-center text-sm tracking-normal text-center whitespace-nowrap right-[20px] top-[20px]">
               <div class="flex flex-col self-stretch my-auto w-[60px]">
-               <a href="/friends"><p class="leading-loose">{{ user.friends | length }}</p></a>
+               <a href="/friends"><p class="leading-loose">42</p></a>
                 <p class="leading-5">Friends</p>
               </div>
               <a href="#">
               <div class="flex flex-col self-stretch my-auto w-[60px]">
-                <p class="leading-loose">{{ user.groups | length }}</p>
+                <p class="leading-loose">3</p>
                 <p class="leading-5">Groups</p>
               </div>
             </a>
               <div class="flex flex-col self-stretch my-auto w-[60px]">
-                <p class="leading-loose">4</p>
+                <p class="leading-loose">3</p>
                 <p class="leading-5">Courts</p>
               </div>
             </div>
+            <section class="flex justify-center items-center">
+                <div class="flex gap-8 justify-between items-center w-[226px]">
+                    <button class="overflow-hidden px-3 py-2 text-sm font-bold text-white rounded-md bg-neutral-800 w-[98px]" tabindex="0">
+                        Add Friend
+                    </button>
+                    <button class="overflow-hidden px-3 py-2 text-sm font-bold whitespace-nowrap bg-emerald-100 rounded-md text-neutral-800 w-[98px]" tabindex="0">
+                        Message
+                    </button>
+                </div>
+            </section>
             <!-- RATING/HOMECOURT BUTTON  -->
             <div class="flex z-0 gap-2.5 mt-5 max-w-full text-base tracking-normal leading-relaxed w-full">
               <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/e78aca1bb9eb379316934c0196e4c179c037320dec68578f83a43a0f0c124f22?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain shrink-0 w-6 aspect-square" />
               <p class="my-auto">4.0 Rating</p>
             </div>
             <div class="flex items-center px-4 mt-5 max-w-fit text-lg tracking-normal leading-none bg-custom-yellow rounded-lg p-4">
-              {% if not user.home_court %}
-              <a href="">
-              <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/fd77e291b5175858bfef626ea7a5ab896020d25abdf72936d3df19d7b359f690?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain shrink-0 aspect-square w-[35px]" />
-            </a>
-              {% else %}  
-              <a href="">
-              <img loading="lazy" src="static/images/icon-home.png" alt="Home Court Icon" class="object-contain w-6 aspect-square filter brightness-0 text-dark-gray" />
-            </a>
-              {% endif %}
-              <p class="ml-2">Home Court</p>
+                <img loading="lazy" src="static/images/icon-home.png" alt="Home Court Icon" class="object-contain w-6 aspect-square filter brightness-0 text-dark-gray" />
+                <p class="ml-2">Home Court</p>
             </div>
             
             <a href="/edit-profile" class="absolute bottom-2.5 right-6 flex items-center gap-2.5 self-stretch text-xs font-extralight tracking-normal leading-6 text-center text-gray-600">
@@ -63,9 +65,8 @@
                  
           </section>
           <!-- HOME COURT DIVIDER -->
-           {% if user.home_court %}
           <section class="flex flex-col items-center px-32 py-2.5 w-full text-center bg-light-green">
-            <h3 class="text-lg">{{ user.home_court.name }}</h3>
+            <h3 class="text-lg">Vista Canyon Park</h3>
             <div class="flex items-center justify-center gap-2 mt-1 text-xs">
               <img 
                 loading="lazy" 
@@ -73,70 +74,43 @@
                 alt="" 
                 class="object-contain w-3.5 aspect-square" 
               />
-              <p>{{ user.home_court.city }}, {{ user.home_court.state }}</p>
+              <p>Santa Clarita, CA, 91387</p>
             </div>
           </section>
-          {% endif %}
+          
         </main>
-
-<!-- SCHEDULE SECTION  -->
-<section class="flex justify-center items-center py-11 px-5 border-b border-gray-600 border-opacity-10 text-neutral-800">
-  <div class="flex flex-col w-full max-w-md">
-    <!-- Header for Days of the Week -->
-    <div class="flex flex-col w-full">
-      <h2 class="text-2xl mb-4 text-center">Schedule</h2>
-      <table class="w-full border-collapse table-fixed">
-        <!-- Header Row -->
-        <thead>
-          <tr class="text-base font-bold">
-            <th class="w-[40px]"></th> <!-- Empty cell for AM/PM labels -->
-            <th class="w-[40px]">Sun</th>
-            <th class="w-[40px]">Mon</th>
-            <th class="w-[40px]">Tue</th>
-            <th class="w-[40px]">Wed</th>
-            <th class="w-[40px]">Thu</th>
-            <th class="w-[40px]">Fri</th>
-            <th class="w-[40px]">Sat</th>
-          </tr>
-        </thead>
-        <!-- Body Rows -->
-        <tbody>
-          <!-- AM Row -->
-          <tr>
-            <td class="text-sm text-center">AM</td>
-            <td class="w-[40px] h-[40px]"><img loading="lazy" src="/static/images/Rectangle.png" alt="Schedule Cell" class="w-[30px] h-[30px] object-cover mx-auto my-auto" /></td>
-            <td class="w-[40px] h-[40px]"><img loading="lazy" src="/static/images/Rectangle.png" alt="Schedule Cell" class="w-[30px] h-[30px] object-cover mx-auto my-auto" /></td>
-            <td class="w-[40px] h-[40px]"><img loading="lazy" src="/static/images/Rectangle.png" alt="Schedule Cell" class="w-[30px] h-[30px] object-cover mx-auto my-auto" /></td>
-            <td class="w-[40px] h-[40px]"><img loading="lazy" src="/static/images/Rectangle.png" alt="Schedule Cell" class="w-[30px] h-[30px] object-cover mx-auto my-auto" /></td>
-            <td class="w-[40px] h-[40px]"><img loading="lazy" src="/static/images/Rectangle.png" alt="Schedule Cell" class="w-[30px] h-[30px] object-cover mx-auto my-auto" /></td>
-            <td class="w-[40px] h-[40px]"><img loading="lazy" src="/static/images/Rectangle.png" alt="Schedule Cell" class="w-[30px] h-[30px] object-cover mx-auto my-auto" /></td>
-            <td class="w-[40px] h-[40px]"><img loading="lazy" src="/static/images/Rectangle.png" alt="Schedule Cell" class="w-[30px] h-[30px] object-cover mx-auto my-auto" /></td>
-          </tr>
-          <!-- PM Row -->
-          <tr>
-            <td class="text-sm text-center">PM</td>
-            <td class="w-[40px] h-[40px]"><img loading="lazy" src="/static/images/Rectangle.png" alt="Schedule Cell" class="w-[30px] h-[30px] object-cover mx-auto my-auto" /></td>
-            <td class="w-[40px] h-[40px]"><img loading="lazy" src="/static/images/Rectangle.png" alt="Schedule Cell" class="w-[30px] h-[30px] object-cover mx-auto my-auto" /></td>
-            <td class="w-[40px] h-[40px]"><img loading="lazy" src="/static/images/Rectangle.png" alt="Schedule Cell" class="w-[30px] h-[30px] object-cover mx-auto my-auto" /></td>
-            <td class="w-[40px] h-[40px]"><img loading="lazy" src="/static/images/Rectangle.png" alt="Schedule Cell" class="w-[30px] h-[30px] object-cover mx-auto my-auto" /></td>
-            <td class="w-[40px] h-[40px]"><img loading="lazy" src="/static/images/Rectangle.png" alt="Schedule Cell" class="w-[30px] h-[30px] object-cover mx-auto my-auto" /></td>
-            <td class="w-[40px] h-[40px]"><img loading="lazy" src="/static/images/Rectangle.png" alt="Schedule Cell" class="w-[30px] h-[30px] object-cover mx-auto my-auto" /></td>
-            <td class="w-[40px] h-[40px]"><img loading="lazy" src="/static/images/Rectangle.png" alt="Schedule Cell" class="w-[30px] h-[30px] object-cover mx-auto my-auto" /></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-        
+        <!-- SCHEDULE SECTION  -->
+        <section class="flex overflow-hidden gap-2.5 justify-center items-center py-6 pr-12 pl-5 min-h-[194px]">
+          <div class="flex flex-col self-stretch py-1 my-auto rounded-none min-w-[240px] w-[296px]">
+            <div class="flex flex-col pr-2.5 pl-6 w-full whitespace-nowrap ">
+              <h3 class="self-center ml-2.5 text-2xl">Schedule</h3>
+              <div class="flex gap-3.5 mt-6 text-base font-bold text-center">
+                <p class="grow">Sun</p>
+                <p>Mon</p>
+                <p>Tue</p>
+                <p>Wed</p>
+                <p>Thu</p>
+                <p>Fri</p>
+                <p>Sat</p>
+              </div>
+            </div>
+            <div class="flex gap-1 mt-2 text-sm text-center whitespace-nowrap">
+              <div class="flex flex-col justify-center items-start my-auto">
+                <p>AM</p>
+                <p class="mt-3">PM</p>
+              </div>
+              <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/779090f3-d5d9-4837-af4a-50df729cce50?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="Schedule grid" class="object-contain grow shrink-0 rounded-none aspect-[5.26] basis-0 w-fit" />
+            </div>
+            <a class="self-center mt-5 mx-auto text-xs text-center text-gray-600 pl-6">
+                Edit Availability
+              </a>              
+          </div>
+        </section> 
         <!-- --------------------  -->
         <!-- POSTS DIVIDER  -->
         <section class="gap-2.5 self-stretch px-40 py-2 text-2xl text-center whitespace-nowrap bg-light-green">
           <h3>Posts</h3>
         </section>
-
-
  <!-- POST -->
  <section class="flex overflow-hidden flex-col justify-center w-full text-neutral-800">
     <article class="flex overflow-hidden flex-col justify-center w-full text-neutral-800">
@@ -171,7 +145,6 @@
         </footer>
       </article>
  </section>
- 
     {% endblock %}
 
 {% block user_img_src %}

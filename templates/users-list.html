@@ -7,7 +7,7 @@
         <a href="/home">
           <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/539ed51d37d977c20c959d420318ce5243d4e380b02211d551bb885ffa50fd16?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain shrink-0 aspect-square w-[33px]" />
       </a>
-        <h1 class="w-[120px]">Friends</h1>
+        <h1 class="w-[120px]">Users</h1>
       <div class="flex shrink-0 h-[30px] w-[30px]"></div>
     </header>
     <!-- SEARCH FIELD  -->
@@ -24,26 +24,23 @@
 </div>
     <!-- MESSAGE BLOCKS  -->
      <main>
-     {% for friend in user.friends %}
+        {% for other_user in other_users %}
     <article class="flex flex-col justify-center items-start px-5 py-3 mt-5 w-full min-h-[117px] text-neutral-800 border-b border-light-gray">
+        <a href="/users/{{ other_user.id }}">
         <div class="flex items-center w-full">
           <div class="flex gap-3 flex-grow">
-            <a href="">
               <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/e1da3d96b7886665cd54474dafa2a2286bc2da70cc28e1554bdd5b28583778ea?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="Profile picture of picklePal" class="object-contain shrink-0 aspect-[1.08] w-[54px]" />
-            </a>
             <div class="flex flex-col my-auto">
-              <h2 class="text-xl">{{ friend.first_name }} {{ friend.last_name }}</h2>
-              <p class="mt-2 text-sm">{{ friend.city }}, {{ friend.state }}</p>
+              <h2 class="text-xl">{{ other_user.first_name }} {{ other_user.last_name }}</h2>
+              <p class="mt-2 text-sm">{{ other_user.city }}, {{ other_user.state }}</p>
             </div>
           </div>
-          <a href="#message/<user>" aria-label="message-user" class="object-contain shrink-0 my-auto aspect-square w-[30px] ml-4">
-            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/ed405be8f8a4c46c924fc095d2a2d67372eeba8259a374b505a72b3a5db88cb0?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="message button" />
-          </a>
         </div>
         <div class="flex gap-2.5 mt-2.5 max-w-full text-base tracking-normal leading-relaxed w-full items-center">
           <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/4472064661d4d432e1a1a509ff757948c4f7fb489ea860620033c22561b29090?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain shrink-0 w-6 aspect-square" />
-          <p class="my-auto">{{ friend.skill }}</p>
+          <p class="my-auto">{{ other_user.skill }}</p>
         </div>
+    </a>
       </article>
       {% endfor %}
     </main>
