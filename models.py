@@ -81,14 +81,12 @@ class Court(db.Model):
     __tablename__ = 'courts'
     
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String, nullable=False, unique=True)
-    address = db.Column(db.String, nullable=False)
-    city = db.Column(db.String, nullable=False)
-    state = db.Column(db.String, nullable=False)
-    zip_code = db.Column(db.String, nullable=False)
+    name = db.Column(db.String, nullable=False, default='Unnamed Court')
+    address = db.Column(db.String, nullable=False, unique=True)
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
     num_courts = db.Column(db.String, nullable=True, default='N/A')
+    court_image = db.Column(db.String, nullable=True)
     
     posts = db.relationship('Post', back_populates='court')
     reviews = db.relationship('Review', back_populates='court')

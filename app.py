@@ -4,8 +4,9 @@ from flask_bcrypt import Bcrypt
 from sqlalchemy.exc import IntegrityError
 from werkzeug.utils import secure_filename
 
-from models import db, connect_db, User, Group, GroupMembership
-from forms import UserRegisterForm, UserInfoForm, UserLoginForm, CreateGroupForm
+from models import db, connect_db, User, Group, GroupMembership, Court
+from forms import UserRegisterForm, UserInfoForm, UserLoginForm, CreateGroupForm, AddCourtForm
+from flask_wtf.csrf import generate_csrf
 
 from dotenv import load_dotenv
 import os
@@ -72,7 +73,6 @@ def get_home_page():
 def get_register_form():
     """Get register form and submit user input to DB"""
     form = UserRegisterForm()
-    form2 = UserInfoForm()
 
     if form.validate_on_submit():
         # Save the user's registration data in session or temporary storage
@@ -163,18 +163,47 @@ def show_user_home():
     return render_template('home.html', user=user)
 
 
-@app.route('/courts')
+@app.route('/courts', methods=['GET', 'POST'])
 def show_map_search():
-    """get maps api to find courts"""
+    """get maps api to find courts and allow users to add new courts"""
     if not g.user:
         flash('Please Login First')
         return redirect('/login')
     
     google_maps_api_key = os.getenv('GOOGLE_MAPS_API_KEY')
     
+    form = AddCourtForm()
+    
+    if form.validate_on_submit():
+        address = form.address.data
+        latitude = form.latitude.data
+        longitude = form.longitude.data
+        name = form.name.data
+        court_image = form.court_image.data
+
+        new_court = Court(name=name, address=address, latitude=latitude, longitude=longitude, court_image=court_image)
+        
+        db.session.add(new_court)
+        db.session.commit()
+
+        flash('Successfully added new court.', 'success')
+        return redirect('/courts')
+    
+    courts = Court.query.all()
+    courts_data = [
+        {
+            'name': court.name,
+            'address': court.address,
+            'latitude': court.latitude,
+            'longitude': court.longitude,
+            'court_image': court.court_image
+        } for court in courts
+    ]
 
     user = g.user
-    return render_template('court-finder.html', user=user, google_maps_api_key=google_maps_api_key)
+    
+    return render_template('court-finder.html', user=user, google_maps_api_key=google_maps_api_key, courts_data=courts_data, form=form, csrf_token=generate_csrf())
+
 
 @app.route('/groups')
 def show_groups():

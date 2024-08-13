@@ -1,5 +1,5 @@
 {% extends 'base-nav.html' %}
-
+<meta name="csrf-token" content="{{ form.hidden_tag() | safe }}">
 {% block content %}
 <section class="flex flex-col h-screen bg-white">
     <!-- TOP NAV -->
@@ -13,6 +13,29 @@
 
     <!-- Main Content Area -->
     <div class="flex flex-col mt-[120px] mb-[100px] flex-1">
+        <!-- Flash Messages -->
+        <div class="px-5 py-3">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="fixed top-0 left-0 right-0 z-50">
+              {% for category, message in messages %}
+                <div class="max-w-xl mx-auto mt-4">
+                  {% if category == 'success' %}
+                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                      <strong class="font-bold">Success:</strong>
+                  {% elif category == 'danger' %}
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                      <strong class="font-bold">Error:</strong>
+                  {% endif %}
+                  <span class="block sm:inline">{{ message }}</span>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+        
+      </div>
+
 <!-- SEARCH INPUT FIELDS -->
 <div class="flex gap-2.5 px-5 mt-2">
   <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/f6b1d85a640d5498efd484ad756d91fb80b843e09b03715861a5704b299900c4?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain w-[31px]" />
@@ -20,44 +43,34 @@
       <label for="location-input" class="sr-only">Location</label>
       <form id="search-form" class="flex items-center">
           <input id="location-input" type="text" class="w-full bg-white min-h-[24px] border-b border-input-gray p-1" placeholder="Enter location" />
-          <button type="submit" class="bg-dark-green text-white p-2 ml-2">+</button>
       </form>
   </div>
 </div>
 
         <!-- GOOGLE MAPS -->
         <div class="flex-1 mt-5 w-full bg-gray-200" id="map">
-            <!-- Map will be displayed here -->
         </div>
-          <!-- ADDRESS BAR SECTION
-    <section class="fixed bottom-[100px] inset-x-0 bg-light-green text-neutral-800 z-20">
-      <article class="flex gap-2.5 justify-center items-center py-4">
-        <div class="flex flex-col self-stretch my-auto min-w-[240px] w-[380px] text-center">
-          <h2 class="flex gap-2 items-center justify-center text-2xl">
-            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/dc244ff92a9d948a9e06e395851f7a938fabb0499c8fe0c5535d5b00e7c1d9f9?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain w-5 aspect-square" />
-            <span>Vista Canyon Park</span>
-          </h2>
-          <p class="text-xs">16950 Lost Canyon Rd, Santa Clarita, CA, 91387</p>
-          <div class="flex items-center justify-center gap-1 mt-2">
-            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/9b48aad3e611083b2877f60c597259290b99847b2e2a74cce0f56fee53a98455?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain w-[16px] aspect-square" />
-            <span class="text-sm">3.5</span>
-          </div>
-        </div>
-      </article>
-    </section> -->
     </div>
 </section>
-<script
-    src="https://maps.googleapis.com/maps/api/js?key={{google_maps_api_key}}&libraries=places&callback=initMap"
-    async
-    defer>
-</script>
+
 <script>
-  const city = "{{user.city}}"
-  const state = "{{user.state}}"
-  const zipCode = "{{user.zip_code}}"
-  const apiKey = "{{google_maps_api_key}}"
+  const csrfToken = "{{ csrf_token }}"; // get csrf directly
 </script>
+
+<script
+    src="https://maps.googleapis.com/maps/api/js?key={{google_maps_api_key}}&loading=async&libraries=places&callback=initMap"
+    async>
+</script>
+
+<script>
+  const city = "{{ user.city }}";
+  const state = "{{ user.state }}";
+  const zipCode = "{{ user.zip_code }}";
+  const apiKey = "{{ google_maps_api_key }}";
+  const courtsData = {{ courts_data | tojson | safe }};
+  console.log(courtsData)
+</script>
+
 <script src="static/js/main.js"></script>
 
 {% endblock %}

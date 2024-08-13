@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, TextAreaField, SelectField, FileField, RadioField
+from wtforms import StringField, PasswordField, TextAreaField, SelectField, FileField, RadioField, SubmitField, FloatField
 from wtforms.validators import InputRequired, Email, DataRequired
 
 class UserRegisterForm(FlaskForm):
@@ -27,3 +27,11 @@ class CreateGroupForm(FlaskForm):
     website = StringField('Website', render_kw={"autocomplete": "website"})
     primary_court = StringField('Primary Court')
     play_type = RadioField('Type Of Play', choices=['Casual', 'Competitive', 'Both' ])
+
+class AddCourtForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    address = StringField('Address', validators=[DataRequired()])
+    latitude = FloatField('Latitude', validators=[DataRequired()])
+    longitude = FloatField('Longitude', validators=[DataRequired()])
+    court_image = StringField('Image')
+    submit = SubmitField('Add Court')
