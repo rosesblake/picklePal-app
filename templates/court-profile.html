@@ -9,6 +9,28 @@
       <h1 class="w-[120px]">picklePal</h1>
       <div class="flex shrink-0 h-[33px] w-[33px]" aria-hidden="true"></div>
     </header>
+            <!-- Flash Messages -->
+            <div class="px-5 py-3">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                  <div class="fixed top-0 left-0 right-0 z-50">
+                    {% for category, message in messages %}
+                      <div class="max-w-xl mx-auto mt-4">
+                        {% if category == 'success' %}
+                          <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                            <strong class="font-bold">Success:</strong>
+                        {% elif category == 'danger' %}
+                          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                            <strong class="font-bold">Error:</strong>
+                        {% endif %}
+                        <span class="block sm:inline">{{ message }}</span>
+                      </div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              {% endwith %}
+            </div>
+
     <main class="flex flex-col py-6 w-full border-b border-gray-600 border-opacity-10">
       <div class="flex flex-col w-full text-center text-neutral-800">
         <div class="flex gap-2.5 items-center self-center pr-9 text-2xl">
@@ -33,6 +55,7 @@
         </button>
       </div>
     </main>
+    <!-- posts divider  -->
     <section class="gap-2.5 self-stretch px-40 py-3 text-2xl text-center whitespace-nowrap bg-emerald-100 border-b border-gray-600 border-opacity-10 min-h-[48px] text-neutral-800">
       <h3>Posts</h3>
     </section>
@@ -62,6 +85,10 @@
         </button>
       </div>
     </article>
+    <a href="#" class="fixed bottom-[120px] left-1/2 transform -translate-x-1/2 z-20">
+        <img id="court-post-btn" loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/9ab9f807e49eaaf05d9b03a93bb724b8ffbfa6eca8dac7ada1a55830674774dc?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4"
+             class="object-contain self-stretch my-auto aspect-square w-[55px] cursor-pointer" alt="Add Post Button" />
+    </a>   
   </section>
 {% endblock %}
 {% block user_img_src %}{{ user.profile_image }}{% endblock %}
