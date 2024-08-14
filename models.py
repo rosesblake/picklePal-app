@@ -22,7 +22,7 @@ class User(db.Model):
     email = db.Column(db.Text, nullable=False, unique=True)
     city = db.Column(db.Text, nullable=True)
     state = db.Column(db.Text, nullable=True)
-    zip_code = db.Column(db.String(5), nullable=True)
+    zip_code = db.Column(db.Integer, nullable=True)
     skill = db.Column(db.String, nullable=False)
     
     home_court_id = db.Column(db.Integer, db.ForeignKey('courts.id'), nullable=True)

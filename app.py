@@ -140,7 +140,7 @@ def get_login_form():
             login_user(user)
 
             return redirect('/home')
-        
+        # say which username or password is wrong 
         flash('Invalid Email and/or Password')
     return render_template('login.html', form=form)
 
