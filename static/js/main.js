@@ -63,7 +63,8 @@ async function initMap() {
         { lat: court.latitude, lng: court.longitude },
         court.name,
         court.address,
-        // court.court_image
+        court.court_image,
+        court.id
       );
     });
 
@@ -104,7 +105,7 @@ async function initMap() {
               if (status === google.maps.places.PlacesServiceStatus.OK) {
                 const address = place.formatted_address;
                 const photos = place.photos;
-                const placeName = place.name || address;
+                const placeName = place.name;
                 const photoUrl =
                   photos && photos.length > 0
                     ? photos[0].getUrl({ maxWidth: 200, maxHeight: 200 })
@@ -160,7 +161,7 @@ async function initMap() {
   }
 }
 
-function addMarker(map, location, name, address) { //courtImage
+function addMarker(map, location, name, address, courtImage, courtId) {
   try {
     const marker = new google.maps.Marker({
       position: location,
@@ -168,20 +169,24 @@ function addMarker(map, location, name, address) { //courtImage
       title: name,
       icon: {
         url: "static/images/custom-marker.png", // Custom marker for courts
-        scaledSize: new google.maps.Size(39, 60), // Adjust size as needed
+        scaledSize: new google.maps.Size(39, 60),
       },
     });
     // show court details when custom pin is clicked
     marker.addListener("click", () => {
+      const courtUrl = `/courts/${courtId}`;
       const mapsUrl = `https://www.google.com/maps?q=${location.lat},${location.lng}`;
-      // add this once working           <img src="${courtImage} alt=${name} image" class="w-full h-auto mb-2"/>
       const contentString = `
         <div>
-          <h1 class="text-xl"><strong>${name}</strong></h1>
+          <a href="${courtUrl}" class="underline cursor-pointer text-blue-500" style="color: #3b82f6 !important;"><h1 class="text-xl"><strong>${name}</strong></h1>
+          <img src="${courtImage} alt=${name} image" class="w-full h-auto mb-2"/>
+          </a>
           <p>${address}</p>
           <a href="${mapsUrl}" target="_blank" class="underline cursor-pointer text-blue-500" style="color: #3b82f6 !important;">
             Show on Google Maps
           </a>
+          <br>
+          <a href="${courtUrl}" class="underline cursor-pointer text-blue-500" style="color: #3b82f6 !important;">Court Information<a/>
         </div>
       `;
 

@@ -185,13 +185,14 @@ def show_map_search():
         
         db.session.add(new_court)
         db.session.commit()
-
-        flash('Successfully added new court.', 'success')
-        return redirect('/courts')
+        court = Court.query.filter_by(address=address).first_or_404()
+        
+        return redirect(f'/courts/{court.id}')
     
     courts = Court.query.all()
     courts_data = [
         {
+            'id': court.id,
             'name': court.name,
             'address': court.address,
             'latitude': court.latitude,
@@ -204,6 +205,13 @@ def show_map_search():
     
     return render_template('court-finder.html', user=user, google_maps_api_key=google_maps_api_key, courts_data=courts_data, form=form, csrf_token=generate_csrf())
 
+
+@app.route('/courts/<int:court_id>')
+def get_court_info(court_id):
+    """show information about a given court based on it's address"""
+    court = Court.query.get_or_404(court_id)
+    user = g.user
+    return render_template('court-profile.html', court=court, user=user)
 
 @app.route('/groups')
 def show_groups():
