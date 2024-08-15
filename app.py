@@ -314,6 +314,25 @@ def user_follow_court(court_id):
         flash('You now follow this court', 'success')
     return redirect(f'/courts/{court_id}')
 
+@app.route('/users/unfollow/<int:court_id>', methods=['POST'])
+def user_unfollow_court(court_id):
+    """unfollow court"""
+    if not g.user:
+        flash('Please Login First', 'danger')
+        return redirect('/login')
+    
+    user = g.user
+    # check if user follows court already. if not follow it.
+    already_follows = UserCourt.query.filter_by(user_id=user.id, court_id=court_id).first()
+    if already_follows:
+        db.session.delete(already_follows)
+        db.session.commit()
+        flash('Successfully unfollowed', 'success')
+    else:
+        flash('You are not following this court', 'danger')
+        
+    return redirect(f'/courts/{court_id}')
+
 
 @app.route('/edit-profile', methods=['GET', 'POST'])
 def edit_user_profile():
