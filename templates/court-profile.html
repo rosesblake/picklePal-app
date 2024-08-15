@@ -47,14 +47,16 @@
       </figure>
       <div class="flex gap-8 self-center mt-5 max-w-full text-sm font-bold tracking-normal leading-6 text-center text-white whitespace-nowrap w-[210px]">
         <!-- Follow Button  -->
-         {% if not already_follows %}
         <form action="/users/following/{{ court.id }}" method="POST">
         <button class="flex overflow-hidden flex-1 gap-2 justify-center items-center px-3 py-2 rounded-md bg-neutral-800">
           <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/ffc49d60068d2a40e34ec4b3e1df189e6edb5b26afc1594bd98ac0f02187768e?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain shrink-0 self-stretch my-auto w-3.5 aspect-[0.87]" />
+          {% if not already_follows %}
           <span>Follow</span>
+          {% else %}
+          <span>Unfollow</span>
+          {% endif %}
         </button>
       </form>
-      {% endif %}
         <!-- Review button  -->
         <button class="flex overflow-hidden flex-1 gap-2 justify-center items-center px-3 py-2 rounded-md bg-neutral-800">
           <span>Review</span>
