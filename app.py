@@ -4,7 +4,7 @@ from flask_bcrypt import Bcrypt
 from sqlalchemy.exc import IntegrityError
 from werkzeug.utils import secure_filename
 
-from models import db, connect_db, User, Group, GroupMembership, Court
+from models import db, connect_db, User, Group, GroupMembership, Court, UserCourt
 from forms import UserRegisterForm, UserInfoForm, UserLoginForm, CreateGroupForm, AddCourtForm
 from flask_wtf.csrf import generate_csrf
 
@@ -186,7 +186,7 @@ def show_map_search():
         db.session.add(new_court)
         db.session.commit()
         court = Court.query.filter_by(address=address).first_or_404()
-        
+        flash('Successfully added new court.', 'success')
         return redirect(f'/courts/{court.id}')
     
     courts = Court.query.all()
@@ -211,7 +211,8 @@ def get_court_info(court_id):
     """show information about a given court based on it's address"""
     court = Court.query.get_or_404(court_id)
     user = g.user
-    return render_template('court-profile.html', court=court, user=user)
+    already_follows = UserCourt.query.filter_by(user_id=user.id, court_id=court.id).first()
+    return render_template('court-profile.html', court=court, user=user, already_follows=already_follows)
 
 @app.route('/groups')
 def show_groups():
@@ -274,6 +275,45 @@ def show_user_profile():
 
     user = g.user
     return render_template('profile.html', user=user)
+
+@app.route('/users/<int:court_id>', methods=['POST'])
+def add_home_court(court_id):
+    """add home court for user"""
+    if not g.user:
+        flash('Please Login First', 'danger')
+        return redirect('/login')
+    
+    user = g.user
+    # set home court 
+    user.home_court_id = court_id
+    # check if user follows court already. if not follow it.
+    already_follows = UserCourt.query.filter_by(user_id=user.id, court_id=court_id).first()
+    if not already_follows:
+        follow = UserCourt(user_id=user.id, court_id=court_id)
+        db.session.add(follow)
+        flash('Successfully added your home court', 'success')
+
+    db.session.commit()
+    
+    return redirect('/profile')
+
+@app.route('/users/following/<int:court_id>', methods=['POST'])
+def user_follow_court(court_id):
+    """add court to followed courts by user"""
+    if not g.user:
+        flash('Please Login First', 'danger')
+        return redirect('/login')
+    
+    user = g.user
+    # check if user follows court already. if not follow it.
+    already_follows = UserCourt.query.filter_by(user_id=user.id, court_id=court_id).first()
+    if not already_follows:
+        follow = UserCourt(user_id=user.id, court_id=court_id)
+        db.session.add(follow)
+        db.session.commit()
+        flash('You now follow this court', 'success')
+    return redirect(f'/courts/{court_id}')
+
 
 @app.route('/edit-profile', methods=['GET', 'POST'])
 def edit_user_profile():

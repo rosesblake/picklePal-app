@@ -28,6 +28,9 @@ class User(db.Model):
     home_court_id = db.Column(db.Integer, db.ForeignKey('courts.id'), nullable=True)
     home_court = db.relationship('Court', backref='users', foreign_keys=[home_court_id])
 
+    user_courts = db.relationship('UserCourt', back_populates='user')
+    followed_courts = db.relationship('Court', secondary='user_court', back_populates='followers')
+
     friends = db.relationship(
         'User',
         secondary='friends',
@@ -91,8 +94,21 @@ class Court(db.Model):
     posts = db.relationship('Post', back_populates='court')
     reviews = db.relationship('Review', back_populates='court')
     
+    user_courts = db.relationship('UserCourt', back_populates='court')
+    followers = db.relationship('User', secondary='user_court', back_populates='followed_courts')
+    
     def __repr__(self):
         return f"<Court #{self.id}: {self.name}, {self.address}>"
+
+class UserCourt(db.Model):
+    __tablename__ = 'user_court'
+    
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    court_id = db.Column(db.Integer, db.ForeignKey('courts.id'), nullable=False)
+    
+    user = db.relationship('User', back_populates='user_courts')
+    court = db.relationship('Court', back_populates='user_courts')
 
 class Post(db.Model):
     __tablename__ = 'posts'

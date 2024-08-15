@@ -7,7 +7,7 @@
         <a href="/home">
             <img loading="lazy" src="static/images/icon-home.png" alt="" class="object-contain w-[30px]" />
         </a>
-        <h1 class="w-[200px]">Find Courts</h1>
+        <h1 class="w-[200px]">Search Courts</h1>
         <div class="flex h-[35px] w-[35px]"></div>
     </header>
 
@@ -32,8 +32,7 @@
               {% endfor %}
             </div>
           {% endif %}
-        {% endwith %}
-        
+        {% endwith %}  
       </div>
 
 <!-- SEARCH INPUT FIELDS -->
@@ -42,7 +41,7 @@
   <div class="flex flex-col grow">
       <label for="location-input" class="sr-only">Location</label>
       <form id="search-form" class="flex items-center">
-          <input id="location-input" type="text" class="w-full bg-white min-h-[24px] border-b border-input-gray p-1" placeholder="Enter location" />
+          <input id="location-input" type="text" class="w-full bg-white min-h-[24px] border-b border-input-gray p-1" placeholder="Find or Add a Court" />
       </form>
   </div>
 </div>

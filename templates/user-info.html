@@ -16,7 +16,7 @@
 
         {% for field in form2 %}
             {% if field.widget.input_type != 'hidden' %}
-                <div class="flex flex-col w-full whitespace-nowrap mb-10">
+                <div class="flex flex-col w-full whitespace-nowrap mb-8">
                     {{ field.label(class_="flex-1 shrink gap-2.5 w-full") }}
                     {{ field(class_="flex mt-2 w-full bg-white rounded-md min-h-[48px] border border-input-gray p-3", placeholder=field.label.text) }}
                     {% for error in field.errors %}

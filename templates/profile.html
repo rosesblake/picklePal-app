@@ -12,6 +12,28 @@
         <img loading="lazy" src="static/images/icon-settings.png" alt="" class="object-contain shrink-0 aspect-square w-[33px]" />
       </a>
     </header>
+
+            <!-- Flash Messages -->
+            <div class="px-5 py-3">
+              {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                <div class="">
+                  {% for category, message in messages %}
+                    <div class="max-w-xl mx-auto mt-4">
+                      {% if category == 'success' %}
+                        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                          <strong class="font-bold">Success:</strong>
+                      {% elif category == 'danger' %}
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                          <strong class="font-bold">Error:</strong>
+                      {% endif %}
+                      <span class="block sm:inline">{{ message }}</span>
+                    </div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            {% endwith %}  
+          </div>
         <!-- MAIN PROFILE SECTION  -->
         <main class="flex flex-col w-full">
           <section class="flex overflow-hidden relative flex-col items-start px-5 pt-5 pb-2.5 w-full border-b border-light-gray">
@@ -34,10 +56,12 @@
                 <p class="leading-5">Groups</p>
               </div>
             </a>
+            <a href="#">
               <div class="flex flex-col self-stretch my-auto w-[60px]">
-                <p class="leading-loose">4</p>
+                <p class="leading-loose">{{ user.followed_courts | length }}</p>
                 <p class="leading-5">Courts</p>
               </div>
+            </a>
             </div>
             <!-- RATING/HOMECOURT BUTTON  -->
             <div class="flex z-0 gap-2.5 mt-5 max-w-full text-base tracking-normal leading-relaxed w-full">
@@ -46,11 +70,11 @@
             </div>
             <div class="flex items-center px-4 mt-5 max-w-fit text-lg tracking-normal leading-none bg-custom-yellow rounded-lg p-4">
               {% if not user.home_court %}
-              <a href="">
+              <a href="/courts">
               <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/fd77e291b5175858bfef626ea7a5ab896020d25abdf72936d3df19d7b359f690?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain shrink-0 aspect-square w-[35px]" />
             </a>
               {% else %}  
-              <a href="">
+              <a href="/courts/{{ user.home_court_id }}">
               <img loading="lazy" src="static/images/icon-home.png" alt="Home Court Icon" class="object-contain w-6 aspect-square filter brightness-0 text-dark-gray" />
             </a>
               {% endif %}
@@ -73,7 +97,7 @@
                 alt="" 
                 class="object-contain w-3.5 aspect-square" 
               />
-              <p>{{ user.home_court.city }}, {{ user.home_court.state }}</p>
+              <p>{{ user.home_court.address }}</p>
             </div>
           </section>
           {% endif %}

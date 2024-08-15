@@ -175,18 +175,21 @@ function addMarker(map, location, name, address, courtImage, courtId) {
     // show court details when custom pin is clicked
     marker.addListener("click", () => {
       const courtUrl = `/courts/${courtId}`;
+      const homeCourtUrl = `/users/${courtId}`;
       const mapsUrl = `https://www.google.com/maps?q=${location.lat},${location.lng}`;
       const contentString = `
         <div>
-          <a href="${courtUrl}" class="underline cursor-pointer text-blue-500" style="color: #3b82f6 !important;"><h1 class="text-xl"><strong>${name}</strong></h1>
+          <a href="${courtUrl}" class="underline cursor-pointer text-gray-800" !important;"><h1 class="text-xl"><strong>${name}</strong></h1></a>
+          <form action="${homeCourtUrl}" method="POST">
+            <button class="underline cursor-pointer text-blue-500" style="color: #3b82f6 !important;">Make This My Home Court</button>
+          </form>  
           <img src="${courtImage} alt=${name} image" class="w-full h-auto mb-2"/>
-          </a>
           <p>${address}</p>
+          <a href="${courtUrl}" class="underline cursor-pointer text-blue-500" style="color: #3b82f6 !important;">Court Information<a/>
+          <br>
           <a href="${mapsUrl}" target="_blank" class="underline cursor-pointer text-blue-500" style="color: #3b82f6 !important;">
             Show on Google Maps
           </a>
-          <br>
-          <a href="${courtUrl}" class="underline cursor-pointer text-blue-500" style="color: #3b82f6 !important;">Court Information<a/>
         </div>
       `;
 
