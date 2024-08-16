@@ -5,7 +5,7 @@ from sqlalchemy.exc import IntegrityError
 from werkzeug.utils import secure_filename
 
 from models import db, connect_db, User, Group, GroupMembership, Court, UserCourt
-from forms import UserRegisterForm, UserInfoForm, UserLoginForm, CreateGroupForm, AddCourtForm
+from forms import UserRegisterForm, UserInfoForm, UserLoginForm, CreateGroupForm, AddCourtForm, EditCourtForm
 from flask_wtf.csrf import generate_csrf
 
 from dotenv import load_dotenv
@@ -205,7 +205,6 @@ def show_map_search():
     
     return render_template('court-finder.html', user=user, google_maps_api_key=google_maps_api_key, courts_data=courts_data, form=form, csrf_token=generate_csrf())
 
-
 @app.route('/courts/<int:court_id>')
 def get_court_info(court_id):
     """show information about a given court based on it's address"""
@@ -213,6 +212,28 @@ def get_court_info(court_id):
     user = g.user
     already_follows = UserCourt.query.filter_by(user_id=user.id, court_id=court.id).first()
     return render_template('court-profile.html', court=court, user=user, already_follows=already_follows)
+
+@app.route('/courts/<int:court_id>/edit')
+def show_edit_court_form(court_id):
+    """edit court details"""
+    court = Court.query.get_or_404(court_id)
+    user = g.user
+    already_follows = UserCourt.query.filter_by(user_id=user.id, court_id=court.id).first()
+    if already_follows:
+        form = EditCourtForm(obj=court)
+        if form.validate_on_submit():
+            court.name = form.name.data
+            court.address = form.address.data
+            court.num_courts = form.num_courts.data
+            db.session.commit()
+            flash('Court details updated successfully!', 'success')
+            return redirect(f'/courts/{court.id}')
+        
+        return render_template('court-edit.html', user=user, court=court, form=form)
+
+    flash('Must Follow Court to Edit', 'danger')
+    return redirect(f'/courts/{court.id}')
+
 
 @app.route('/groups')
 def show_groups():
@@ -330,7 +351,7 @@ def user_unfollow_court(court_id):
         flash('Successfully unfollowed', 'success')
     else:
         flash('You are not following this court', 'danger')
-        
+
     return redirect(f'/courts/{court_id}')
 
 

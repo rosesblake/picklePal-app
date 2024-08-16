@@ -88,7 +88,7 @@ class Court(db.Model):
     address = db.Column(db.String, nullable=False, unique=True)
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
-    num_courts = db.Column(db.String, nullable=True, default='N/A')
+    num_courts = db.Column(db.Integer, nullable=False, default=0)
     court_image = db.Column(db.String, nullable=False, default='/static/images/default-court.jpg')
     
     posts = db.relationship('Post', back_populates='court')

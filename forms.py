@@ -35,3 +35,8 @@ class AddCourtForm(FlaskForm):
     longitude = FloatField('Longitude', validators=[DataRequired()])
     court_image = StringField('Image')
     submit = SubmitField('Add Court')
+
+class EditCourtForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    address = StringField('Address', validators=[DataRequired()])
+    num_courts = FloatField('Number of Courts')

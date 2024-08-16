@@ -78,7 +78,7 @@
     <div class="flex justify-center w-full mt-6 text-sm">
       <div class="flex justify-between gap-x-8">
         <div class="flex flex-col items-center">
-          <p>4</p>
+          <p>{{ court.num_courts }}</p>
           <p>courts</p>
         </div>
         <div class="flex flex-col items-center">
@@ -94,7 +94,7 @@
 
     <!-- EDIT COURT DETAILS  -->
     <div class="flex justify-center mt-2">
-      <a href="#" class="text-blue-500 text-xs"><p>Edit Court Details</p></a>
+      <a href="/courts/{{ court.id }}/edit" class="text-blue-500 text-xs"><p>Edit Court Details</p></a>
     </div>
     
     </main>
