@@ -1,10 +1,10 @@
 from flask_debugtoolbar import DebugToolbarExtension
-from flask import Flask, render_template, redirect, flash, session, g, request
+from flask import Flask, render_template, redirect, flash, session, g, request, jsonify
 from flask_bcrypt import Bcrypt
 from sqlalchemy.exc import IntegrityError
 from werkzeug.utils import secure_filename
 
-from models import db, connect_db, User, Group, GroupMembership, Court, UserCourt, Review, Post
+from models import db, connect_db, User, Group, GroupMembership, Court, UserCourt, Review, Post, Like
 from forms import UserRegisterForm, UserInfoForm, UserLoginForm, CreateGroupForm, AddCourtForm, EditCourtForm, CourtReviewForm, UserPostForm
 from flask_wtf.csrf import generate_csrf
 
@@ -212,6 +212,8 @@ def get_court_info(court_id):
     user = g.user
     reviews = court.reviews
     posts = Post.query.filter_by(court_id=court.id).all()
+    user_likes = Like.query.filter_by(user_id=user.id).all()
+    post_likes = {like.post_id for like in user_likes}
 
     if reviews:
         avg_rating = sum(review.rating for review in reviews) / len(reviews)
@@ -219,7 +221,7 @@ def get_court_info(court_id):
         avg_rating = 0
 
     already_follows = UserCourt.query.filter_by(user_id=user.id, court_id=court.id).first()
-    return render_template('court-profile.html', court=court, user=user, already_follows=already_follows, avg_rating=avg_rating, reviews=reviews, posts=posts)
+    return render_template('court-profile.html', court=court, user=user, already_follows=already_follows, avg_rating=avg_rating, reviews=reviews, posts=posts, csrf_token=generate_csrf(), user_likes=user_likes, post_likes=post_likes)
 
 @app.route('/courts/<int:court_id>/edit', methods=['GET', 'POST'])
 def show_edit_court_form(court_id):
@@ -288,6 +290,17 @@ def get_make_post_form(court_id):
     
     return render_template('court-post.html', user=user, court=court, form=form)
 
+@app.route('/posts/<int:post_id>/like', methods=['POST'])
+def like_post(post_id):
+    """perform like functionality and update db"""
+    user = g.user
+
+    new_like = Like(user_id=user.id, post_id=post_id)
+
+    db.session.add(new_like)
+    db.session.commit()
+
+    return jsonify({'message': 'Post liked successfully!'}), 200
 
 @app.route('/groups')
 def show_groups():

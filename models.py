@@ -29,7 +29,7 @@ class User(db.Model):
     home_court = db.relationship('Court', backref='users', foreign_keys=[home_court_id])
 
     user_courts = db.relationship('UserCourt', back_populates='user')
-    followed_courts = db.relationship('Court', secondary='user_court', back_populates='followers')
+    followed_courts = db.relationship('Court', secondary='user_court', overlaps='user_courts', back_populates='followers')
 
     friends = db.relationship(
         'User',
@@ -95,7 +95,7 @@ class Court(db.Model):
     reviews = db.relationship('Review', back_populates='court')
     
     user_courts = db.relationship('UserCourt', back_populates='court')
-    followers = db.relationship('User', secondary='user_court', back_populates='followed_courts')
+    followers = db.relationship('User', secondary='user_court', overlaps='followed_courts', back_populates='followed_courts')
     
     def __repr__(self):
         return f"<Court #{self.id}: {self.name}, {self.address}>"

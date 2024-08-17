@@ -1,5 +1,4 @@
 {% extends 'base-nav.html' %}
-
 {% block content %}
 <section class="flex overflow-hidden flex-col mx-auto w-full bg-white pb-[100px] pt-[100px]">
     <header class="fixed top-0 left-0 right-0 flex overflow-hidden gap-5 justify-between items-end px-5 py-6 w-full text-2xl text-center text-white whitespace-nowrap bg-dark-green h-[100px] z-10">
@@ -10,7 +9,7 @@
       <div class="flex shrink-0 h-[33px] w-[33px]" aria-hidden="true"></div>
     </header>
             <!-- Flash Messages -->
-            <div class="px-5 py-3">
+            <div>
                 {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                   <div class="fixed top-0 left-0 right-0 z-50">
@@ -31,7 +30,7 @@
               {% endwith %}
             </div>
 
-    <main class="flex flex-col w-full border-b border-gray-600 border-opacity-10 shadow-sm">
+    <main class="flex flex-col w-full py-4 border-b border-gray-600 border-opacity-10 shadow-sm">
       <div class="flex flex-col w-full text-center text-neutral-800">
         <div class="flex gap-2 items-center self-center pr-9 text-2xl mb-2">
           <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/9a57675ef4560cde77619882b3eeb73a6dec68eb1029a7f0e1799e9174f2341e?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain shrink-0 self-stretch my-auto w-6 aspect-square" />
@@ -106,39 +105,44 @@
     
     </main>
     <!-- REVIEW PREVIEWS  -->
-      {% for review in reviews[-3:] %}
-  <article class="flex flex-col justify-center items-start px-5 py-2 w-full min-h-[100px] text-neutral-800 border-b border-light-gray shadow-sm">
-      <a href="/users/{{ review.user.id }}">
-      <div class="flex items-center w-full">
-        <div class="flex gap-3 flex-grow">
-            <img loading="lazy" src="{{ review.user.profile_image }}" alt="Profile picture of picklePal" class="object-contain shrink-0 aspect-[1.08] w-[30px]" />
-          <div class="flex flex-col my-auto">
-            <h2 class="text-sm">{{ review.user.first_name }} {{ review.user.last_name }}</h2>
+    {% for review in reviews[-3:] %}
+    <article class="flex flex-col justify-center items-start px-5 py-2 w-full text-neutral-800 border-b border-light-gray shadow-sm">
+        <a href="/users/{{ review.user.id }}">
+        <div class="flex items-center w-full">
+          <div class="flex gap-3 flex-grow">
+              <img loading="lazy" src="{{ review.user.profile_image }}" alt="Profile picture of picklePal" class="object-contain shrink-0 aspect-[1.08] w-[30px]" />
+            <div class="flex flex-col my-auto">
+              <h2 class="text-sm">{{ review.user.first_name }} {{ review.user.last_name }}</h2>
+            </div>
           </div>
         </div>
-      </div>
-    </a>
-      <div class="flex gap-2 mt-2 max-w-full text-base tracking-normal leading-relaxed w-full items-center">
+      </a>
+      <div class="flex gap-2 mt-2 text-base tracking-normal leading-relaxed w-full items-start">
         <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/4472064661d4d432e1a1a509ff757948c4f7fb489ea860620033c22561b29090?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain shrink-0 w-5 aspect-square" />
+        <div>
         <p class="my-auto text-sm">{{ review.rating }}</p>
-        <p class="my-auto text-sm">{{ review.content }}</p>
+      </div>
+        <div class="w-full pr-20">
+        <p class="text-sm break-words">{{ review.content }}</p>
+      </div>
       </div>
     </article>
-    {% endfor %}
+  {% endfor %}
+  
 
     <!-- SEE MORE REVIEWS  -->
-      <a href="/courts/{{court.id}}/reviews" class="text-gray-600 text-xs bg-custom-yellow">
+      <a href="/courts/{{court.id}}/reviews" class="w-full text-gray-600 text-xs bg-light-gray">
         <div class="flex justify-center pt-2 pb-2">
         <p>See More</p>
     </div>
   </a>
     <!-- posts divider  -->
-    <section class="w-full gap-2 self-stretch px-40 py-2 text-2xl text-center whitespace-nowrap bg-light-green border-b border-gray-600 border-opacity-10 min-h-[48px] text-neutral-800">
+    <section class="w-full gap-2 self-stretch px-40 py-2 text-2xl text-center whitespace-nowrap bg-light-green border-b border-gray-600 border-opacity-10 min-h-[48px] text-neutral-800 shadow-sm">
       <h3>Posts</h3>
     </section>
     <!-- POSTS SECTION  -->
      {% for post in posts %}
-    <article class="flex overflow-hidden flex-col justify-center w-full text-neutral-800">
+    <article class="flex overflow-hidden flex-col justify-center w-full text-neutral-800 shadow-sm">
       <div class="flex flex-col p-5 w-full">
         <div class="flex gap-10 justify-between items-start w-full">
           <div class="flex gap-3 items-start min-w-[240px] w-[242px]">
@@ -153,10 +157,14 @@
         <p class="mt-5 text-base">{{ post.content }}</p>
         <div class="flex mt-4 max-w-full min-h-0 w-[116px]" aria-hidden="true"></div>
       </div>
-      <div class="flex overflow-hidden gap-10 justify-between items-center px-5 w-full text-xs whitespace-nowrap border-t border-b bg-gray-600 bg-opacity-10 border-gray-600 border-opacity-10 min-h-[38px]">
-        <button class="flex gap-2.5 self-stretch my-auto w-[50px]">
-          <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/8f00393c98e110eecbcd9e54fbd359cb89ea9552e254ce44de0ab4cda883194c?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain shrink-0 aspect-square w-[18px]" />
-          <span>Like</span>
+      <div class="post flex overflow-hidden gap-10 justify-between items-center px-5 w-full text-xs whitespace-nowrap border-t border-b bg-gray-600 bg-opacity-10 border-gray-600 border-opacity-10 min-h-[38px]">
+        <button class="like flex gap-2.5 self-stretch my-auto w-[50px]" data-post-id="{{ post.id }}" onclick="likePost(this)">
+          <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/8f00393c98e110eecbcd9e54fbd359cb89ea9552e254ce44de0ab4cda883194c?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="like-heart object-contain shrink-0 aspect-square w-[18px]" />
+          {% if post.id not in post_likes %}
+          <span class="like-text">Like</span>
+          {% else %}
+          <span class="liked-text">Liked</span>
+          {% endif %}
         </button>
         <button class="flex gap-2.5 self-stretch my-auto w-[81px]">
           <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/3bb0686157f570aa325a48bed77d4fdc4cf7178988d41088def114144b7231f3?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain shrink-0 aspect-square w-[18px]" />
@@ -172,5 +180,6 @@
              class="object-contain self-stretch my-auto aspect-square w-[55px] cursor-pointer" alt="Add Post Button" />
     </a>   
   </section>
+  <script src="/static/js/like-post.js"></script>
 {% endblock %}
 {% block user_img_src %}{{ user.profile_image }}{% endblock %}
