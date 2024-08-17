@@ -38,19 +38,19 @@
           <h2 class="self-stretch my-auto">{{ court.name }}</h2>
         </div>
         <p class="text-xs">{{ court.address }}</p>
-        {% if court.id != user.home_court_id %}
-        <form action="/users/{{ court.id }}" method="POST">
-          <button class="cursor-pointer text-blue-500 text-xs" style="color: #3b82f6">Make This My Home Court</button>
-        </form>  
-        {% else %}
-        <div class="flex items-center px-2 mt-2 max-w-fit text-lg tracking-normal leading-none bg-custom-yellow rounded-lg p-2 mx-auto">
-          <p class="text-xs ">Home Court</p>
-      </div>      
-        {% endif %}
       </div>
       <figure class="flex flex-col justify-center items-center mt-2 w-full min-h-[224px]">
         <img loading="lazy" src="{{ court.court_image }}" alt="{{court.name}}" class="object-contain max-w-full aspect-[1.74] w-[380px]" />
       </figure>
+      {% if court.id != user.home_court_id %}
+      <form action="/users/{{ court.id }}" method="POST">
+        <button class="cursor-pointer text-blue-500 text-xs" style="color: #3b82f6">Make This My Home Court</button>
+      </form>  
+      {% else %}
+      <div class="flex items-center px-2 mt-2 max-w-fit text-lg tracking-normal leading-none bg-custom-yellow rounded-lg p-2 mx-auto">
+        <p class="text-xs ">Home Court</p>
+    </div>      
+      {% endif %}
 <div class="flex justify-center gap-8 self-center mt-4 max-w-full text-sm font-bold tracking-normal leading-6 text-center text-white whitespace-nowrap w-full">
     <!-- Follow Button  -->
     {% if not already_follows %}
@@ -133,23 +133,25 @@
     </div>
   </a>
     <!-- posts divider  -->
-    <section class="gap-2.5 self-stretch px-40 py-3 text-2xl text-center whitespace-nowrap bg-light-green border-b border-gray-600 border-opacity-10 min-h-[48px] text-neutral-800">
+    <section class="w-full gap-2 self-stretch px-40 py-2 text-2xl text-center whitespace-nowrap bg-light-green border-b border-gray-600 border-opacity-10 min-h-[48px] text-neutral-800">
       <h3>Posts</h3>
     </section>
+    <!-- POSTS SECTION  -->
+     {% for post in posts %}
     <article class="flex overflow-hidden flex-col justify-center w-full text-neutral-800">
       <div class="flex flex-col p-5 w-full">
         <div class="flex gap-10 justify-between items-start w-full">
-          <div class="flex gap-3 items-start pr-12 min-w-[240px] w-[242px]">
-            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/97fcc4a0df661b33b0af64864d27a8362b8bba2456c3959988699df3c649a4cc?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="User profile picture" class="object-contain shrink-0 aspect-square w-[30px]" />
+          <div class="flex gap-3 items-start min-w-[240px] w-[242px]">
+            <img loading="lazy" src="{{ user.profile_image }}" alt="User profile picture" class="object-contain shrink-0 aspect-square w-[30px]" />
             <div class="flex flex-col">
-              <h4 class="self-start text-base">picklePal</h4>
-              <p class="mt-1 text-xs">Santa Clarita, CA, 91387</p>
+              <h4 class="self-start text-base">{{ post.user.first_name }} {{ post.user.last_name }}</h4>
+              <p class="text-xs">{{ post.user.city }}, {{ post.user.state }}</p>
             </div>
           </div>
-          <p class="text-xs text-right">skill 4.0</p>
+          <p class="text-xs text-right">Skill {{ post.user.skill }}</p>
         </div>
-        <p class="mt-5 text-base">Looking for some solo games in the Valley!</p>
-        <div class="flex mt-5 max-w-full min-h-0 w-[116px]" aria-hidden="true"></div>
+        <p class="mt-5 text-base">{{ post.content }}</p>
+        <div class="flex mt-4 max-w-full min-h-0 w-[116px]" aria-hidden="true"></div>
       </div>
       <div class="flex overflow-hidden gap-10 justify-between items-center px-5 w-full text-xs whitespace-nowrap border-t border-b bg-gray-600 bg-opacity-10 border-gray-600 border-opacity-10 min-h-[38px]">
         <button class="flex gap-2.5 self-stretch my-auto w-[50px]">
@@ -162,7 +164,10 @@
         </button>
       </div>
     </article>
-    <a href="#" class="fixed bottom-[120px] left-1/2 transform -translate-x-1/2 z-20">
+    {% endfor %}
+<!-- ----------------- -->
+    <!-- CREATE POST FIXED BUTTON  -->
+    <a href="/courts/{{ court.id }}/posts" class="fixed bottom-[120px] left-1/2 transform -translate-x-1/2 z-20">
         <img id="court-post-btn" loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/9ab9f807e49eaaf05d9b03a93bb724b8ffbfa6eca8dac7ada1a55830674774dc?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4"
              class="object-contain self-stretch my-auto aspect-square w-[55px] cursor-pointer" alt="Add Post Button" />
     </a>   

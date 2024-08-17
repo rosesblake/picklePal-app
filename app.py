@@ -4,8 +4,8 @@ from flask_bcrypt import Bcrypt
 from sqlalchemy.exc import IntegrityError
 from werkzeug.utils import secure_filename
 
-from models import db, connect_db, User, Group, GroupMembership, Court, UserCourt, Review
-from forms import UserRegisterForm, UserInfoForm, UserLoginForm, CreateGroupForm, AddCourtForm, EditCourtForm, CourtReviewForm
+from models import db, connect_db, User, Group, GroupMembership, Court, UserCourt, Review, Post
+from forms import UserRegisterForm, UserInfoForm, UserLoginForm, CreateGroupForm, AddCourtForm, EditCourtForm, CourtReviewForm, UserPostForm
 from flask_wtf.csrf import generate_csrf
 
 from dotenv import load_dotenv
@@ -211,6 +211,7 @@ def get_court_info(court_id):
     court = Court.query.get_or_404(court_id)
     user = g.user
     reviews = court.reviews
+    posts = Post.query.filter_by(court_id=court.id).all()
 
     if reviews:
         avg_rating = sum(review.rating for review in reviews) / len(reviews)
@@ -218,7 +219,7 @@ def get_court_info(court_id):
         avg_rating = 0
 
     already_follows = UserCourt.query.filter_by(user_id=user.id, court_id=court.id).first()
-    return render_template('court-profile.html', court=court, user=user, already_follows=already_follows, avg_rating=avg_rating, reviews=reviews)
+    return render_template('court-profile.html', court=court, user=user, already_follows=already_follows, avg_rating=avg_rating, reviews=reviews, posts=posts)
 
 @app.route('/courts/<int:court_id>/edit', methods=['GET', 'POST'])
 def show_edit_court_form(court_id):
@@ -266,6 +267,26 @@ def show_reviews_list(court_id):
     reviews = court.reviews
     user = g.user
     return render_template('review-list.html', user=user, court=court, reviews=reviews)
+
+@app.route('/courts/<int:court_id>/posts', methods=['GET', 'POST'])
+def get_make_post_form(court_id):
+    """get form for user to make a post to a given court"""
+    court = Court.query.get_or_404(court_id)
+    user = g.user
+    form = UserPostForm()
+
+    if form.validate_on_submit():
+        content = form.content.data
+
+        new_post = Post(user_id=user.id, court_id=court.id, content=content)
+
+        db.session.add(new_post)
+        db.session.commit()
+
+        flash('Successfully Submitted Post', 'success')
+        return redirect(f'/courts/{court_id}')
+    
+    return render_template('court-post.html', user=user, court=court, form=form)
 
 
 @app.route('/groups')

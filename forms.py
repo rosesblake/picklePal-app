@@ -44,3 +44,6 @@ class EditCourtForm(FlaskForm):
 class CourtReviewForm(FlaskForm):
     rating = IntegerField('Rating', validators=[InputRequired(), NumberRange(min=1, max=5)])
     content = TextAreaField('Review Body', validators=[InputRequired()])
+
+class UserPostForm(FlaskForm):
+    content = TextAreaField('Post Content', validators=[InputRequired()])
