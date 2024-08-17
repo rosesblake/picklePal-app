@@ -180,9 +180,6 @@ function addMarker(map, location, name, address, courtImage, courtId) {
       const contentString = `
         <div>
           <a href="${courtUrl}" class="underline cursor-pointer text-gray-800" !important;"><h1 class="text-xl"><strong>${name}</strong></h1></a>
-          <form action="${homeCourtUrl}" method="POST">
-            <button class="underline cursor-pointer text-blue-500" style="color: #3b82f6 !important;">Make This My Home Court</button>
-          </form>  
           <img src="${courtImage} alt=${name} image" class="w-full h-auto mb-2"/>
           <p>${address}</p>
           <a href="${courtUrl}" class="underline cursor-pointer text-blue-500" style="color: #3b82f6 !important;">Court Information<a/>

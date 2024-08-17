@@ -31,9 +31,9 @@
               {% endwith %}
             </div>
 
-    <main class="flex flex-col py-2 w-full border-b border-gray-600 border-opacity-10">
+    <main class="flex flex-col w-full border-b border-gray-600 border-opacity-10 shadow-sm">
       <div class="flex flex-col w-full text-center text-neutral-800">
-        <div class="flex gap-2.5 items-center self-center pr-9 text-2xl">
+        <div class="flex gap-2 items-center self-center pr-9 text-2xl mb-2">
           <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/9a57675ef4560cde77619882b3eeb73a6dec68eb1029a7f0e1799e9174f2341e?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain shrink-0 self-stretch my-auto w-6 aspect-square" />
           <h2 class="self-stretch my-auto">{{ court.name }}</h2>
         </div>
@@ -43,15 +43,15 @@
           <button class="cursor-pointer text-blue-500 text-xs" style="color: #3b82f6">Make This My Home Court</button>
         </form>  
         {% else %}
-        <div class="flex items-center px-4 mt-5 max-w-fit text-lg tracking-normal leading-none bg-custom-yellow rounded-lg p-4 mx-auto">
+        <div class="flex items-center px-2 mt-2 max-w-fit text-lg tracking-normal leading-none bg-custom-yellow rounded-lg p-2 mx-auto">
           <p class="text-xs ">Home Court</p>
       </div>      
         {% endif %}
       </div>
-      <figure class="flex flex-col justify-center items-center mt-5 w-full min-h-[224px]">
+      <figure class="flex flex-col justify-center items-center mt-2 w-full min-h-[224px]">
         <img loading="lazy" src="{{ court.court_image }}" alt="{{court.name}}" class="object-contain max-w-full aspect-[1.74] w-[380px]" />
       </figure>
-<div class="flex justify-center gap-8 self-center mt-5 max-w-full text-sm font-bold tracking-normal leading-6 text-center text-white whitespace-nowrap w-full">
+<div class="flex justify-center gap-8 self-center mt-4 max-w-full text-sm font-bold tracking-normal leading-6 text-center text-white whitespace-nowrap w-full">
     <!-- Follow Button  -->
     {% if not already_follows %}
     <form action="/users/following/{{ court.id }}" method="POST">
@@ -68,38 +68,72 @@
   </form>
     {% endif %}
     <!-- Review Button -->
+     <form action="/courts/{{ court.id }}/review" method="GET">
     <button class="flex justify-between items-center w-[90px] px-3 py-2 rounded-md bg-neutral-800">
       <span class="flex-1 text-center">Review</span>
       <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/a341dcd427fb6083623106c6e155a2dcd9deeca82ac15da1cd7d326482ae7d87?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="w-3.5 aspect-[0.87]" />
   </button>  
+  </form>
 </div>
 
     <!-- COURT DETAILS  -->
-    <div class="flex justify-center w-full mt-6 text-sm">
+    <div class="flex justify-center w-full mt-4 text-sm">
       <div class="flex justify-between gap-x-8">
-        <div class="flex flex-col items-center">
+        <div class="flex flex-col items-center bg-light-green rounded-md px-2 py-1 min-w-[75px]">
           <p>{{ court.num_courts }}</p>
           <p>courts</p>
         </div>
-        <div class="flex flex-col items-center">
-          <p>4</p>
-          <p>followers</p>
-        </div>
-        <div class="flex flex-col items-center">
-          <p>4</p>
+        <a href="/courts/{{court.id}}/reviews">
+          <div class="flex flex-col items-center bg-light-green rounded-md px-2 py-1 min-w-[75px]">
+            <p>{{ court.reviews | length }}</p>
           <p>reviews</p>
+        </div>
+      </a>
+      <div class="flex flex-col items-center bg-light-green rounded-md px-2 py-1 min-w-[75px]">
+        <p>{{ avg_rating | round(1) }}</p>
+          <p>rating</p>
+        </div>
+        <div class="flex flex-col items-center bg-light-green rounded-md px-2 py-1 min-w-[75px]">
+          <p>{{ court.followers | length }}</p>
+          <p>followers</p>
         </div>
       </div>
     </div>
-
     <!-- EDIT COURT DETAILS  -->
-    <div class="flex justify-center mt-2">
+    <div class="flex justify-center mt-4 mb-2">
       <a href="/courts/{{ court.id }}/edit" class="text-blue-500 text-xs"><p>Edit Court Details</p></a>
     </div>
     
     </main>
+    <!-- REVIEW PREVIEWS  -->
+      {% for review in reviews[-3:] %}
+  <article class="flex flex-col justify-center items-start px-5 py-2 w-full min-h-[100px] text-neutral-800 border-b border-light-gray shadow-sm">
+      <a href="/users/{{ review.user.id }}">
+      <div class="flex items-center w-full">
+        <div class="flex gap-3 flex-grow">
+            <img loading="lazy" src="{{ review.user.profile_image }}" alt="Profile picture of picklePal" class="object-contain shrink-0 aspect-[1.08] w-[30px]" />
+          <div class="flex flex-col my-auto">
+            <h2 class="text-sm">{{ review.user.first_name }} {{ review.user.last_name }}</h2>
+          </div>
+        </div>
+      </div>
+    </a>
+      <div class="flex gap-2 mt-2 max-w-full text-base tracking-normal leading-relaxed w-full items-center">
+        <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/4472064661d4d432e1a1a509ff757948c4f7fb489ea860620033c22561b29090?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain shrink-0 w-5 aspect-square" />
+        <p class="my-auto text-sm">{{ review.rating }}</p>
+        <p class="my-auto text-sm">{{ review.content }}</p>
+      </div>
+    </article>
+    {% endfor %}
+
+    <!-- SEE MORE REVIEWS  -->
+      <a href="/courts/{{court.id}}/reviews" class="text-gray-600 text-xs bg-custom-yellow">
+        <div class="flex justify-center pt-2 pb-2">
+        <p>See More</p>
+    </div>
+  </a>
     <!-- posts divider  -->
-    <section class="gap-2.5 self-stretch px-40 py-3 text-2xl text-center whitespace-nowrap bg-emerald-100 border-b border-gray-600 border-opacity-10 min-h-[48px] text-neutral-800">
+    <section class="gap-2.5 self-stretch px-40 py-3 text-2xl text-center whitespace-nowrap bg-light-green border-b border-gray-600 border-opacity-10 min-h-[48px] text-neutral-800">
       <h3>Posts</h3>
     </section>
     <article class="flex overflow-hidden flex-col justify-center w-full text-neutral-800">

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}All Reviews{% endblock %}
+{% block content %}
+<section class="flex overflow-hidden flex-col items-center pb-40 mx-auto w-full bg-white pb-[100px] pt-[100px]">
+  <header class="fixed top-0 left-0 right-0 flex overflow-hidden gap-5 justify-between items-end px-5 py-6 w-full text-2xl text-center text-white whitespace-nowrap bg-dark-green h-[100px] z-10">
+    <a href="/courts/{{ court.id }}">
+      <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/6ca2bd449a63fb56568b3457b563fcd9f254106bb728a513a7292aeff082a19c?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" class="object-contain aspect-square w-[35px]" alt="" />
+    </a>
+    </header>
+    <main>
+    <!-- REVIEW PREVIEWS  -->
+    {% for review in reviews %}
+    <article class="flex flex-col justify-center items-start px-5 py-2 w-full min-h-[100px] text-neutral-800 border-b border-light-gray shadow-sm">
+        <a href="/users/{{ review.user.id }}">
+        <div class="flex items-center w-full">
+          <div class="flex gap-3 flex-grow">
+              <img loading="lazy" src="{{ review.user.profile_image }}" alt="Profile picture of picklePal" class="object-contain shrink-0 aspect-[1.08] w-[30px]" />
+            <div class="flex flex-col my-auto">
+              <h2 class="text-sm">{{ review.user.first_name }} {{ review.user.last_name }}</h2>
+            </div>
+          </div>
+        </div>
+      </a>
+        <div class="flex gap-2 mt-2 max-w-full text-base tracking-normal leading-relaxed w-full items-center">
+          <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/4472064661d4d432e1a1a509ff757948c4f7fb489ea860620033c22561b29090?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain shrink-0 w-5 aspect-square" />
+          <p class="my-auto text-sm">{{ review.rating }}</p>
+          <p class="my-auto text-sm">{{ review.content }}</p>
+        </div>
+      </article>
+      {% endfor %}
+    </main>
+    
+    <script src="/static/js/court-rating.js"></script>
+
+{% endblock %}

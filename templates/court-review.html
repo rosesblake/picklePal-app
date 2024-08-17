@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="flex overflow-hidden flex-col items-center pb-40 mx-auto w-full bg-white pb-[100px] pt-[100px]">
+    <header class="fixed top-0 left-0 right-0 flex overflow-hidden gap-5 justify-between items-end px-5 py-6 w-full text-2xl text-center text-white whitespace-nowrap bg-dark-green h-[100px] z-10">
+        <a href="/courts/{{ court.id }}">
+            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/6ca2bd449a63fb56568b3457b563fcd9f254106bb728a513a7292aeff082a19c?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" class="object-contain aspect-square w-[35px]" alt="" />
+          </a>
+        <h1 class="w-[120px]">picklePal</h1>
+        <div></div>
+    </header>
+    <main class="flex flex-col justify-center mt-12 w-full max-w-xs text-sm font-semibold tracking-normal leading-none text-neutral-800">
+        <form id="review-court-form" method="POST">
+        {{ form.hidden_tag() }}
+             <!-- FLASH MESSAGES  -->
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flex flex-col items-center mb-4">
+                {% for message in messages %}
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-2 w-full text-center" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% endwith %}
+            <!-- FORM CONTENT  -->
+            <div class="flex flex-col w-full whitespace-nowrap mb-8">
+                <label class="flex-1 shrink gap-2.5 w-full">Rating</label>
+                <div id="star-rating" class="flex mt-2 gap-1">
+                    {% for i in range(1, 6) %}
+                        <span class="star text-gray-400 cursor-pointer text-2xl" data-value="{{ i }}">&#9733;</span>
+                    {% endfor %}
+                </div>
+                <input type="hidden" name="rating" id="rating" value="{{ form.rating.data }}">
+                {% for error in form.rating.errors %}
+                    <span class="text-red-500">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="flex flex-col w-full whitespace-nowrap mb-8">
+                {{ form.content.label(class_="flex-1 shrink gap-2.5 w-full") }}
+                {{ form.content(class_="flex mt-2 w-full bg-white rounded-md min-h-[48px] border border-input-gray p-3", placeholder=form.content.label.text) }}
+                {% for error in form.content.errors %}
+                    <span class="text-red-500">{{ error }}</span>
+                {% endfor %}
+            </div>
+        <div class="flex justify-center mt-8">
+            <button id="submit-review-btn" type="submit" class="inline-flex items-center justify-center gap-2 px-3.5 py-2.5 text-2xl font-bold tracking-tight leading-none text-white whitespace-nowrap rounded-md bg-green-btn">
+              Submit
+            </button>
+          </div>  
+      </form>
+    </main>
+  </section>
+
+<script src="/static/js/court-rating.js"></script>
+
+{% endblock %}
+
+<!-- 
+    <main class="flex gap-6 justify-center items-center py-3.5 bg-emerald-100">
+      <form class="flex gap-2 justify-center items-start self-stretch px-5 my-auto w-[393px]">
+        <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/0eb2e871b0daf34d02ede5066bd061794e0210efbbf310262ba58cbd597da905?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="User profile picture" class="object-contain shrink-0 rounded-full aspect-square w-[50px]" />
+        <div class="flex flex-1 shrink items-start basis-6">
+          <div class="flex flex-col min-h-[99px] w-[233px]">
+            <div class="flex flex-col flex-1 p-3 w-full bg-white rounded-md border-2 border-emerald-100 border-solid">
+              <label for="postContent" class="sr-only">Write your post</label>
+              <textarea id="postContent" class="flex flex-1 py-2 w-full min-h-[33px]" aria-label="Write your post"></textarea>
+              <div class="flex flex-1 gap-2 items-end mt-2.5 size-full">
+                <button type="button" aria-label="Add image">
+                  <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/45e19bf39da54983b33c15ee28da0e5756889af7bd6a702980cb6340c01af951?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain shrink-0 w-6 aspect-square" />
+                </button>
+                <button type="button" aria-label="Add emoji">
+                  <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/6c95756d2a363ffe0484b5d2f844d44dc75fac73e42b7e05e3971392939a9281?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain shrink-0 w-6 aspect-square" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="overflow-hidden gap-2 self-stretch px-3 py-2 text-sm font-bold tracking-normal leading-6 text-white whitespace-nowrap rounded-md bg-neutral-800">
+          Submit
+        </button>
+      </form>
+    </main>
+  </section> -->

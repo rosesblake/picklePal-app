@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, TextAreaField, SelectField, FileField, RadioField, SubmitField, FloatField
-from wtforms.validators import InputRequired, Email, DataRequired
+from wtforms import StringField, PasswordField, TextAreaField, SelectField, FileField, RadioField, SubmitField, FloatField, IntegerField
+from wtforms.validators import InputRequired, Email, DataRequired, NumberRange
 
 class UserRegisterForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()], render_kw={"autocomplete": "email"}) 
@@ -39,4 +39,8 @@ class AddCourtForm(FlaskForm):
 class EditCourtForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     address = StringField('Address', validators=[DataRequired()])
-    num_courts = FloatField('Number of Courts')
+    num_courts = IntegerField('Number of Courts')
+
+class CourtReviewForm(FlaskForm):
+    rating = IntegerField('Rating', validators=[InputRequired(), NumberRange(min=1, max=5)])
+    content = TextAreaField('Review Body', validators=[InputRequired()])

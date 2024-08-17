@@ -4,8 +4,8 @@ from flask_bcrypt import Bcrypt
 from sqlalchemy.exc import IntegrityError
 from werkzeug.utils import secure_filename
 
-from models import db, connect_db, User, Group, GroupMembership, Court, UserCourt
-from forms import UserRegisterForm, UserInfoForm, UserLoginForm, CreateGroupForm, AddCourtForm, EditCourtForm
+from models import db, connect_db, User, Group, GroupMembership, Court, UserCourt, Review
+from forms import UserRegisterForm, UserInfoForm, UserLoginForm, CreateGroupForm, AddCourtForm, EditCourtForm, CourtReviewForm
 from flask_wtf.csrf import generate_csrf
 
 from dotenv import load_dotenv
@@ -210,10 +210,17 @@ def get_court_info(court_id):
     """show information about a given court based on it's address"""
     court = Court.query.get_or_404(court_id)
     user = g.user
-    already_follows = UserCourt.query.filter_by(user_id=user.id, court_id=court.id).first()
-    return render_template('court-profile.html', court=court, user=user, already_follows=already_follows)
+    reviews = court.reviews
 
-@app.route('/courts/<int:court_id>/edit')
+    if reviews:
+        avg_rating = sum(review.rating for review in reviews) / len(reviews)
+    else:
+        avg_rating = 0
+
+    already_follows = UserCourt.query.filter_by(user_id=user.id, court_id=court.id).first()
+    return render_template('court-profile.html', court=court, user=user, already_follows=already_follows, avg_rating=avg_rating, reviews=reviews)
+
+@app.route('/courts/<int:court_id>/edit', methods=['GET', 'POST'])
 def show_edit_court_form(court_id):
     """edit court details"""
     court = Court.query.get_or_404(court_id)
@@ -233,6 +240,32 @@ def show_edit_court_form(court_id):
 
     flash('Must Follow Court to Edit', 'danger')
     return redirect(f'/courts/{court.id}')
+
+@app.route('/courts/<int:court_id>/review', methods=['GET', 'POST'])
+def get_review_form(court_id):
+    """get review form for user to submit"""
+    court = Court.query.get_or_404(court_id)
+    user = g.user
+    form = CourtReviewForm()
+
+    if form.validate_on_submit():
+        rating = form.rating.data
+        content = form.content.data
+        new_review = Review(court_id=court.id, user_id=user.id, rating=rating, content=content)
+        db.session.add(new_review)
+        db.session.commit()
+        flash('Review Submitted', 'success')
+        return redirect(f'/courts/{court.id}')
+
+    return render_template('court-review.html', court=court, user=user, form=form)
+
+@app.route('/courts/<int:court_id>/reviews')
+def show_reviews_list(court_id):
+    """show list of all reviews for given court"""
+    court = Court.query.get_or_404(court_id)
+    reviews = court.reviews
+    user = g.user
+    return render_template('review-list.html', user=user, court=court, reviews=reviews)
 
 
 @app.route('/groups')
@@ -316,7 +349,7 @@ def add_home_court(court_id):
 
     db.session.commit()
     
-    return redirect('/profile')
+    return redirect(f'/courts/{court_id}')
 
 @app.route('/users/following/<int:court_id>', methods=['POST'])
 def user_follow_court(court_id):
@@ -355,7 +388,7 @@ def user_unfollow_court(court_id):
     return redirect(f'/courts/{court_id}')
 
 
-@app.route('/edit-profile', methods=['GET', 'POST'])
+@app.route('/profile/edit', methods=['GET', 'POST'])
 def edit_user_profile():
     """list all groups based on search criteria"""
     if not g.user:
