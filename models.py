@@ -15,7 +15,7 @@ class User(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    profile_image = db.Column(db.String, nullable=False, default='static/images/profile-icon.png')
+    profile_image = db.Column(db.String, nullable=False, default='/static/images/profile-icon.png')
     password = db.Column(db.String(128), nullable=False)
     first_name = db.Column(db.String(35), nullable=False)
     last_name = db.Column(db.String(35), nullable=False)
@@ -43,16 +43,6 @@ class User(db.Model):
     sent_messages = db.relationship('Message', foreign_keys='Message.sender_id', back_populates='sender')
     received_messages = db.relationship('Message', foreign_keys='Message.receiver_id', back_populates='receiver')
     groups = db.relationship('GroupMembership', back_populates='user')
-
-    schedule = db.Column(JSON, nullable=False, default={
-        'Sunday': {'AM': False, 'PM': False},
-        'Monday': {'AM': False, 'PM': False},
-        'Tuesday': {'AM': False, 'PM': False},
-        'Wednesday': {'AM': False, 'PM': False},
-        'Thursday': {'AM': False, 'PM': False},
-        'Friday': {'AM': False, 'PM': False},
-        'Saturday': {'AM': False, 'PM': False}
-    })
     
     def __repr__(self):
         return f"<User #{self.id}: {self.first_name} {self.last_name}, {self.email}>"
@@ -79,6 +69,19 @@ class User(db.Model):
         if user and bcrypt.check_password_hash(user.password, password):
             return user
         return False
+
+class Schedule(db.Model):
+    __tablename__ = 'schedules'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    day = db.Column(db.String(20), nullable=False)
+    period = db.Column(db.String(20), nullable=False)
+    available = db.Column(db.Boolean, default=False)
+
+    user = db.relationship('User', backref='schedules')
+
+
 
 class Court(db.Model):
     __tablename__ = 'courts'

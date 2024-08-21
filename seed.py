@@ -17,7 +17,7 @@ with app.app_context():
 
     # Seed users
     user1 = User.signup(
-        profile_image="",
+        profile_image="static/images/profile-icon.png",
         first_name='John',
         last_name='Doe',
         email='john@example.com',
@@ -29,7 +29,7 @@ with app.app_context():
     )
     
     user2 = User.signup(
-        profile_image="",
+        profile_image="static/images/profile-icon.png",
         first_name='Jane',
         last_name='Smith',
         email='jane@example.com',
@@ -41,7 +41,7 @@ with app.app_context():
     )
 
     user3 = User.signup(
-        profile_image="",
+        profile_image="static/images/profile-icon.png",
         first_name='Blake',
         last_name='Roses',
         email='blake@gmail.com',

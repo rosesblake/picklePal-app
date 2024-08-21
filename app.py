@@ -4,7 +4,7 @@ from flask_bcrypt import Bcrypt
 from sqlalchemy.exc import IntegrityError
 from werkzeug.utils import secure_filename
 
-from models import db, connect_db, User, Group, GroupMembership, Court, UserCourt, Review, Post, Like, Comment
+from models import db, connect_db, User, Group, GroupMembership, Court, UserCourt, Review, Post, Like, Comment, Schedule
 from forms import UserRegisterForm, UserInfoForm, UserLoginForm, CreateGroupForm, AddCourtForm, EditCourtForm, CourtReviewForm, UserPostForm
 from flask_wtf.csrf import generate_csrf
 
@@ -475,8 +475,49 @@ def show_user_profile():
 
     user = g.user
     posts = Post.query.filter_by(user_id=user.id).all()
+    schedule_entries = Schedule.query.filter_by(user_id=user.id).all()
 
-    return render_template('profile.html', user=user, posts=posts)
+    # Convert schedule entries to a dictionary to get availability easier.
+    schedule = {}
+    for entry in schedule_entries:
+        if entry.day not in schedule:
+            schedule[entry.day] = {}
+        schedule[entry.day][entry.period] = entry.available
+
+    days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+
+    return render_template('profile.html', user=user, posts=posts, schedule=schedule, days=days)
+
+@app.route('/profile/schedule', methods=['POST'])
+def update_profile_schedule():
+    """create new schedule entry for user"""
+    if not g.user:
+        flash('Please Login First')
+        return redirect('/login') 
+    
+    data = request.get_json()
+
+    user = g.user
+
+    day = data.get('day')
+    period = data.get('period')
+    selected = data.get('selected')
+    # make sure data is present 
+    if not day or not period:
+        return jsonify({"error": "Missing day or period"}), 400 
+    # check if schedule entry exists
+    entry = Schedule.query.filter_by(user_id=user.id, day=day, period=period).first()
+    # update existing entry 
+    if entry:
+        entry.available = selected
+    else:
+        # create new entry 
+        schedule = Schedule(user_id=user.id, day=day, period=period, available=selected)
+        db.session.add(schedule)
+
+    db.session.commit()
+
+    return jsonify({"message": "Schedule updated successfully"})
 
 @app.route('/users/<int:court_id>', methods=['POST'])
 def add_home_court(court_id):
