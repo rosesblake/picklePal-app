@@ -172,9 +172,6 @@ def show_user_home():
 @app.route('/courts', methods=['GET', 'POST'])
 def show_map_search():
     """get maps api to find courts and allow users to add new courts"""
-    if not g.user:
-        flash('Please Login First')
-        return redirect('/login')
     
     google_maps_api_key = os.getenv('GOOGLE_MAPS_API_KEY')
     
@@ -214,6 +211,10 @@ def show_map_search():
 @app.route('/courts/<int:court_id>')
 def get_court_info(court_id):
     """show information about a given court based on it's address"""
+    if not g.user:
+        flash('Please Login First')
+        return redirect('/login')
+    
     court = Court.query.get_or_404(court_id)
     user = g.user
     reviews = court.reviews
