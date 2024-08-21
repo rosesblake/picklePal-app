@@ -42,8 +42,8 @@
         <img loading="lazy" src="{{ court.court_image }}" alt="{{court.name}}" class="object-contain max-w-full aspect-[1.74] w-[380px]" />
       </figure>
       {% if court.id != user.home_court_id %}
-      <form action="/users/{{ court.id }}" method="POST">
-        <button class="cursor-pointer text-blue-500 text-xs" style="color: #3b82f6">Make This My Home Court</button>
+      <form action="/users/{{ court.id }}" method="POST" class="mx-auto">
+        <button class="text-blue-500 text-xs text-center" style="color: #3b82f6">Make This My Home Court</button>
       </form>  
       {% else %}
       <div class="flex items-center px-2 mt-2 max-w-fit text-lg tracking-normal leading-none bg-custom-yellow rounded-lg p-2 mx-auto">
@@ -102,7 +102,10 @@
     <div class="flex justify-center mt-4 mb-2">
       <a href="/courts/{{ court.id }}/edit" class="text-blue-500 text-xs"><p>Edit Court Details</p></a>
     </div>
-    
+    <!-- AVERAGE PLAYER SKILL  -->
+     <div class="flex flex-row justify-center">
+      <p class="text-xs">Average Player Skill</p>
+     </div>
     </main>
     <!-- REVIEW PREVIEWS  -->
     {% for review in reviews[-3:] %}
@@ -131,12 +134,15 @@
   
 
     <!-- SEE MORE REVIEWS  -->
+     {% if court.reviews %}
       <a href="/courts/{{court.id}}/reviews" class="w-full text-gray-600 text-xs bg-light-gray">
         <div class="flex justify-center pt-2 pb-2">
         <p>See More</p>
     </div>
   </a>
+  {% endif %}
     <!-- posts divider  -->
+     {% if court.posts %}
     <section class="w-full gap-2 self-stretch px-40 py-2 text-2xl text-center whitespace-nowrap bg-light-green border-b border-gray-600 border-opacity-10 min-h-[48px] text-neutral-800 shadow-sm">
       <h3>Posts</h3>
     </section>
@@ -166,13 +172,14 @@
           <span class="liked-text">Liked</span>
           {% endif %}
         </button>
-        <button class="flex gap-2.5 self-stretch my-auto w-[81px]">
+        <a href="/posts/{{post.id}}/comment" class="flex gap-2.5 self-stretch my-auto w-[81px]">
           <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/3bb0686157f570aa325a48bed77d4fdc4cf7178988d41088def114144b7231f3?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain shrink-0 aspect-square w-[18px]" />
           <span>Comment</span>
-        </button>
+        </a>
       </div>
     </article>
     {% endfor %}
+    {% endif %}
 <!-- ----------------- -->
     <!-- CREATE POST FIXED BUTTON  -->
     <a href="/courts/{{ court.id }}/posts" class="fixed bottom-[120px] left-1/2 transform -translate-x-1/2 z-20">

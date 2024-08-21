@@ -4,42 +4,42 @@
 <section class="flex overflow-hidden flex-col mx-auto w-full bg-white pb-[100px] pt-[100px]">
     <!-- TOP NAV  -->
     <header class="fixed top-0 left-0 right-0 flex overflow-hidden gap-5 justify-between items-end px-5 py-6 w-full text-2xl text-center text-white whitespace-nowrap bg-dark-green h-[100px] z-10">
-      <a href="/friends">
-        <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/301a99352172e443598727e0754e538d0a6a1a6d1ef532292992e083a9c04209?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" class="object-contain shrink-0 aspect-square w-[35px]" alt="PicklePal logo" />
-      </a> 
-        <h1 class="w-[120px]">Users</h1>
+        <a href="/groups">
+            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/301a99352172e443598727e0754e538d0a6a1a6d1ef532292992e083a9c04209?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" class="object-contain shrink-0 aspect-square w-[35px]" alt="PicklePal logo" />
+          </a> 
+        <h1 class="w-[120px]">Groups</h1>
       <div class="flex shrink-0 h-[30px] w-[30px]"></div>
     </header>
-
+    
     <!-- SEARCH FIELD  -->
     <div class="flex flex-col pr-16 pl-5 mt-5 w-full">
-    <form action="/users" method="get">
+    <form action="/groups/list" method="get">
         <div class="flex gap-3">
           <img loading="lazy" src="/static/images/icon-search.png" alt="" class="object-contain shrink-0 my-auto aspect-square w-[30px]" />
           <div class="flex flex-col grow shrink-0 basis-0 w-fit">
-            <label for="search-input" class="sr-only">Search</label>
-            <input id="search-input" name="search" type="text" placeholder="Search Friends or Users" class="flex mt-1 w-full bg-white min-h-[24px] border-b border-input-gray p-1" />
+            <label for="group-search-input" class="sr-only">Search</label>
+            <input id="group-search-input" name="group-q" type="text" placeholder="Search groups" class="flex mt-1 w-full bg-white min-h-[24px] border-b border-input-gray p-1" />
           </div>
         </div>
     </form>
 </div>
     <!-- MESSAGE BLOCKS  -->
      <main>
-        {% for other_user in other_users %}
+        {% for group in groups %}
     <article class="flex flex-col justify-center items-start px-5 py-3 mt-5 w-full min-h-[117px] text-neutral-800 border-b border-light-gray">
-        <a href="/users/{{ other_user.id }}">
+        <a href="/groups/{{ group.id }}">
         <div class="flex items-center w-full">
           <div class="flex gap-3 flex-grow">
               <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/e1da3d96b7886665cd54474dafa2a2286bc2da70cc28e1554bdd5b28583778ea?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="Profile picture of picklePal" class="object-contain shrink-0 aspect-[1.08] w-[54px]" />
             <div class="flex flex-col my-auto">
-              <h2 class="text-xl">{{ other_user.first_name }} {{ other_user.last_name }}</h2>
-              <p class="mt-2 text-sm">{{ other_user.city }}, {{ other_user.state }}</p>
+              <h2 class="text-xl">{{ group.name }}</h2>
+              <p class="mt-2 text-sm">{{ group.owner.city }}</p>
             </div>
           </div>
         </div>
         <div class="flex gap-2.5 mt-2.5 max-w-full text-base tracking-normal leading-relaxed w-full items-center">
           <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/4472064661d4d432e1a1a509ff757948c4f7fb489ea860620033c22561b29090?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain shrink-0 w-6 aspect-square" />
-          <p class="my-auto">{{ other_user.skill }}</p>
+          <p class="my-auto">{{ group.memberships|length }} members</p>
         </div>
     </a>
       </article>

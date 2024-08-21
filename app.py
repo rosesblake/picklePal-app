@@ -4,7 +4,7 @@ from flask_bcrypt import Bcrypt
 from sqlalchemy.exc import IntegrityError
 from werkzeug.utils import secure_filename
 
-from models import db, connect_db, User, Group, GroupMembership, Court, UserCourt, Review, Post, Like
+from models import db, connect_db, User, Group, GroupMembership, Court, UserCourt, Review, Post, Like, Comment
 from forms import UserRegisterForm, UserInfoForm, UserLoginForm, CreateGroupForm, AddCourtForm, EditCourtForm, CourtReviewForm, UserPostForm
 from flask_wtf.csrf import generate_csrf
 
@@ -159,8 +159,14 @@ def show_user_home():
         return redirect('/login')
 
     user = g.user
-    
-    return render_template('home.html', user=user)
+
+    hc_posts = Post.query.filter_by(court_id=user.home_court_id)
+    followed_courts = user.followed_courts
+
+    likes = [like.post_id for like in Like.query.filter_by(user_id=user.id)]
+
+    print(followed_courts)
+    return render_template('home.html', user=user, hc_posts=hc_posts, followed_courts=followed_courts, likes=likes)
 
 
 @app.route('/courts', methods=['GET', 'POST'])
@@ -214,7 +220,6 @@ def get_court_info(court_id):
     posts = Post.query.filter_by(court_id=court.id).all()
     user_likes = Like.query.filter_by(user_id=user.id).all()
     post_likes = {like.post_id for like in user_likes}
-
     if reviews:
         avg_rating = sum(review.rating for review in reviews) / len(reviews)
     else:
@@ -293,14 +298,44 @@ def get_make_post_form(court_id):
 @app.route('/posts/<int:post_id>/like', methods=['POST'])
 def like_post(post_id):
     """perform like functionality and update db"""
+    if not g.user:
+        flash('Please Login First')
+        return redirect('/login')
+    
     user = g.user
 
-    new_like = Like(user_id=user.id, post_id=post_id)
+    already_liked = Like.query.filter_by(user_id=user.id, post_id=post_id)
+    if not already_liked:
+        new_like = Like(user_id=user.id, post_id=post_id)
 
-    db.session.add(new_like)
-    db.session.commit()
+        db.session.add(new_like)
+        db.session.commit()
+    # else:
+    #     db.session.delete(already_liked)
+    #     db.session.commit()
 
     return jsonify({'message': 'Post liked successfully!'}), 200
+
+@app.route('/posts/<int:post_id>/comment', methods=['GET', 'POST'])
+def comment_on_post_form(post_id):
+    """get comment form for user to comment on given post"""
+    if not g.user:
+        flash('Please Login First')
+        return redirect('/login')
+    user = g.user
+    post = Post.query.get_or_404(post_id)
+    form = UserPostForm()
+
+    if form.validate_on_submit():
+        content = form.content.data
+        new_comment = Comment(content=content, user_id=user.id, post_id=post.id)
+        
+        db.session.add(new_comment)
+        db.session.commit()
+
+        return redirect('/')
+    
+    return render_template('court-post.html', user=user, form=form, post=post)
 
 @app.route('/groups')
 def show_groups():
@@ -308,9 +343,86 @@ def show_groups():
     if not g.user:
         flash('Please Login First')
         return redirect('/login')
-
+    groups = Group.query.all()
     user = g.user
-    return render_template('groups.html', user=user)
+    return render_template('groups.html', user=user, groups=groups)
+
+@app.route('/groups/list')
+def show_groups_list():
+    """show list of groups based on search"""
+    if not g.user:
+        flash('Please Login First')
+        return redirect('/login')
+    
+    q = request.args.get('group-q', '')
+    user = g.user
+
+    # Query groups based on the search input
+    groups = Group.query.filter(
+        (Group.name.ilike(f'%{q}%'))).all()
+
+    return render_template('group-list.html', user=user, groups=groups)
+
+@app.route('/groups/<int:group_id>')
+def show_group_profile(group_id):
+    """show user group profile"""
+    if not g.user:
+        flash('Please Login First')
+        return redirect('/login')
+    
+    user = g.user
+    group = Group.query.get_or_404(group_id)
+    user_ids = {g.user_id for g in group.memberships}
+    avg_skill = ''
+    for user_id in user_ids:
+        user = User.query.get_or_404(user_id)
+        if user.skill != 'Beginner':
+            user_skill = user.skill
+            avg_skill.append(user_skill)
+
+    return render_template('group-profile.html', user=user, group=group, avg_skill=avg_skill)
+
+@app.route('/groups/<int:group_id>/join', methods=['POST'])
+def join_group(group_id):
+    """post request for user to join group"""
+    if not g.user:
+        flash('Please Login First', 'danger')
+        return redirect('/login')
+    
+    user = g.user
+
+    new_membership = GroupMembership(group_id=group_id, user_id=user.id)
+
+    db.session.add(new_membership)
+    db.session.commit()
+
+    return redirect(f'/groups/{group_id}')
+
+@app.route('/groups/<int:group_id>/edit', methods=['GET', 'POST'])
+def get_edit_group_form(group_id):
+    """get the form for owner to edit group"""
+    if not g.user:
+        flash('Please Login First', 'danger')
+        return redirect('/login')
+    
+    user = g.user
+
+    group = Group.query.get_or_404(group_id)
+
+    form = CreateGroupForm(obj=group)
+
+    if form.validate_on_submit():
+        group.name = form.name.data
+        group.description = form.description.data
+        group.email = form.email.data
+        group.website = form.email.data
+        group.primary_court = form.primary_court.data
+        group.play_type = form.play_type.data
+
+        db.session.commit()
+        return redirect(f'/groups/{group.id}')
+
+    return render_template('create-group.html', user=user, group=group, form=form)
 
 @app.route('/create-group', methods=['POST', 'GET'])
 def show_create_group_form():
@@ -362,7 +474,9 @@ def show_user_profile():
         return redirect('/login')
 
     user = g.user
-    return render_template('profile.html', user=user)
+    posts = Post.query.filter_by(user_id=user.id).all()
+
+    return render_template('profile.html', user=user, posts=posts)
 
 @app.route('/users/<int:court_id>', methods=['POST'])
 def add_home_court(court_id):
@@ -446,6 +560,7 @@ def edit_user_profile():
 
 @app.route('/users')
 def show_users_list():
+    """show list of users based on search"""
     if not g.user:
         flash('Please Login First')
         return redirect('/login')

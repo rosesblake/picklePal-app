@@ -4,7 +4,7 @@
 
 <section class="flex overflow-hidden flex-col items-center pb-40 mx-auto w-full bg-white pb-[100px] pt-[100px]">
   <header class="fixed top-0 left-0 right-0 flex overflow-hidden gap-5 justify-between items-end px-5 py-6 w-full text-2xl text-center text-white whitespace-nowrap bg-dark-green h-[100px] z-10">
-    <a href="/groups">
+    <a href="{% if not group %}/groups{% else %}/groups/{{group.id}}{% endif %}">
       <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/301a99352172e443598727e0754e538d0a6a1a6d1ef532292992e083a9c04209?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" class="object-contain shrink-0 aspect-square w-[35px]" alt="PicklePal logo" />
     </a>
     <h1 class="w-[120px] mr-10">Create Group</h1>
@@ -45,7 +45,7 @@
       
       <div class="flex justify-center mt-8">
         <button id="register-btn" type="submit" class="inline-flex items-center justify-center gap-2 px-3.5 py-2.5 text-2xl font-bold tracking-tight leading-none text-white whitespace-nowrap rounded-md bg-green-btn">
-          Create Group
+          {% if not group %}Create Group{% else %}Edit{% endif %}
         </button>
       </div>             
     </form>
