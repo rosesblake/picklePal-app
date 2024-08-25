@@ -160,13 +160,14 @@ def show_user_home():
 
     user = g.user
 
+    all_posts = Post.query.all()
     hc_posts = Post.query.filter_by(court_id=user.home_court_id)
     followed_courts = user.followed_courts
 
     likes = [like.post_id for like in Like.query.filter_by(user_id=user.id)]
 
     print(followed_courts)
-    return render_template('home.html', user=user, hc_posts=hc_posts, followed_courts=followed_courts, likes=likes)
+    return render_template('home.html', user=user, hc_posts=hc_posts, followed_courts=followed_courts, likes=likes, all_posts=all_posts)
 
 
 @app.route('/courts', methods=['GET', 'POST'])
@@ -279,20 +280,25 @@ def show_reviews_list(court_id):
 @app.route('/courts/<int:court_id>/posts', methods=['GET', 'POST'])
 def get_make_post_form(court_id):
     """get form for user to make a post to a given court"""
-    court = Court.query.get_or_404(court_id)
+    court = Court.query.get(court_id)
     user = g.user
     form = UserPostForm()
 
     if form.validate_on_submit():
         content = form.content.data
-
-        new_post = Post(user_id=user.id, court_id=court.id, content=content)
-
+        if court:
+            new_post = Post(user_id=user.id, court_id=court.id, content=content)
+        else:
+            new_post = Post(user_id=user.id, content=content)
+            
         db.session.add(new_post)
         db.session.commit()
 
         flash('Successfully Submitted Post', 'success')
-        return redirect(f'/courts/{court_id}')
+        if court:
+            return redirect(f'/courts/{court_id}')
+        else:
+            return redirect('/')
     
     return render_template('court-post.html', user=user, court=court, form=form)
 
@@ -576,7 +582,6 @@ def user_unfollow_court(court_id):
         flash('You are not following this court', 'danger')
 
     return redirect(f'/courts/{court_id}')
-
 
 @app.route('/profile/edit', methods=['GET', 'POST'])
 def edit_user_profile():
