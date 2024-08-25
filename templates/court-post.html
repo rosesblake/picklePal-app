@@ -3,7 +3,7 @@
 {% block content %}
 <section class="flex overflow-hidden flex-col mx-auto w-full bg-white pb-[100px] pt-[100px]">
     <header class="fixed top-0 left-0 right-0 flex overflow-hidden gap-5 justify-between items-end px-5 py-6 w-full text-2xl text-center text-white whitespace-nowrap bg-dark-green h-[100px] z-10">
-        <a href="/courts">
+      <a href="javascript:void(0)" onclick="window.history.back();">
         <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/301a99352172e443598727e0754e538d0a6a1a6d1ef532292992e083a9c04209?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" class="object-contain shrink-0 aspect-square w-[35px]" alt="PicklePal logo" />
       </a>  
         <h1 class="w-[120px]">picklePal</h1>
@@ -25,24 +25,22 @@
           <p class="text-xs text-right">Skill {{ post.user.skill }}</p>
         </div>
         <p class="mt-5 text-base">{{ post.content }}</p>
-        <div class="flex mt-4 max-w-full min-h-0 w-[116px]" aria-hidden="true"></div>
+        <!-- LIKES AND COMMENTS COUNT  -->
+        <div class="flex flex-row justify-between mt-4 max-w-full min-h-0 w-full text-xs text-gray-400" aria-hidden="true"><span>{{ post.likes | length }} likes</span><a href="/posts/{{ post.id }}/comment/list">{{ post.comments | length }} comments</a></div>
       </div>
       <div class="post flex overflow-hidden gap-10 justify-between items-center px-5 w-full text-xs whitespace-nowrap border-t border-b bg-gray-600 bg-opacity-10 border-gray-600 border-opacity-10 min-h-[38px]">
-        <button class="like flex gap-2.5 self-stretch my-auto w-[50px]" data-post-id="{{ post.id }}" onclick="likePost(this)">
+        <button class="like-button flex gap-2.5 self-stretch my-auto w-[50px]" data-post-id="{{ post.id }}" onclick="likePost(this)">
           <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/8f00393c98e110eecbcd9e54fbd359cb89ea9552e254ce44de0ab4cda883194c?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="like-heart object-contain shrink-0 aspect-square w-[18px]" />
-          {% if post.id not in post_likes %}
-          <span class="like-text">Like</span>
-          {% else %}
-          <span class="liked-text">Liked</span>
-          {% endif %}
-        </button>
-        <button class="flex gap-2.5 self-stretch my-auto w-[81px]">
+          <span class="like-text">{{ 'Like' if post.id not in post_likes else 'Liked' }}</span>
+        </button> 
+        <a href="/posts/{{post.id}}/comment" class="flex gap-2.5 self-stretch my-auto w-[81px]">
           <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/3bb0686157f570aa325a48bed77d4fdc4cf7178988d41088def114144b7231f3?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain shrink-0 aspect-square w-[18px]" />
           <span>Comment</span>
-        </button>
+        </a>
       </div>
     </article>
       {% endif %}
+      
       <main class="flex gap-6 justify-center items-center py-3.5 bg-light-green">
       <form method="post" class="flex gap-2 justify-center items-start self-stretch px-4 my-auto w-[393px]">
         {{ form.hidden_tag() }}
@@ -66,5 +64,8 @@
       </form>
     </main>
   </section>
+
+  <script src="/static/js/like-post.js"></script>
+
   {% endblock %}
 {% block user_img_src %}{{ user.profile_image }}{% endblock %}

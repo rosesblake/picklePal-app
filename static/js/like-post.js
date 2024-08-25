@@ -16,8 +16,10 @@ async function likePost(button) {
     if (response.ok) {
       // Update the text content of the span within the clicked button
       const span = button.querySelector(".like-text");
-      if (span) {
+      if (span.textContent === "Like") {
         span.textContent = "Liked"; // Change the text content to "Liked"
+      } else {
+        span.textContent = "Like";
       }
       console.log("Post liked successfully!");
     } else {

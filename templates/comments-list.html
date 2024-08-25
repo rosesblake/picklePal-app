@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}All Reviews{% endblock %}
+{% block content %}
+<section class="flex overflow-hidden flex-col items-center pb-40 mx-auto w-full bg-white pb-[100px] pt-[100px]">
+  <header class="fixed top-0 left-0 right-0 flex overflow-hidden gap-5 justify-between items-end px-5 py-6 w-full text-2xl text-center text-white whitespace-nowrap bg-dark-green h-[100px] z-10">
+    <a href="javascript:void(0)" onclick="window.history.back();">
+      <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/6ca2bd449a63fb56568b3457b563fcd9f254106bb728a513a7292aeff082a19c?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" class="object-contain aspect-square w-[35px]" alt="" />
+    </a>
+    </header>
+      <!-- IF ITS A COMMENT SHOW POST CONTENT ABOVE -->
+      {% if post %}
+    <!-- POSTS SECTION  -->
+    <article class="flex overflow-hidden flex-col justify-center w-full text-neutral-800 shadow-sm">
+      <div class="flex flex-col p-5 w-full">
+        <div class="flex gap-10 justify-between items-start w-full">
+          <div class="flex gap-3 items-start min-w-[240px] w-[242px]">
+            <img loading="lazy" src="{{ user.profile_image }}" alt="User profile picture" class="object-contain shrink-0 aspect-square w-[30px]" />
+            <div class="flex flex-col">
+              <h4 class="self-start text-base">{{ post.user.first_name }} {{ post.user.last_name }}</h4>
+              <p class="text-xs">{{ post.user.city }}, {{ post.user.state }}</p>
+            </div>
+          </div>
+          <p class="text-xs text-right">Skill {{ post.user.skill }}</p>
+        </div>
+        <p class="mt-5 text-base">{{ post.content }}</p>
+        <!-- LIKES AND COMMENTS COUNT  -->
+        <div class="flex flex-row justify-between mt-4 max-w-full min-h-0 w-full text-xs text-gray-400" aria-hidden="true"><span>{{ post.likes | length }} likes</span><a href="/posts/{{ post.id }}/comment/list">{{ post.comments | length }} comments</a></div>
+      </div>
+      <div class="post flex overflow-hidden gap-10 justify-between items-center px-5 w-full text-xs whitespace-nowrap border-t border-b bg-gray-600 bg-opacity-10 border-gray-600 border-opacity-10 min-h-[38px]">
+        <button class="like-button flex gap-2.5 self-stretch my-auto w-[50px]" data-post-id="{{ post.id }}" onclick="likePost(this)">
+            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/8f00393c98e110eecbcd9e54fbd359cb89ea9552e254ce44de0ab4cda883194c?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="like-heart object-contain shrink-0 aspect-square w-[18px]" />
+            <span class="like-text">{{ 'Like' if post.id not in post_likes else 'Liked' }}</span>
+          </button> 
+          <a href="/posts/{{post.id}}/comment" class="flex gap-2.5 self-stretch my-auto w-[81px]">
+            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/3bb0686157f570aa325a48bed77d4fdc4cf7178988d41088def114144b7231f3?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain shrink-0 aspect-square w-[18px]" />
+            <span>Comment</span>
+          </a>
+      </div>
+    </article>
+
+      <main class="w-full">
+        <!-- POST COMMENTS  -->
+        {% for comment in post.comments %}
+        <article class="flex flex-col justify-center items-start px-5 py-2 w-full min-h-[100px] text-neutral-800 border-b border-light-gray shadow-sm">
+            <a href="/users/{{ comment.user_id }}">
+              <div class="flex items-center w-full">
+                <div class="flex gap-3 flex-grow">
+                  <img loading="lazy" src="{{ post.user.profile_image }}" alt="Profile picture of picklePal" class="object-contain shrink-0 aspect-[1.08] w-[30px]" />
+                  <div class="flex flex-col my-auto">
+                    <h2 class="text-sm">{{ comment.user.first_name }} {{ comment.user.last_name }}</h2>
+                  </div>
+                </div>
+              </div>
+            </a>
+            <div class="flex flex-col gap-2 mt-2 w-full">
+              <p class="text-base tracking-normal leading-relaxed break-words whitespace-normal">
+                {{ comment.content }}
+              </p>
+            </div>
+          </article>
+          {% endfor %}
+        </main>
+        
+        {% endif %}
+
+      <script src="/static/js/like-post.js"></script>
+
+{% endblock %}

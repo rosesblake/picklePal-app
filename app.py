@@ -163,11 +163,13 @@ def show_user_home():
     all_posts = Post.query.all()
     hc_posts = Post.query.filter_by(court_id=user.home_court_id)
     followed_courts = user.followed_courts
+    user_likes = Like.query.filter_by(user_id=user.id).all()
+    post_likes = {like.post_id for like in user_likes}
 
     likes = [like.post_id for like in Like.query.filter_by(user_id=user.id)]
 
     print(followed_courts)
-    return render_template('home.html', user=user, hc_posts=hc_posts, followed_courts=followed_courts, likes=likes, all_posts=all_posts)
+    return render_template('home.html', user=user, hc_posts=hc_posts, followed_courts=followed_courts, likes=likes, all_posts=all_posts, post_likes=post_likes)
 
 
 @app.route('/courts', methods=['GET', 'POST'])
@@ -311,15 +313,15 @@ def like_post(post_id):
     
     user = g.user
 
-    already_liked = Like.query.filter_by(user_id=user.id, post_id=post_id)
+    already_liked = Like.query.filter_by(user_id=user.id, post_id=post_id).first()
     if not already_liked:
         new_like = Like(user_id=user.id, post_id=post_id)
 
         db.session.add(new_like)
         db.session.commit()
-    # else:
-    #     db.session.delete(already_liked)
-    #     db.session.commit()
+    else:
+        db.session.delete(already_liked)
+        db.session.commit()
 
     return jsonify({'message': 'Post liked successfully!'}), 200
 
@@ -340,9 +342,16 @@ def comment_on_post_form(post_id):
         db.session.add(new_comment)
         db.session.commit()
 
-        return redirect('/')
+        return redirect(f'/posts/{post_id}/comment/list')
     
     return render_template('court-post.html', user=user, form=form, post=post)
+
+@app.route('/posts/<int:post_id>/comment/list', methods=['GET'])
+def show_list_of_comments(post_id):
+    """show list of comments for given post"""
+    user = g.user
+    post = Post.query.get_or_404(post_id)
+    return render_template('comments-list.html', user=user, post=post)
 
 @app.route('/groups')
 def show_groups():
@@ -380,6 +389,7 @@ def show_group_profile(group_id):
     user = g.user
     group = Group.query.get_or_404(group_id)
     skills = []
+    user_groups = [membership.group_id for membership in user.groups]
     
     for membership in group.memberships:
         user = User.query.get_or_404(membership.user_id)
@@ -392,7 +402,7 @@ def show_group_profile(group_id):
     else:
         avg_skill = 'N/A'
 
-    return render_template('group-profile.html', user=user, group=group, avg_skill=avg_skill)
+    return render_template('group-profile.html', user=user, group=group, avg_skill=avg_skill, user_groups=user_groups)
 
 @app.route('/groups/<int:group_id>/join', methods=['POST'])
 def join_group(group_id):
@@ -533,7 +543,8 @@ def show_user_profile():
     posts = Post.query.filter_by(user_id=user.id).all()
     schedule_entries = Schedule.query.filter_by(user_id=user.id).all()
     friends = Friend.query.filter_by(user_id=user.id, status='accepted').all()
-
+    user_likes = Like.query.filter_by(user_id=user.id).all()
+    post_likes = {like.post_id for like in user_likes}
     # Convert schedule entries to a dictionary to get availability easier.
     schedule = {}
     for entry in schedule_entries:
@@ -543,7 +554,7 @@ def show_user_profile():
 
     days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
-    return render_template('profile.html', user=user, posts=posts, schedule=schedule, days=days, friends=friends)
+    return render_template('profile.html', user=user, posts=posts, schedule=schedule, days=days, friends=friends, post_likes=post_likes)
 
 @app.route('/profile/schedule', methods=['POST'])
 def update_profile_schedule():
@@ -686,6 +697,8 @@ def get_user_profile(user_id):
     posts = Post.query.filter_by(user_id=other_user.id).all()
     schedule_entries = Schedule.query.filter_by(user_id=other_user.id).all()
     check_request = Friend.query.filter_by(user_id=user.id, friend_id=other_user.id).first()
+    user_likes = Like.query.filter_by(user_id=user.id).all()
+    post_likes = {like.post_id for like in user_likes}
 
     # Convert schedule entries to a dictionary to get availability easier.
     schedule = {}
@@ -697,7 +710,7 @@ def get_user_profile(user_id):
     days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
     
-    return render_template('other-profile.html', user=user, other_user=other_user, days=days, posts=posts, check_request=check_request, schedule=schedule)
+    return render_template('other-profile.html', user=user, other_user=other_user, days=days, posts=posts, check_request=check_request, schedule=schedule, post_likes=post_likes)
 
 
 @app.route('/messages')
