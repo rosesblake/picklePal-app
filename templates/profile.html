@@ -47,7 +47,7 @@
             <!-- FRIENDS/GROUPS/COURTS  -->
             <div class="flex absolute z-0 justify-center items-center text-sm tracking-normal text-center whitespace-nowrap right-[20px] top-[20px]">
               <div class="flex flex-col self-stretch my-auto w-[60px]">
-               <a href="/friends"><p class="leading-loose">{{ user.friends | length }}</p></a>
+               <a href="/friends"><p class="leading-loose">{{ friends | length }}</p></a>
                 <p class="leading-5">Friends</p>
               </div>
               <a href="#">
@@ -66,7 +66,7 @@
             <!-- RATING/HOMECOURT BUTTON  -->
             <div class="flex z-0 gap-2.5 mt-5 max-w-full text-base tracking-normal leading-relaxed w-full">
               <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/e78aca1bb9eb379316934c0196e4c179c037320dec68578f83a43a0f0c124f22?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain shrink-0 w-6 aspect-square" />
-              <p class="my-auto">4.0 Rating</p>
+              <p class="my-auto">{{ user.skill }}</p>
             </div>
             <div class="flex flex-row items-center px-4 mt-5 max-w-fit text-lg tracking-normal leading-none bg-custom-yellow rounded-lg p-4 shadow-sm">
               {% if not user.home_court %}

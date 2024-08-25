@@ -2,7 +2,7 @@
 {% block content %}
 <section class="flex overflow-hidden flex-col mx-auto w-full bg-white pb-[100px] pt-[100px]">
     <header class="fixed top-0 left-0 right-0 flex overflow-hidden gap-5 justify-between items-end px-5 py-6 w-full text-2xl text-center text-white whitespace-nowrap bg-dark-green h-[100px] z-10">
-      <a href="/">
+      <a href="/groups">
       <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/301a99352172e443598727e0754e538d0a6a1a6d1ef532292992e083a9c04209?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" class="object-contain shrink-0 aspect-square w-[35px]" alt="PicklePal logo" />
     </a>  
       <h1 class="w-[120px]">picklePal</h1>
@@ -50,8 +50,9 @@
                     <p class="z-0 self-stretch mt-5 text-base tracking-normal leading-relaxed">{{ group.play_type }}</p>
                     <div class="flex z-0 flex-col items-center self-stretch px-16 mt-5 w-full text-sm font-bold tracking-normal leading-6 text-center text-white">
                       <div class="flex gap-8 items-center w-[98px]">
+                        {% if group in user.groups%}
                         {% if user.id != group.owner.id %}
-                        <form action="/groups/{{ group.id }}/join" methodd="post">
+                        <form action="/groups/{{ group.id }}/join" method="post">
                         <button class="flex justify-center text-center self-stretch my-auto w-[98px] overflow-hidden gap-2 px-3 py-2 rounded-md bg-neutral-800 bg-dark-green">
                           Join Group
                         </button>
@@ -60,6 +61,7 @@
                     <a href="/groups/{{group.id}}/edit">
                         <p class="flex justify-center text-center self-stretch my-auto w-[98px] overflow-hidden gap-2 px-3 py-2 rounded-md bg-neutral-800 bg-dark-green">Edit Group</p>
                     </a>
+                    {% endif %}
                     {% endif %}
                       </div>
                     </div>

@@ -4,7 +4,7 @@ from flask_bcrypt import Bcrypt
 from sqlalchemy.exc import IntegrityError
 from werkzeug.utils import secure_filename
 
-from models import db, connect_db, User, Group, GroupMembership, Court, UserCourt, Review, Post, Like, Comment, Schedule
+from models import db, connect_db, User, Group, GroupMembership, Court, UserCourt, Review, Post, Like, Comment, Schedule, Friend
 from forms import UserRegisterForm, UserInfoForm, UserLoginForm, CreateGroupForm, AddCourtForm, EditCourtForm, CourtReviewForm, UserPostForm
 from flask_wtf.csrf import generate_csrf
 
@@ -379,13 +379,18 @@ def show_group_profile(group_id):
     
     user = g.user
     group = Group.query.get_or_404(group_id)
-    user_ids = {g.user_id for g in group.memberships}
-    avg_skill = ''
-    for user_id in user_ids:
-        user = User.query.get_or_404(user_id)
+    skills = []
+    
+    for membership in group.memberships:
+        user = User.query.get_or_404(membership.user_id)
         if user.skill != 'Beginner':
-            user_skill = user.skill
-            avg_skill.append(user_skill)
+            skill_lvl = float(user.skill)
+            skills.append(skill_lvl)
+
+    if skills:
+        avg_skill = sum(skills) / len(skills)
+    else:
+        avg_skill = 'N/A'
 
     return render_template('group-profile.html', user=user, group=group, avg_skill=avg_skill)
 
@@ -473,6 +478,50 @@ def show_friends_list():
     user = g.user
     return render_template('friends.html', user=user)
 
+@app.route('/friends/<int:other_user_id>/add', methods=['POST'])
+def add_friend(other_user_id):
+    """add friend request"""
+    user = g.user
+    other_user = User.query.get_or_404(other_user_id)
+    
+    friendship = Friend(user_id=user.id, friend_id=other_user.id)
+
+    db.session.add(friendship)
+    db.session.commit()
+
+    return redirect(f'/users/{other_user.id}')
+
+@app.route('/friends/<int:other_user_id>/accept', methods=['POST'])
+def accept_friend(other_user_id):
+    """accept friend request"""
+    user = g.user
+    other_user = User.query.get_or_404(other_user_id)
+    
+    pending_request = Friend.query.filter_by(user_id=other_user.id, friend_id=user.id, status='requested').first()
+
+    if pending_request:
+        pending_request.status = 'accepted'
+        # make a new friend with this user id 
+        new_friend = Friend(user_id=user.id, friend_id=other_user.id, status='accepted')
+        db.session.add(new_friend)
+    
+    db.session.commit()
+    flash('You are now friends.', 'success')
+    return redirect(f'/users/{other_user.id}')
+
+@app.route('/friends/<int:other_user_id>/unfriend', methods=['POST'])
+def remove_friend(other_user_id):
+    """remove friend post request"""
+    user = g.user
+    other_user = User.query.get_or_404(other_user_id)
+    
+    friendship = Friend.query.filter_by(user_id=user.id, friend_id=other_user.id).first()
+    
+    db.session.delete(friendship)
+    db.session.commit()
+
+    return redirect(f'/users/{other_user.id}')
+
 @app.route('/profile')
 def show_user_profile():
     """list all groups based on search criteria"""
@@ -483,6 +532,7 @@ def show_user_profile():
     user = g.user
     posts = Post.query.filter_by(user_id=user.id).all()
     schedule_entries = Schedule.query.filter_by(user_id=user.id).all()
+    friends = Friend.query.filter_by(user_id=user.id, status='accepted').all()
 
     # Convert schedule entries to a dictionary to get availability easier.
     schedule = {}
@@ -493,7 +543,7 @@ def show_user_profile():
 
     days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
-    return render_template('profile.html', user=user, posts=posts, schedule=schedule, days=days)
+    return render_template('profile.html', user=user, posts=posts, schedule=schedule, days=days, friends=friends)
 
 @app.route('/profile/schedule', methods=['POST'])
 def update_profile_schedule():
@@ -633,8 +683,21 @@ def get_user_profile(user_id):
     
     user = g.user
     other_user = User.query.get_or_404(user_id)
+    posts = Post.query.filter_by(user_id=other_user.id).all()
+    schedule_entries = Schedule.query.filter_by(user_id=other_user.id).all()
+    check_request = Friend.query.filter_by(user_id=user.id, friend_id=other_user.id).first()
+
+    # Convert schedule entries to a dictionary to get availability easier.
+    schedule = {}
+    for entry in schedule_entries:
+        if entry.day not in schedule:
+            schedule[entry.day] = {}
+        schedule[entry.day][entry.period] = entry.available
+
+    days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+
     
-    return render_template('other-profile.html', user=user, other_user=other_user)
+    return render_template('other-profile.html', user=user, other_user=other_user, days=days, posts=posts, check_request=check_request, schedule=schedule)
 
 
 @app.route('/messages')
@@ -657,7 +720,7 @@ def show_settings_menu():
     user = g.user
     return render_template('settings.html', user=user)
 
-@app.route('/alerts')
+@app.route('/alerts', methods=['POST', 'GET'])
 def show_alerts_menu():
     """show alerts"""
     if not g.user:
@@ -665,4 +728,8 @@ def show_alerts_menu():
         return redirect('/login')
     
     user = g.user
-    return render_template('alerts.html', user=user)
+
+    requests = Friend.query.filter_by(friend_id=user.id, status='requested').all()
+    request_users = [User.query.get(friend.user_id) for friend in requests]
+
+    return render_template('alerts.html', user=user, requests=requests, request_users=request_users)

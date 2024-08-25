@@ -9,11 +9,13 @@
       <div class="flex shrink-0 h-[33px] w-[33px]" aria-hidden="true"></div>
     </header>
     <main>
-      <article class="flex overflow-hidden justify-between items-center py-3 pr-11 pl-5 tracking-normal leading-6 text-center bg-light-green min-h-[72px] border-b border-light-gray">
+      {% for request in request_users %}
+      <article class="flex overflow-hidden justify-between items-center py-3 pr-6 pl-6 tracking-normal leading-6 text-center bg-light-green min-h-[72px] border-b border-light-gray">
         <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/77b827a0a2d76e2173ccb8f2af5b0c8721c9cd0db44c35db7c901324cb2c7a81?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain shrink-0 self-stretch my-auto w-6 aspect-square" />
-        <p class="flex-1 shrink self-stretch my-auto basis-0">Check back later... Still in development</p>
+        <p class="flex-1 shrink self-stretch my-auto basis-0">You have a friend request from {{ request.first_name }} {{ request.last_name }}</p> <span><form action="/friends/{{request.id}}/accept" method="POST"><button class="bg-dark-green p-2 rounded-md text-white text-sm">Accept</button></form></span>
       </article>
     </main>
+    {% endfor %}
 {% endblock %}
 
 {% block user_img_src %}
