@@ -15,6 +15,8 @@ load_dotenv()
 
 app = Flask(__name__)
 
+app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static/uploads')
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///picklepal-app'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
@@ -40,14 +42,21 @@ def city_caps(city):
     return city.capitalize()
 
 @app.before_request
-def add_user_to_g():
+def add_user_to_g_and_require_login():
     """If we're logged in, add curr user to Flask global."""
-
+    
     if CURR_USER_KEY in session:
         g.user = db.session.get(User, session[CURR_USER_KEY])
-
     else:
         g.user = None
+
+    # List of routes that don't require login
+    allowed_routes = ['/','/login', '/register', '/user-info', '/static/', '/logout']
+
+    if not g.user and not any(request.path.startswith(route) for route in allowed_routes):
+        flash('Please Login First', 'danger')
+        return redirect('/login')
+
 
 def login_user(user):
     """login user and add them to session"""
@@ -57,8 +66,6 @@ def logout_user():
     """Logout the current user by popping the user ID from the session."""
     if CURR_USER_KEY in session:
         session.pop(CURR_USER_KEY)
-
-
 
 
 @app.route('/')
@@ -71,7 +78,7 @@ def get_home_page():
 
 @app.route('/register', methods=['GET', 'POST'])
 def get_register_form():
-    """Get register form and submit user input to DB"""
+    """Get register form and send new user to second registration form"""
     form = UserRegisterForm()
 
     if form.validate_on_submit():
@@ -90,7 +97,7 @@ def get_register_form():
 def get_user_info_form():
     """Get user info form and complete registration"""
     form2 = UserInfoForm()
-
+    # make sure user filled out the first form 
     if 'registration_data' not in session:
         flash("Session expired. Please fill out the registration form again.", "danger")
         return redirect('/register')
@@ -102,10 +109,11 @@ def get_user_info_form():
         profile_image = form2.profile_image.data
         if profile_image:
             filename = secure_filename(profile_image.filename)
-            profile_image_path = os.path.join('static/images/', filename)
+            profile_image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             profile_image.save(profile_image_path)
+            profile_image_url = f'/static/uploads/{filename}'
         else:
-            profile_image_path = '/static/images/profile-icon.png'  # Default image if none uploaded
+            profile_image_url = '/static/images/profile-icon.png'  # Default image if none uploaded
             
         user = User.signup(
             email=user_data['email'],
@@ -116,14 +124,14 @@ def get_user_info_form():
             state=city_caps(form2.state.data),
             zip_code=form2.zip_code.data,
             skill=form2.skill.data,
-            profile_image=profile_image_path
+            profile_image=profile_image_url
         )
         db.session.add(user)
         db.session.commit()
 
         login_user(user)
 
-        # flash("Registration successful!", "success")
+        flash("Registration successful!", "success")
         return redirect('/home')
 
     return render_template('user-info.html', form2=form2)
@@ -154,9 +162,6 @@ def handle_logout():
 @app.route('/home', methods=['GET', 'POST'])
 def show_user_home():
     """show user home page"""
-    if not g.user:
-        flash('Please Login First')
-        return redirect('/login')
 
     user = g.user
 
@@ -214,9 +219,6 @@ def show_map_search():
 @app.route('/courts/<int:court_id>')
 def get_court_info(court_id):
     """show information about a given court based on it's address"""
-    if not g.user:
-        flash('Please Login First')
-        return redirect('/login')
     
     court = Court.query.get_or_404(court_id)
     user = g.user
@@ -307,9 +309,6 @@ def get_make_post_form(court_id):
 @app.route('/posts/<int:post_id>/like', methods=['POST'])
 def like_post(post_id):
     """perform like functionality and update db"""
-    if not g.user:
-        flash('Please Login First')
-        return redirect('/login')
     
     user = g.user
 
@@ -328,9 +327,7 @@ def like_post(post_id):
 @app.route('/posts/<int:post_id>/comment', methods=['GET', 'POST'])
 def comment_on_post_form(post_id):
     """get comment form for user to comment on given post"""
-    if not g.user:
-        flash('Please Login First')
-        return redirect('/login')
+
     user = g.user
     post = Post.query.get_or_404(post_id)
     form = UserPostForm()
@@ -356,9 +353,7 @@ def show_list_of_comments(post_id):
 @app.route('/groups')
 def show_groups():
     """list all groups based on search criteria"""
-    if not g.user:
-        flash('Please Login First')
-        return redirect('/login')
+
     groups = Group.query.all()
     user = g.user
     return render_template('groups.html', user=user, groups=groups)
@@ -366,9 +361,6 @@ def show_groups():
 @app.route('/groups/list')
 def show_groups_list():
     """show list of groups based on search"""
-    if not g.user:
-        flash('Please Login First')
-        return redirect('/login')
     
     q = request.args.get('group-q', '')
     user = g.user
@@ -382,9 +374,6 @@ def show_groups_list():
 @app.route('/groups/<int:group_id>')
 def show_group_profile(group_id):
     """show user group profile"""
-    if not g.user:
-        flash('Please Login First')
-        return redirect('/login')
     
     user = g.user
     group = Group.query.get_or_404(group_id)
@@ -407,9 +396,6 @@ def show_group_profile(group_id):
 @app.route('/groups/<int:group_id>/join', methods=['POST'])
 def join_group(group_id):
     """post request for user to join group"""
-    if not g.user:
-        flash('Please Login First', 'danger')
-        return redirect('/login')
     
     user = g.user
 
@@ -423,9 +409,6 @@ def join_group(group_id):
 @app.route('/groups/<int:group_id>/edit', methods=['GET', 'POST'])
 def get_edit_group_form(group_id):
     """get the form for owner to edit group"""
-    if not g.user:
-        flash('Please Login First', 'danger')
-        return redirect('/login')
     
     user = g.user
 
@@ -448,9 +431,7 @@ def get_edit_group_form(group_id):
 
 @app.route('/create-group', methods=['POST', 'GET'])
 def show_create_group_form():
-    if not g.user:
-        flash('Please Login First')
-        return redirect('/login')
+    """get form and handle post to create new group"""
     
     form = CreateGroupForm()
     user = g.user
@@ -481,9 +462,6 @@ def show_create_group_form():
 @app.route('/friends')
 def show_friends_list():
     """show friends list and user search"""
-    if not g.user:
-        flash('Please Login First')
-        return redirect('/login')
 
     user = g.user
     return render_template('friends.html', user=user)
@@ -535,9 +513,6 @@ def remove_friend(other_user_id):
 @app.route('/profile')
 def show_user_profile():
     """list all groups based on search criteria"""
-    if not g.user:
-        flash('Please Login First')
-        return redirect('/login')
 
     user = g.user
     posts = Post.query.filter_by(user_id=user.id).all()
@@ -559,9 +534,6 @@ def show_user_profile():
 @app.route('/profile/schedule', methods=['POST'])
 def update_profile_schedule():
     """create new schedule entry for user"""
-    if not g.user:
-        flash('Please Login First')
-        return redirect('/login') 
     
     data = request.get_json()
 
@@ -590,9 +562,6 @@ def update_profile_schedule():
 @app.route('/users/<int:court_id>', methods=['POST'])
 def add_home_court(court_id):
     """add home court for user"""
-    if not g.user:
-        flash('Please Login First', 'danger')
-        return redirect('/login')
     
     user = g.user
     # set home court 
@@ -611,9 +580,6 @@ def add_home_court(court_id):
 @app.route('/users/following/<int:court_id>', methods=['POST'])
 def user_follow_court(court_id):
     """add court to followed courts by user"""
-    if not g.user:
-        flash('Please Login First', 'danger')
-        return redirect('/login')
     
     user = g.user
     # check if user follows court already. if not follow it.
@@ -628,9 +594,6 @@ def user_follow_court(court_id):
 @app.route('/users/unfollow/<int:court_id>', methods=['POST'])
 def user_unfollow_court(court_id):
     """unfollow court"""
-    if not g.user:
-        flash('Please Login First', 'danger')
-        return redirect('/login')
     
     user = g.user
     # check if user follows court already. if not follow it.
@@ -647,9 +610,6 @@ def user_unfollow_court(court_id):
 @app.route('/profile/edit', methods=['GET', 'POST'])
 def edit_user_profile():
     """list all groups based on search criteria"""
-    if not g.user:
-        flash('Please Login First')
-        return redirect('/login')
 
     user = g.user
     form2 = UserInfoForm(obj=user)
@@ -669,9 +629,6 @@ def edit_user_profile():
 @app.route('/users')
 def show_users_list():
     """show list of users based on search"""
-    if not g.user:
-        flash('Please Login First')
-        return redirect('/login')
     
     q = request.args.get('search', '')
     user = g.user
@@ -688,9 +645,6 @@ def show_users_list():
 @app.route('/users/<int:user_id>')
 def get_user_profile(user_id):
     """show other user's profile"""
-    if not g.user:
-        flash('Please Login First')
-        return redirect('/login')
     
     user = g.user
     other_user = User.query.get_or_404(user_id)
@@ -716,9 +670,6 @@ def get_user_profile(user_id):
 @app.route('/messages')
 def show_user_messages():
     """list all groups based on search criteria"""
-    if not g.user:
-        flash('Please Login First')
-        return redirect('/login')
 
     user = g.user
     return render_template('messages.html', user=user)
@@ -726,9 +677,6 @@ def show_user_messages():
 @app.route('/settings')
 def show_settings_menu():
     """show settings list"""
-    if not g.user:
-        flash('Please Login First')
-        return redirect('/login')
 
     user = g.user
     return render_template('settings.html', user=user)
@@ -736,9 +684,6 @@ def show_settings_menu():
 @app.route('/alerts', methods=['POST', 'GET'])
 def show_alerts_menu():
     """show alerts"""
-    if not g.user:
-        flash('Please Login First')
-        return redirect('/login')
     
     user = g.user
 

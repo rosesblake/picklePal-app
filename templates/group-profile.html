@@ -33,7 +33,7 @@
                 <main class="flex flex-col w-full">
                   <article class="flex overflow-hidden relative flex-col items-start p-5 w-full border-b border-gray-600 border-opacity-10">
                     <div class="flex z-0 gap-2.5 pr-16 max-w-full w-[350px]">
-                      <img loading="lazy" src="{{ group.owner.profile_image }}" alt="Owner Photo" class="object-contain shrink-0 aspect-square w-[50px]" />
+                      <img loading="lazy" src="{{ group.owner.profile_image }}" alt="Owner Photo" class="object-cover rounded-full shrink-0 aspect-square w-[50px]" />
                       <div class="flex flex-col my-auto">
                         <h2 class="text-xl">{{ group.name }}</h2>
                         <p class="self-start text-xs">{{ group.owner.city }}</p>
@@ -81,7 +81,7 @@
                   </p>
                   <div class="flex flex-row mt-5 max-w-full w-full pr-8">
                     <div class="flex justify-center gap-3 items-center w-full">
-                      <img loading="lazy" src="{{ group.owner.profile_image }}" alt="Group owner profile picture" class="object-contain shrink-0 self-stretch my-auto aspect-square w-[35px]" />
+                      <img loading="lazy" src="{{ group.owner.profile_image }}" alt="Group owner profile picture" class="object-cover rounded-full shrink-0 self-stretch my-auto aspect-square w-[35px] h-[35px]" />
                       <div class="flex flex-col">
                       <p class="self-stretch my-auto text-sm">{{ group.owner.first_name }} {{ group.owner.last_name }}</p>
                       <p class="self-stretch my-auto text-xs tracking-normal leading-loose">Group Owner</p>

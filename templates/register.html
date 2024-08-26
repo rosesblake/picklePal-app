@@ -8,7 +8,7 @@
           <div></div>
       </header>
         <main class="flex flex-col justify-center mt-12 w-full max-w-xs text-sm font-semibold tracking-normal leading-none text-neutral-800">
-          <div class="flex justify-center mb-5">
+          <div class="flex justify-center mb-4">
             <h1 class="text-2xl font-bold whitespace-nowrap">Create An Account</h1>
         </div>
           <form id="register-form-p1" method="POST">
@@ -16,7 +16,7 @@
 
             {% for field in form %}
                 {% if field.widget.input_type != 'hidden' %}
-                    <div class="flex flex-col w-full whitespace-nowrap mb-8">
+                    <div class="flex flex-col w-full whitespace-nowrap mb-6">
                         {{ field.label(class_="flex-1 shrink gap-2.5 w-full") }}
                         {{ field(class_="flex mt-2 w-full bg-white rounded-md min-h-[48px] border border-input-gray p-3", placeholder=field.label.text) }}
                         {% for error in field.errors %}

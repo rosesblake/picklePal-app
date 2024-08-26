@@ -30,7 +30,7 @@
         <a href="/groups/{{ group.id }}">
         <div class="flex items-center w-full">
           <div class="flex gap-3 flex-grow">
-              <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/e1da3d96b7886665cd54474dafa2a2286bc2da70cc28e1554bdd5b28583778ea?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="Profile picture of picklePal" class="object-contain shrink-0 aspect-[1.08] w-[54px]" />
+              <img loading="lazy" src="{{group.owner.profile_image}}" alt="Profile picture of picklePal" class="object-cover rounded-full shrink-0 aspect-square w-[50px] h-[50px]" />
             <div class="flex flex-col my-auto">
               <h2 class="text-xl">{{ group.name }}</h2>
               <p class="mt-2 text-sm">{{ group.owner.city }}</p>

@@ -37,41 +37,6 @@ The target users are pickleball players of all skill levels who want to connect 
 - **Map API Data:** Used to determine player locations and nearby pickleball courts.
 - **Custom API Data:** Used to manage user profiles, group formations, courts, messages, and social feed content.
 
-### Database Schema
-
-- **Users:**
-  - id, profile_image, password, first_name, last_name, email, city, state, zip_code, skill, home_court_id (FK)
-- **Courts:**
-  - id, name, address, city, state, zip_code
-- **Groups:**
-  - id, name, description, owner_id (FK)
-- **GroupMemberships:**
-  - group_id (FK), user_id (FK)
-- **Posts:**
-  - id, user_id (FK), court_id (FK), content, timestamp
-- **Likes:**
-  - id, post_id (FK), user_id (FK)
-- **Comments:**
-  - id, post_id (FK), user_id (FK), content, timestamp
-- **Friends:**
-  - user_id (FK), friend_id (FK), status
-- **Messages:**
-  - id, sender_id (FK), receiver_id (FK), content, timestamp
-- **Reviews:**
-  - id, court_id (FK), user_id (FK), content, rating
-
-### API Issues
-
-- **Data Consistency:** Ensuring data from the Maps API is accurate and up-to-date.
-- **Rate Limits:** Managing API usage within the limits of free or paid plans.
-- **Data Security:** Ensuring user data is securely transmitted and stored.
-
-### Security
-
-- **User Authentication:** Secure login and registration processes.
-- **Data Encryption:** Encrypt sensitive data such as passwords.
-- **API Security:** Protecting custom API endpoints from unauthorized access.
-
 ### MVP
 
 - **Location-Based Matchmaking:** Finding nearby players and courts using the Maps API.
@@ -81,18 +46,19 @@ The target users are pickleball players of all skill levels who want to connect 
 ### Extra
 
 - **Review Feature:** Adding reviews for courts.
-- **Spectator Feature:** Allowing users to follow games as spectators.
 
 ## User Flow
 
 1. **Registration/Login:** Users create an account or log in.
 2. **Profile Setup:** Users set up their profile, including location, name, skill level, and home court.
-3. **Finding Courts:** Users search for nearby pickleball courts using the Maps API.
+3. **Finding Courts:** Users search for nearby pickleball courts using the Maps API or add their court/details if it does not exist.
 4. **Joining/Creating Groups:** Users form or join groups.
-5. **Social Interaction:** Users post updates and interact on the social feed.
+5. **Social Interaction:** Users post updates and interact on the home or local court social feed.
 
 ## Future Goals
 
+- **Notifications** Giving more notifications to make more use of the groups and friends features. Allow users to select or post times/days that they plan on going that's outside of their typical routine.
+- **Messaging** Allow users to message eachother and implement group messaging as well.
 - **Machine Learning:** Suggesting optimal game times and partners based on user activity.
 - **Tournament Management:** Organizing and managing local tournaments.
 - **Performance Tracking:** Recording and analyzing game performance statistics.

@@ -38,7 +38,7 @@
         <main class="flex flex-col w-full shadow-sm">
           <section class="flex overflow-hidden relative flex-col items-start px-5 pt-5 pb-2.5 w-full border-b border-light-gray">
             <div class="flex z-0 gap-2.5 pr-10 max-w-full w-full">
-              <img loading="lazy" src="{{ user.profile_image }}" alt="Profile picture" class="object-contain shrink-0 aspect-square w-[50px]" />
+              <img loading="lazy" src="{{ user.profile_image }}" alt="Profile picture" class="object-cover shrink-0 aspect-square w-[50px] rounded-full" />
               <div class="flex flex-col my-auto">
                 <h2 class="self-start text-xl">{{ user.first_name }} {{ user.last_name }}</h2>
                 <p class="mt-2 text-xs">{{ user.city }}, {{ user.state }}</p>
@@ -161,7 +161,7 @@
         <div class="flex gap-10 justify-between items-start w-full">
           <a href="/users/{{post.user.id}}">
             <div class="flex gap-3 items-start min-w-[240px] w-[242px]">
-              <img loading="lazy" src="{{ post.user.profile_image }}" alt="User profile picture" class="object-contain shrink-0 aspect-square w-[30px]" />
+              <img loading="lazy" src="{{ post.user.profile_image }}" alt="User profile picture" class="object-cover rounded-full shrink-0 aspect-square w-[30px]" />
               <div class="flex flex-col">
                 <h4 class="self-start text-base">{{ post.user.first_name }} {{ post.user.last_name }}</h4>
                 <p class="text-xs">{{ post.user.city }}, {{ post.user.state }}</p>

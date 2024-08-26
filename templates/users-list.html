@@ -30,7 +30,7 @@
         <a href="/users/{{ other_user.id }}">
         <div class="flex items-center w-full">
           <div class="flex gap-3 flex-grow">
-              <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/e1da3d96b7886665cd54474dafa2a2286bc2da70cc28e1554bdd5b28583778ea?apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4&&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="Profile picture of picklePal" class="object-contain shrink-0 aspect-[1.08] w-[54px]" />
+              <img loading="lazy" src="{{other_user.profile_image}}" alt="Profile picture of picklePal" class="object-cover aspect-square w-[50px] h-[50px] rounded-full" />
             <div class="flex flex-col my-auto">
               <h2 class="text-xl">{{ other_user.first_name }} {{ other_user.last_name }}</h2>
               <p class="mt-2 text-sm">{{ other_user.city }}, {{ other_user.state }}</p>

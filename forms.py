@@ -47,3 +47,4 @@ class CourtReviewForm(FlaskForm):
 
 class UserPostForm(FlaskForm):
     content = TextAreaField('Post Content', validators=[InputRequired()])
+    
