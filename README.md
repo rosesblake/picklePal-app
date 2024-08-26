@@ -11,10 +11,10 @@ PicklePal is a mobile and web application designed to help pickleball players co
 
 ## Stack
 
-- **Frontend:** HTML, CSS, JavaScript, Tailwind CSS
+- **Frontend:** HTML, JavaScript, Tailwind CSS
 - **Backend:** Python/Flask
 - **Database:** PostgreSQL
-- **APIs:** Custom API, Maps API
+- **APIs:** Custom API, Google Maps API
 
 ## Focus
 
@@ -22,7 +22,7 @@ This will be a full-stack application with an even focus on both the front-end U
 
 ## Type
 
-The project will be developed as both a website and a mobile app to maximize accessibility and user engagement.
+Mobile app first project with a desktop implementation in the future.
 
 ## Goal
 
@@ -41,7 +41,7 @@ The target users are pickleball players of all skill levels who want to connect 
 
 - **Location-Based Matchmaking:** Finding nearby players and courts using the Maps API.
 - **Group Formation:** Creating and managing groups.
-- **Social Feed:** Sharing updates, achievements, and game highlights.
+- **Social Feed:** Sharing updates, posting to courts, commenting on posts, adding friends.
 
 ### Extra
 
