@@ -10,6 +10,9 @@ from flask_wtf.csrf import generate_csrf
 
 from dotenv import load_dotenv
 import os
+from flask_migrate import Migrate
+import logging
+from logging.handlers import RotatingFileHandler
 
 load_dotenv()
 
@@ -17,16 +20,25 @@ app = Flask(__name__)
 
 app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static/uploads')
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///picklepal-app'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+app.config['DEBUG'] = False
+
+if not app.debug:
+    file_handler = RotatingFileHandler('app.log', maxBytes=10240, backupCount=10)
+    file_handler.setLevel(logging.INFO)
+    app.logger.addHandler(file_handler)
+
+
+migrate = Migrate(app, db)
 
 connect_db(app)
 bcrypt = Bcrypt(app)
 
-debug = DebugToolbarExtension(app)
+# debug = DebugToolbarExtension(app)
 
 with app.app_context():
     db.create_all()
@@ -647,6 +659,8 @@ def get_user_profile(user_id):
     """show other user's profile"""
     
     user = g.user
+    if user.id == user_id:
+        return redirect('/profile')
     other_user = User.query.get_or_404(user_id)
     posts = Post.query.filter_by(user_id=other_user.id).all()
     schedule_entries = Schedule.query.filter_by(user_id=other_user.id).all()
