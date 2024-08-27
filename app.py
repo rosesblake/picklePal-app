@@ -1,4 +1,4 @@
-from flask_debugtoolbar import DebugToolbarExtension
+# from flask_debugtoolbar import DebugToolbarExtension
 from flask import Flask, render_template, redirect, flash, session, g, request, jsonify
 from flask_bcrypt import Bcrypt
 from sqlalchemy.exc import IntegrityError
@@ -26,6 +26,7 @@ app.config['SQLALCHEMY_ECHO'] = False
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.config['DEBUG'] = False
+app.config['SESSION_COOKIE_SECURE'] = True
 
 if not app.debug:
     file_handler = RotatingFileHandler('app.log', maxBytes=10240, backupCount=10)
