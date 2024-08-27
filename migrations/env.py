@@ -3,8 +3,8 @@ from logging.config import fileConfig
 
 from flask import current_app
 from alembic import context
-from app import app  # Import your Flask app
-from models import db  # Import your SQLAlchemy instance
+from app import app
+from models import db, User, Group, GroupMembership, Court, UserCourt, Friend, Comment, Post, Like, Review, Message, Schedule
 
 # Alembic Config object
 config = context.config
