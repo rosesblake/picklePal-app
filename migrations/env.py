@@ -1,6 +1,5 @@
 import logging
 from logging.config import fileConfig
-
 from flask import current_app
 from alembic import context
 from app import app
@@ -16,7 +15,9 @@ logger = logging.getLogger('alembic.env')
 def get_engine():
     """Retrieve the SQLAlchemy engine from Flask-Migrate."""
     try:
-        return current_app.extensions['migrate'].db.get_engine()
+        # Ensure app context is pushed
+        with app.app_context():
+            return current_app.extensions['migrate'].db.get_engine()
     except (TypeError, AttributeError):
         return current_app.extensions['migrate'].db.engine
 
@@ -32,8 +33,6 @@ config.set_main_option('sqlalchemy.url', get_engine_url())
 
 def get_metadata():
     """Retrieve the metadata for the current database."""
-    if hasattr(db, 'metadatas'):
-        return db.metadatas[None]
     return db.metadata
 
 def run_migrations_offline():
