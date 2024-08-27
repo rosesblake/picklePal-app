@@ -1,9 +1,14 @@
 import logging
+import os
 from logging.config import fileConfig
 from flask import current_app
 from alembic import context
+from dotenv import load_dotenv
 from app import app
-from models import db, User, Group, GroupMembership, Court, UserCourt, Friend, Comment, Post, Like, Review, Message, Schedule
+from models import db
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Alembic Config object
 config = context.config
@@ -15,7 +20,6 @@ logger = logging.getLogger('alembic.env')
 def get_engine():
     """Retrieve the SQLAlchemy engine from Flask-Migrate."""
     try:
-        # Ensure app context is pushed
         with app.app_context():
             return current_app.extensions['migrate'].db.get_engine()
     except (TypeError, AttributeError):
@@ -28,8 +32,9 @@ def get_engine_url():
     except AttributeError:
         return str(get_engine().url).replace('%', '%%')
 
-# Set the SQLAlchemy URL in the config
-config.set_main_option('sqlalchemy.url', get_engine_url())
+# Set the SQLAlchemy URL in the config from environment variables
+database_url = os.getenv('SQLALCHEMY_DATABASE_URI')  # Change 'DATABASE_URL' to your actual environment variable name
+config.set_main_option('sqlalchemy.url', database_url)
 
 def get_metadata():
     """Retrieve the metadata for the current database."""
