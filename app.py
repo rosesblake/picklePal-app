@@ -4,8 +4,8 @@ from flask_bcrypt import Bcrypt
 from sqlalchemy.exc import IntegrityError
 from werkzeug.utils import secure_filename
 
-from models import db, connect_db, User, Group, GroupMembership, Court, UserCourt, Review, Post, Like, Comment, Schedule, Friend
-from forms import UserRegisterForm, UserInfoForm, UserLoginForm, CreateGroupForm, AddCourtForm, EditCourtForm, CourtReviewForm, UserPostForm
+from models import db, connect_db, User, Group, GroupMembership, Court, UserCourt, Review, Post, Like, Comment, Schedule, Friend, Issue
+from forms import UserRegisterForm, UserInfoForm, UserLoginForm, CreateGroupForm, AddCourtForm, EditCourtForm, CourtReviewForm, UserPostForm, ReportIssuesForm
 from flask_wtf.csrf import generate_csrf
 
 from dotenv import load_dotenv
@@ -476,7 +476,11 @@ def show_friends_list():
     """show friends list and user search"""
 
     user = g.user
-    return render_template('friends.html', user=user)
+
+    friendships = Friend.query.filter_by(user_id=user.id).all()
+    friends = [User.query.get(friend.friend_id) for friend in friendships if friend.status == 'accepted']
+
+    return render_template('friends.html', user=user, friends=friends)
 
 @app.route('/friends/<int:other_user_id>/add', methods=['POST'])
 def add_friend(other_user_id):
@@ -515,9 +519,14 @@ def remove_friend(other_user_id):
     user = g.user
     other_user = User.query.get_or_404(other_user_id)
     
-    friendship = Friend.query.filter_by(user_id=user.id, friend_id=other_user.id).first()
+    friendship1 = Friend.query.filter_by(user_id=user.id, friend_id=other_user.id).first()
+    friendship2 = Friend.query.filter_by(user_id=other_user.id, friend_id=user.id).first()
     
-    db.session.delete(friendship)
+    if friendship1:
+        db.session.delete(friendship1)
+    if friendship2:
+        db.session.delete(friendship2)
+
     db.session.commit()
 
     return redirect(f'/users/{other_user.id}')
@@ -627,11 +636,21 @@ def edit_user_profile():
     form2 = UserInfoForm(obj=user)
 
     if form2.validate_on_submit():
+                            # Handle file upload
+        profile_image = form2.profile_image.data
+        if profile_image:
+            filename = secure_filename(profile_image.filename)
+            profile_image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            profile_image.save(profile_image_path)
+            profile_image_url = f'/static/uploads/{filename}'
+        else:
+            profile_image_url = '/static/images/profile-icon.png'  # Default image if none uploaded
+
         user.city = form2.city.data
         user.state = form2.state.data
         user.zip_code = form2.zip_code.data
         user.skill = form2.skill.data
-        user.profile_image = form2.profile_image.data
+        user.profile_image = profile_image_url
 
         db.session.commit()
 
@@ -665,6 +684,7 @@ def get_user_profile(user_id):
     posts = Post.query.filter_by(user_id=other_user.id).all()
     schedule_entries = Schedule.query.filter_by(user_id=other_user.id).all()
     check_request = Friend.query.filter_by(user_id=user.id, friend_id=other_user.id).first()
+    friends = Friend.query.filter_by(user_id=other_user.id, status='accepted').all()
     user_likes = Like.query.filter_by(user_id=user.id).all()
     post_likes = {like.post_id for like in user_likes}
 
@@ -678,7 +698,7 @@ def get_user_profile(user_id):
     days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
     
-    return render_template('other-profile.html', user=user, other_user=other_user, days=days, posts=posts, check_request=check_request, schedule=schedule, post_likes=post_likes)
+    return render_template('other-profile.html', user=user, other_user=other_user, days=days, posts=posts, check_request=check_request, schedule=schedule, post_likes=post_likes, friends=friends)
 
 
 @app.route('/messages')
@@ -705,3 +725,19 @@ def show_alerts_menu():
     request_users = [User.query.get(friend.user_id) for friend in requests]
 
     return render_template('alerts.html', user=user, requests=requests, request_users=request_users)
+
+@app.route('/issues', methods=['GET', 'POST'])
+def report_issue():
+    """user can report issues via form"""
+    user = g.user
+
+    form = ReportIssuesForm()
+
+    if form.validate_on_submit():
+        new_issue = Issue(user_id=user.id, content=form.content.data)
+        db.session.add(new_issue)
+        db.session.commit()  
+
+        return redirect('/settings')  
+       
+    return render_template('court-post.html', user=user, form=form)

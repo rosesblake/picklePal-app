@@ -195,6 +195,13 @@ class Review(db.Model):
     court = db.relationship('Court', back_populates='reviews')
     user = db.relationship('User')
 
+class Issue(db.Model):
+    __tablename__ = 'issues'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+
 def connect_db(app):
     """Connect to database."""
     db.app = app

@@ -40,13 +40,13 @@
               <img loading="lazy" src="{{ other_user.profile_image }}" alt="Profile picture" class="object-cover shrink-0 aspect-square w-[50px] h-[50px] rounded-full" />
               <div class="flex flex-col my-auto">
                 <h2 class="self-start text-xl">{{ other_user.first_name }} {{ other_user.last_name }}</h2>
-                <p class="mt-2 text-xs">{{ other_user.city }}, {{ other_user.state }}</p>
+                <p class="text-xs">{{ other_user.city }}, {{ other_user.state }}</p>
               </div>
             </div>
             <!-- FRIENDS/GROUPS/COURTS  -->
             <div class="flex absolute z-0 justify-center items-center text-sm tracking-normal text-center whitespace-nowrap right-[20px] top-[20px]">
               <div class="flex flex-col self-stretch my-auto w-[60px]">
-               <a href="/friends"><p class="leading-loose">{{ other_user.friends | length }}</p></a>
+               <a href="/friends"><p class="leading-loose">{{ friends | length }}</p></a>
                 <p class="leading-5">Friends</p>
               </div>
               <a href="#">

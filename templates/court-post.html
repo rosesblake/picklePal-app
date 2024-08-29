@@ -52,7 +52,7 @@
             <div class="flex flex-col flex-1 p-3 w-full bg-white rounded-md border-2 border-light-green border-solid">
                 {% for field in form %}
                 {% if field.widget.input_type != 'hidden' %}
-                {{ field(class_="flex flex-1 py-2 px-2 w-full min-h-[33px]", placeholder="Comment") }}
+                {{ field(class_="flex flex-1 py-2 px-2 w-full min-h-[33px]", placeholder=form.content.label.text) }}
               {% endif %}
               {% endfor %}
               <div class="flex flex-1 gap-2 items-end mt-2.5 size-full">
@@ -61,7 +61,7 @@
           </div>
         </div>
         <button type="submit" class="overflow-hidden gap-2 self-stretch px-3 py-2 text-sm font-bold tracking-normal leading-6 text-white whitespace-nowrap rounded-md bg-dark-green max-h-[40px]">
-          Post
+        {% if post %}Post{% else %}Report{% endif %}
         </button>
       </form>
     </main>

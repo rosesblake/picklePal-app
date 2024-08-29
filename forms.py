@@ -46,5 +46,8 @@ class CourtReviewForm(FlaskForm):
     content = TextAreaField('Review Body', validators=[InputRequired()])
 
 class UserPostForm(FlaskForm):
-    content = TextAreaField('Post Content', validators=[InputRequired()])
+    content = TextAreaField('Comment', validators=[InputRequired()])
+
+class ReportIssuesForm(FlaskForm):
+    content = TextAreaField('Report Issues', validators=[InputRequired()])
     

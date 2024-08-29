@@ -47,7 +47,10 @@
                       <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/2a69f237d8fb1e2dab15a6a3985b42b7a7eacbad8255ece3d628c746394475bf?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="Rating star icon" class="object-contain shrink-0 w-6 aspect-square" />
                       <p class="grow shrink self-start w-[135px]">{{ avg_skill }} Average Rating</p>
                     </div>
-                    <p class="z-0 self-stretch mt-5 text-base tracking-normal leading-relaxed">{% if group.play_type and group.play_type != 'none'%}{{ group.play_type }}{% endif %}</p>
+                    <p class="z-0 self-stretch mt-5 text-base tracking-normal leading-relaxed"><b>Play Type:</b> {% if group.play_type and group.play_type != 'none'%}{{ group.play_type }}{% endif %}</p>
+                    <p class="z-0 self-stretch mt-5 text-base tracking-normal leading-relaxed"><b>Email:</b> {{ group.email }}</p>
+                    <p class="z-0 self-stretch mt-5 text-base tracking-normal leading-relaxed"><b>Website:</b> {{ group.website }}</p>
+                    <p class="z-0 self-stretch mt-5 text-base tracking-normal leading-relaxed"><b>Primary Court:</b> {{ group.primary_court }}</p>
                     <div class="flex z-0 flex-col items-center self-stretch px-16 mt-5 w-full text-sm font-bold tracking-normal leading-6 text-center text-white">
                       <div class="flex gap-8 items-center w-[98px]">
                         {% if group.id not in user_groups %}

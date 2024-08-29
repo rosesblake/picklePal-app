@@ -121,6 +121,7 @@
   </div>  
 <!-- ALL POSTS  -->
      {% for post in all_posts %}
+     {% if post not in hc_posts and post.court not in followed_courts %}
      <article class="flex overflow-hidden flex-col justify-center w-full text-neutral-800 shadow-sm">
        <div class="flex flex-col p-5 w-full">
          <div class="flex gap-10 justify-between items-start w-full">
@@ -150,6 +151,7 @@
         </a>
        </div>
      </article>
+     {% endif %}
      {% endfor %}
  <!-- ----------------- -->
  
