@@ -35,15 +35,15 @@ if not app.debug:
 
 migrate = Migrate(app, db)
 
-connect_db(app)
 bcrypt = Bcrypt(app)
 
 # debug = DebugToolbarExtension(app)
 
-with app.app_context():
-    db.create_all()
-
-app.app_context().push()
+def connect_db(app):
+    with app.app_context():
+        db.app = app
+        db.init_app(app)
+        db.create_all()
 
 CURR_USER_KEY = 'curr_user'
 
