@@ -59,9 +59,10 @@ def add_user_to_g_and_require_login():
         g.user = None
 
     # List of routes that don't require login
-    allowed_routes = ['/','/login', '/register', '/user-info', '/static/', '/logout']
+    allowed_routes = ['/', '/login', '/register', '/user-info', '/logout']
 
-    if not g.user and not any(request.path.startswith(route) for route in allowed_routes):
+    # Check if the request path is not in the allowed routes and does not start with '/static/'
+    if not g.user and request.path not in allowed_routes and not request.path.startswith('/static/'):
         flash('Please Login First', 'danger')
         return redirect('/login')
 
