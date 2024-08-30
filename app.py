@@ -149,7 +149,7 @@ def get_login_form():
     """get login form and authenticate user login"""
     form = UserLoginForm()
     if form.validate_on_submit():
-        email = form.email.data
+        email = form.email.data.lower()
         password = form.password.data
         user = User.authenticate(email, password)
         if user:
