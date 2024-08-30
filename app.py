@@ -156,7 +156,7 @@ def get_login_form():
     return render_template('login.html', form=form)
 
 @app.route('/login', methods=['POST'])
-def get_login_form():
+def post_login_form():
     """get login form and authenticate user login"""
     form = UserLoginForm()
     if form.validate_on_submit():
