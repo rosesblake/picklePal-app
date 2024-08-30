@@ -28,7 +28,7 @@ class User(db.Model):
     home_court_id = db.Column(db.Integer, db.ForeignKey('courts.id'), nullable=True)
     home_court = db.relationship('Court', backref='users', foreign_keys=[home_court_id])
 
-    user_courts = db.relationship('UserCourt', back_populates='user')
+    user_courts = db.relationship('UserCourt', back_populates='user', overlaps='followed_courts,followers')
     followed_courts = db.relationship('Court', secondary='user_court', overlaps='user_courts', back_populates='followers')
 
     friends = db.relationship(
@@ -97,8 +97,8 @@ class Court(db.Model):
     posts = db.relationship('Post', back_populates='court')
     reviews = db.relationship('Review', back_populates='court')
     
-    user_courts = db.relationship('UserCourt', back_populates='court')
-    followers = db.relationship('User', secondary='user_court', overlaps='followed_courts', back_populates='followed_courts')
+    user_courts = db.relationship('UserCourt', back_populates='court', overlaps='followers')
+    followers = db.relationship('User', secondary='user_court', overlaps='user_courts', back_populates='followed_courts')
     
     def __repr__(self):
         return f"<Court #{self.id}: {self.name}, {self.address}>"
@@ -110,8 +110,8 @@ class UserCourt(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     court_id = db.Column(db.Integer, db.ForeignKey('courts.id'), nullable=False)
     
-    user = db.relationship('User', back_populates='user_courts')
-    court = db.relationship('Court', back_populates='user_courts')
+    user = db.relationship('User', back_populates='user_courts', overlaps='followed_courts,followers')
+    court = db.relationship('Court', back_populates='user_courts', overlaps='followers')
 
 class Post(db.Model):
     __tablename__ = 'posts'
