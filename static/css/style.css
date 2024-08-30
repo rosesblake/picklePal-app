@@ -1243,11 +1243,6 @@ video {
   border-style: solid;
 }
 
-.border-emerald-100{
-  --tw-border-opacity: 1;
-  border-color: rgb(209 250 229 / var(--tw-border-opacity));
-}
-
 .border-gray-600{
   --tw-border-opacity: 1;
   border-color: rgb(75 85 99 / var(--tw-border-opacity));
@@ -1285,11 +1280,6 @@ video {
 
 .bg-dark-green{
   background-color: rgba(63, 106, 84, 1);
-}
-
-.bg-emerald-100{
-  --tw-bg-opacity: 1;
-  background-color: rgb(209 250 229 / var(--tw-bg-opacity));
 }
 
 .bg-gray-200{
