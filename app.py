@@ -39,11 +39,7 @@ bcrypt = Bcrypt(app)
 
 # debug = DebugToolbarExtension(app)
 
-def connect_db(app):
-    with app.app_context():
-        db.app = app
-        db.init_app(app)
-        db.create_all()
+connect_db(app)
 
 CURR_USER_KEY = 'curr_user'
 

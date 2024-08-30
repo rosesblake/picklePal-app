@@ -203,6 +203,7 @@ class Issue(db.Model):
     content = db.Column(db.Text, nullable=False)
 
 def connect_db(app):
-    """Connect to database."""
-    db.app = app
-    db.init_app(app)
+    with app.app_context():
+        db.app = app
+        db.init_app(app)
+        db.create_all()
