@@ -148,7 +148,14 @@ def get_user_info_form():
 
     return render_template('user-info.html', form2=form2)
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET'])
+def get_login_form():
+    """get login form and authenticate user login"""
+    form = UserLoginForm()
+
+    return render_template('login.html', form=form)
+
+@app.route('/login', methods=['POST'])
 def get_login_form():
     """get login form and authenticate user login"""
     form = UserLoginForm()
