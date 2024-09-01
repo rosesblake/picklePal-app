@@ -39,9 +39,9 @@
           <section class="flex overflow-hidden relative flex-col items-start px-5 pt-5 pb-2.5 w-full border-b border-light-gray">
             <div class="flex z-0 gap-2.5 pr-10 max-w-full w-full">
               <img loading="lazy" src="{{ user.profile_image }}" alt="Profile picture" class="object-cover shrink-0 aspect-square w-[50px] rounded-full" />
-              <div class="flex flex-col my-auto">
-                <h2 class="self-start text-xl">{{ user.first_name }} {{ user.last_name }}</h2>
-                <p class="text-xs">{{ user.city }}, {{ user.state }}</p>
+              <div class="flex flex-col my-auto break-words w-[155px]">
+                <h2 class="self-start text-lg">{{ user.first_name }} {{ user.last_name }}</h2>
+                <p class="text-xs text-gray-500">{{ user.city }}, {{ user.state }}</p>
               </div>
             </div>
             <!-- FRIENDS/GROUPS/COURTS  -->
@@ -81,17 +81,17 @@
               <p class="ml-2">Home Court</p>
             </div>
             
-            <a href="/profile/edit" class="absolute bottom-2.5 right-6 flex items-center gap-2.5 self-stretch text-xs font-extralight tracking-normal leading-6 text-center text-gray-600">
-                Edit Profile
-            </a>       
-                 
+            <a href="/profile/edit" class="absolute bottom-2.5 right-6 flex items-center justify-center gap-2.5 px-4 py-2 text-xs font-semibold text-gray-600 bg-light-green rounded-lg shadow-md">
+              Edit Profile
+          </a>
+                
           </section>
           <!-- HOME COURT DIVIDER -->
            {% if user.home_court %}
-          <section class="flex flex-col items-center px-32 py-2.5 w-full text-center bg-light-green shadow-sm">
+          <section class="flex flex-col items-center py-2.5 w-full text-center bg-light-green shadow-md">
             <a href="/courts/{{ user.home_court_id }}">
             <h3 class="text-lg">{{ user.home_court.name }}</h3>
-            <div class="flex items-center justify-center gap-2 mt-1 text-xs">
+            <div class="flex items-center justify-center gap-2 mt-1 text-xs text-gray-500">
               <p>{{ user.home_court.address }}</p>
             </div>
           </a>
@@ -100,12 +100,12 @@
         </main>
 
 <!-- SCHEDULE SECTION  -->
-<section class="flex justify-center items-center py-11 px-5 border-b border-gray-600 border-opacity-10 text-neutral-800">
+<section class="flex justify-center items-center py-8 px-5 border-b border-gray-600 border-opacity-10 text-neutral-800">
   <div class="flex flex-col w-full max-w-md">
     <!-- Header for Days of the Week -->
-    <div class="flex flex-col w-full">
-      <h2 class="text-2xl mb-4 text-center">Schedule</h2>
-      <table class="w-full border-collapse table-fixed">
+    <div class="flex flex-col w-full pr-8">
+      <h2 class="text-2xl mb-4 ml-8 text-center">Schedule</h2>
+      <table class="w-full border-collapse">
         <!-- Header Row -->
         <thead>
           <tr class="text-base font-bold">
@@ -124,7 +124,7 @@
             <td class="w-[40px] h-[40px]">
               <div 
                 onclick="toggleAvailability('{{ day }}', 'AM', event)"
-                class="w-[30px] h-[30px] rounded-full {{ 'bg-dark-green' if (day in schedule and 'AM' in schedule[day] and schedule[day]['AM']) else 'bg-gray-200' }} cursor-pointer"
+                class="w-[30px] h-[30px] ml-2 rounded-full {{ 'bg-dark-green' if (day in schedule and 'AM' in schedule[day] and schedule[day]['AM']) else 'bg-gray-200' }} cursor-pointer"
               ></div>
             </td>
             {% endfor %}
@@ -136,7 +136,7 @@
             <td class="w-[40px] h-[40px]">
               <div 
                 onclick="toggleAvailability('{{ day }}', 'PM', event)"
-                class="w-[30px] h-[30px] rounded-full {{ 'bg-dark-green' if (day in schedule and 'PM' in schedule[day] and schedule[day]['PM']) else 'bg-gray-200' }} cursor-pointer"
+                class="w-[30px] h-[30px] ml-2 rounded-full {{ 'bg-dark-green' if (day in schedule and 'PM' in schedule[day] and schedule[day]['PM']) else 'bg-gray-200' }} cursor-pointer"
               ></div>
             </td>
             {% endfor %}
@@ -144,12 +144,13 @@
         </tbody>
       </table>
     </div>
+    <p class="text-center text-xs text-gray-400 mt-5 ml-1">click to edit!</p>
   </div>
 </section>
 
         <!-- --------------------  -->
         <!-- POSTS DIVIDER  -->
-        <section class="gap-2.5 self-stretch px-40 py-2 text-2xl text-center whitespace-nowrap bg-light-green shadow-sm">
+        <section class="w-full gap-2.5 self-stretch py-2 text-2xl text-center whitespace-nowrap bg-light-green shadow-sm">
           <h3>Posts</h3>
         </section>
 

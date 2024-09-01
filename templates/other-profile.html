@@ -38,9 +38,9 @@
           <section class="flex overflow-hidden relative flex-col items-start px-5 pt-5 pb-2.5 w-full border-b border-light-gray">
             <div class="flex z-0 gap-2.5 pr-10 max-w-full w-full">
               <img loading="lazy" src="{{ other_user.profile_image }}" alt="Profile picture" class="object-cover shrink-0 aspect-square w-[50px] h-[50px] rounded-full" />
-              <div class="flex flex-col my-auto">
-                <h2 class="self-start text-xl">{{ other_user.first_name }} {{ other_user.last_name }}</h2>
-                <p class="text-xs">{{ other_user.city }}, {{ other_user.state }}</p>
+              <div class="flex flex-col my-auto break-words w-[155px]">
+                <h2 class="self-start text-lg">{{ other_user.first_name }} {{ other_user.last_name }}</h2>
+                <p class="text-xs text-gray-500">{{ other_user.city }}, {{ other_user.state }}</p>
               </div>
             </div>
             <!-- FRIENDS/GROUPS/COURTS  -->
@@ -88,10 +88,10 @@
           </section>
           <!-- HOME COURT DIVIDER -->
            {% if other_user.home_court %}
-          <section class="flex flex-col items-center px-32 py-2.5 w-full text-center bg-light-green shadow-sm">
+          <section class="flex flex-col items-center py-2.5 w-full text-center bg-light-green shadow-sm">
             <a href="/courts/{{ user.home_court_id }}">
             <h3 class="text-lg">{{ other_user.home_court.name }}</h3>
-            <div class="flex items-center justify-center gap-2 mt-1 text-xs">
+            <div class="flex items-center justify-center gap-2 mt-1 text-xs text-gray-500">
               <p>{{ other_user.home_court.address }}</p>
             </div>
           </a>
@@ -100,11 +100,11 @@
         </main>
 
 <!-- SCHEDULE SECTION  -->
-<section class="flex justify-center items-center py-11 px-5 border-b border-gray-600 border-opacity-10 text-neutral-800">
+<section class="flex justify-center items-center py-8 px-5 border-b border-gray-600 border-opacity-10 text-neutral-800">
   <div class="flex flex-col w-full max-w-md">
     <!-- Header for Days of the Week -->
-    <div class="flex flex-col w-full">
-      <h2 class="text-2xl mb-4 text-center">Schedule</h2>
+    <div class="flex flex-col w-full pr-8">
+      <h2 class="text-2xl mb-4 ml-8 text-center">Schedule</h2>
       <table class="w-full border-collapse table-fixed">
         <!-- Header Row -->
         <thead>
@@ -123,7 +123,7 @@
             {% for day in days %}
             <td class="w-[40px] h-[40px]">
               <div 
-                class="w-[30px] h-[30px] rounded-full {{ 'bg-dark-green' if (day in schedule and 'AM' in schedule[day] and schedule[day]['AM']) else 'bg-gray-200' }} cursor-pointer"
+                class="w-[30px] h-[30px] ml-2 rounded-full {{ 'bg-dark-green' if (day in schedule and 'AM' in schedule[day] and schedule[day]['AM']) else 'bg-gray-200' }}"
               ></div>
             </td>
             {% endfor %}
@@ -134,7 +134,7 @@
             {% for day in days %}
             <td class="w-[40px] h-[40px]">
               <div 
-                class="w-[30px] h-[30px] rounded-full {{ 'bg-dark-green' if (day in schedule and 'PM' in schedule[day] and schedule[day]['PM']) else 'bg-gray-200' }} cursor-pointer"
+                class="w-[30px] h-[30px] ml-2 rounded-full {{ 'bg-dark-green' if (day in schedule and 'PM' in schedule[day] and schedule[day]['PM']) else 'bg-gray-200' }}"
               ></div>
             </td>
             {% endfor %}

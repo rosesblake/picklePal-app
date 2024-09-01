@@ -91,9 +91,19 @@ def get_register_form():
     form = UserRegisterForm()
 
     if form.validate_on_submit():
+        email = form.email.data
+        # check if email exists in db 
+        already_user = User.query.filter_by(email=email).first()
+        if already_user:
+            flash('User already exists with the email you entered.', 'danger')
+            return redirect('/register')
+        # password length 
+        if len(form.password.data) < 6:
+            flash('Password must be at least 6 characters.', 'danger')
+            return redirect('/register')
         # Save the user's registration data in session or temporary storage
         session['registration_data'] = {
-            'email': form.email.data,
+            'email': email,
             'first_name': form.first_name.data.capitalize(),
             'last_name': form.last_name.data.capitalize(),
             'password': form.password.data
@@ -369,14 +379,15 @@ def show_groups():
 
 @app.route('/groups/list')
 def show_groups_list():
-    """show list of groups based on search"""
+    """Show list of groups based on search"""
     
     q = request.args.get('group-q', '')
     user = g.user
 
     # Query groups based on the search input
-    groups = Group.query.filter(
-        (Group.name.ilike(f'%{q}%'))).all()
+    groups = Group.query.join(User, Group.owner_id == User.id).filter(
+        (Group.name.ilike(f'%{q}%')) | (User.city.ilike(f'%{q}%'))
+    ).all()
 
     return render_template('group-list.html', user=user, groups=groups)
 
@@ -484,6 +495,11 @@ def add_friend(other_user_id):
     """add friend request"""
     user = g.user
     other_user = User.query.get_or_404(other_user_id)
+
+    # check if other friend added user already and accept if so
+    already_added = Friend.query.filter_by(user_id=other_user.id, friend_id=user.id, status='requested').first()
+    if already_added:
+        return redirect(f'/friends/{other_user.id}/accept')
     
     friendship = Friend(user_id=user.id, friend_id=other_user.id)
 
@@ -665,7 +681,7 @@ def show_users_list():
     other_users = User.query.filter(
         # User.id != user.id,  # Exclude curr user
         (User.first_name.ilike(f'%{q}%')) |
-        (User.last_name.ilike(f'%{q}%'))
+        (User.last_name.ilike(f'%{q}%')) | (User.city.ilike(f'%{q}%'))
     ).all()
 
     return render_template('users-list.html', user=user, other_users=other_users)
