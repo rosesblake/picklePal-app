@@ -5,6 +5,10 @@
 **figma**
 https://www.figma.com/design/J4mKwxV0URjaOAYCcCaals/PicklePal?node-id=0-1&m=dev
 
+## DB Diagram
+
+https://dbdiagram.io/d/66a97c8a8b4bb5230ecadc5e
+
 ## Description
 
 PicklePal is a mobile and web application designed to help pickleball players connect, schedule games, and form groups based on their location. The app features a social feed for users to share updates, achievements, and game highlights.
