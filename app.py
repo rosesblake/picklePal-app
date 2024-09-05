@@ -369,6 +369,18 @@ def show_list_of_comments(post_id):
     post = Post.query.get_or_404(post_id)
     return render_template('comments-list.html', user=user, post=post)
 
+@app.route('/comment/<int:comment_id>/delete')
+def delete_comment_on_post(comment_id):
+    """delete user comment on post"""
+    user = g.user
+    comment = Comment.query.get_or_404(comment_id)
+
+    if comment.user_id == user.id:
+        db.session.delete(comment)
+        db.session.commit()
+
+    return redirect('/')
+
 @app.route('/groups')
 def show_groups():
     """list all groups based on search criteria"""
