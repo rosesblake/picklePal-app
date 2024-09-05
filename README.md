@@ -66,3 +66,25 @@ The target users are pickleball players of all skill levels who want to connect 
 - **Machine Learning:** Suggesting optimal game times and partners based on user activity.
 - **Tournament Management:** Organizing and managing local tournaments.
 - **Performance Tracking:** Recording and analyzing game performance statistics.
+
+## Setup Instructions
+
+Install Python
+
+Install PostgreSQL
+
+create virtual env
+
+clone repo
+
+pip install -r requirements.txt
+
+update secrets values in a .env file
+DATABASE_URL=postgresql:///picklepal
+SECRET_KEY=your_secret_key
+API_KEY=your_google_maps_api_key
+
+createdb picklepal
+flask db upgrade
+
+flask run
