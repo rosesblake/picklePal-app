@@ -38,7 +38,7 @@
         {% endfor %}
       </div>
       {% endif %} {% endfor %}
-      <div class="flex flex-col mt-10 mb-10 items-center justify-center">
+      <div class="flex flex-col mt-10 mb-2 items-center justify-center">
         <button
           id="login-btn"
           type="submit"
@@ -52,7 +52,7 @@
     <!-- DEMO BUTTON FORM  -->
     <form action="/login/demo" method="POST">
       {{ form.hidden_tag() }}
-      <div class="flex flex-col mt-2 items-center justify-center">
+      <div class="flex flex-col items-center justify-center">
         <button
           type="submit"
           class="flex items-center justify-center gap-2 px-3.5 py-2.5 text-2xl font-bold tracking-tight leading-none text-white whitespace-nowrap rounded-md bg-green-btn"
