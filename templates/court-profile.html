@@ -39,7 +39,7 @@
         <p class="text-xs">{{ court.address }}</p>
       </div>
       <figure class="flex flex-col justify-center items-center mt-2 w-full min-h-[224px]">
-        <img loading="lazy" src="{{ court.court_image }}" alt="{{court.name}}" class="object-contain max-w-full aspect-[1.74] w-[380px]" />
+        <img loading="lazy" src="{% if not court.court_image %}/static/images/default-court.jpg{% else %}{{ court.court_image }}{% endif %}" alt="{{court.name}}" class="object-contain max-w-full aspect-[1.74] w-[380px]" />
       </figure>
       {% if court.id != user.home_court_id %}
       <form action="/users/{{ court.id }}" method="POST" class="mx-auto">
@@ -164,7 +164,7 @@
         </div>
         <p class="mt-5 text-base">{{ post.content }}</p>
         <!-- LIKES AND COMMENTS COUNT  -->
-        <div class="flex flex-row justify-between mt-4 max-w-full min-h-0 w-full text-xs text-gray-400" aria-hidden="true"><span>{{ post.likes | length }} likes</span><a href="/posts/{{ post.id }}/comment/list">{{ post.comments | length }} comments</a></div>
+        <div class="flex flex-row justify-between mt-4 max-w-full min-h-0 w-full text-xs text-gray-400" aria-hidden="true"><span>{{ post.likes | length }} likes</span><span class="text-xs font-light text-gray-400">{{post.timestamp.strftime("%A, %B %d, %Y, %I:%M %p")}}</span><a href="/posts/{{ post.id }}/comment/list">{{ post.comments | length }} comments</a></div>
       </div>
       <div class="post flex overflow-hidden gap-10 justify-between items-center px-5 w-full text-xs whitespace-nowrap border-t border-b bg-gray-600 bg-opacity-10 border-gray-600 border-opacity-10 min-h-[38px]">
         <button class="like-button flex gap-2.5 self-stretch my-auto w-[50px]" data-post-id="{{ post.id }}" onclick="likePost(this)">

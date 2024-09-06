@@ -45,31 +45,30 @@
                     </div>
                     <div class="flex z-0 gap-2.5 mt-5 max-w-full text-base tracking-normal leading-relaxed w-[174px]">
                       <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/2a69f237d8fb1e2dab15a6a3985b42b7a7eacbad8255ece3d628c746394475bf?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="Rating star icon" class="object-contain shrink-0 w-6 aspect-square" />
-                      <p class="grow shrink self-start w-[135px]">{{ avg_skill }} Average Rating</p>
+                      <p class="grow shrink self-start w-[150px]">{{ avg_skill }} Average Skill</p>
                     </div>
-                    <p class="z-0 self-stretch mt-5 text-base tracking-normal leading-relaxed">{% if group.play_type and group.play_type != 'none'%}<b>Play Type:</b>{{ group.play_type }}{% endif %}</p>
-                    <p class="z-0 self-stretch mt-5 text-base tracking-normal leading-relaxed">{% if group.email and group.email != 'none'%}<b>Email:</b> {{ group.email }}{% endif %}</p>
-                    <p class="z-0 self-stretch mt-5 text-base tracking-normal leading-relaxed">{% if group.website and group.website != 'none'%}<b>Website:</b> {{ group.website }}{% endif %}</p>
-                    <p class="z-0 self-stretch mt-5 text-base tracking-normal leading-relaxed">{% if group.primary_court and group.primary_court != 'none'%}<b>Primary Court:</b> {{ group.primary_court }}{% endif %}</p>
+                    {% if group.play_type and group.play_type != 'none'%}<p class="z-0 self-stretch mt-5 text-base tracking-normal leading-relaxed"></p><b>Play Type:</b>{{ group.play_type }}</p>{% endif %}
+                    {% if group.email and group.email != 'none'%}<p class="z-0 self-stretch mt-5 text-base tracking-normal leading-relaxed"></p><b>Email:</b> {{ group.email }}</p>{% endif %}
+                    {% if group.website and group.website != 'none'%}<p class="z-0 self-stretch mt-5 text-base tracking-normal leading-relaxed"></p><b>Website:</b> {{ group.website }}</p>{% endif %}
+                    {% if group.primary_court and group.primary_court != 'none'%}<p class="z-0 self-stretch mt-5 text-base tracking-normal leading-relaxed"></p><b>Primary Court:</b> {{ group.primary_court }}</p>{% endif %}
                     <div class="flex z-0 flex-col items-center self-stretch px-16 mt-5 w-full text-sm font-bold tracking-normal leading-6 text-center text-white">
                       <div class="flex gap-8 items-center w-[98px]">
-                        {% if group.id not in user_groups %}
-                        {% if user.id != group.owner.id %}
+                        {% if group.id not in user_groups and user.id != group.owner_id %}
                             <!-- User is not a member of the group and is not the owner -->
                             <form action="/groups/{{ group.id }}/join" method="post">
                                 <button class="flex justify-center text-center self-stretch my-auto w-[98px] overflow-hidden gap-2 px-3 py-2 rounded-md bg-neutral-800 bg-dark-green">
                                     Join Group
                                 </button>
                             </form>
-                        {% else %}
+                        {% elif user.id == group.owner_id %}
                             <!-- User is the owner of the group -->
                             <a href="/groups/{{ group.id }}/edit">
                                 <p class="flex justify-center text-center self-stretch my-auto w-[98px] overflow-hidden gap-2 px-3 py-2 rounded-md bg-neutral-800 bg-dark-green">
                                     Edit Group
                                 </p>
                             </a>
-                        {% endif %}
                     {% endif %}
+                  
                     
                       </div>
                     </div>

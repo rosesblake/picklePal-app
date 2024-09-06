@@ -1,96 +1,195 @@
-{% extends 'base-nav.html' %}
-{% block content %}
+{% extends 'base-nav.html' %} {% block content %}
 <!-- TOP NAV  -->
-<section class="flex overflow-hidden flex-col mx-auto w-full bg-white pt-[100px] pb-[100px]">
-    <header class="fixed top-0 left-0 right-0 flex overflow-hidden gap-5 justify-between items-end px-5 py-6 w-full text-2xl text-center text-white whitespace-nowrap bg-dark-green h-[100px] z-10">
-        <a href="/alerts">
-        <img loading="lazy" src="static/images/icon-bell.png" alt="" class="object-contain shrink-0 aspect-square w-[30px]" />
+<section
+  class="flex overflow-hidden flex-col mx-auto w-full bg-white pt-[100px] pb-[100px]"
+>
+  <header
+    class="fixed top-0 left-0 right-0 flex overflow-hidden gap-5 justify-between items-end px-5 py-6 w-full text-2xl text-center text-white whitespace-nowrap bg-dark-green h-[100px] z-10"
+  >
+    <a href="/alerts">
+      <img
+        loading="lazy"
+        src="static/images/icon-bell.png"
+        alt=""
+        class="object-contain shrink-0 aspect-square w-[30px]"
+      />
     </a>
-      <h1 class="w-[120px]">picklePal</h1>
-      <a href="/messages">
-      <img loading="lazy" src="static/images/icon-message-circle.png" alt="" class="object-contain shrink-0 aspect-square w-[33px]" />
+    <h1 class="w-[120px]">picklePal</h1>
+    <a href="/messages">
+      <img
+        loading="lazy"
+        src="static/images/icon-message-circle.png"
+        alt=""
+        class="object-contain shrink-0 aspect-square w-[33px]"
+      />
     </a>
-    </header>
-<!-- --------------- -->
- <!-- court specifier  -->
-<div class="flex flex-col justify-center items-center px-4 py-2.5 w-full text-center bg-custom-yellow min-h-[60px] text-neutral-800 shadow-sm">
-  {% if user.home_court %}
-  <a href="/courts/{{ user.home_court_id }}">
-  <h2 class="text-lg">{{ user.home_court.name }}</h2>
-    <div class="flex items-center mt-1.5 text-xs">
-      <img loading="lazy" src="static/images/icon-map-pin.png" alt="Map Pin" class="object-contain shrink-0 w-3.5 aspect-square" />
-      <p class="ml-1">{{ user.home_court.address }}</p>
-    </div>
-  </a>  
-  {% else %}
-  <a href="/courts">
-    <div class="flex flex-col justify-center">
-    <h2 class="text-lg">Add Home Court</h2>
+  </header>
+  <!-- --------------- -->
+            <!-- Flash Messages -->
+            <div>
+              {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                <div class="fixed top-0 left-0 right-0 z-50">
+                  {% for category, message in messages %}
+                    <div class="max-w-xl mx-auto mt-4">
+                      {% if category == 'success' %}
+                        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                          <strong class="font-bold">Success:</strong>
+                      {% elif category == 'danger' %}
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                          <strong class="font-bold">Error:</strong>
+                      {% endif %}
+                      <span class="block sm:inline">{{ message }}</span>
+                    </div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            {% endwith %}
+          </div>
+  <!-- court specifier  -->
+  <div
+    class="flex flex-col justify-center items-center px-4 py-2.5 w-full text-center bg-custom-yellow min-h-[60px] text-neutral-800 shadow-sm"
+  >
+    {% if user.home_court %}
+    <a href="/courts/{{ user.home_court_id }}">
+      <h2 class="text-lg">{{ user.home_court.name }}</h2>
+      <div class="flex items-center mt-1.5 text-xs">
+        <img
+          loading="lazy"
+          src="static/images/icon-map-pin.png"
+          alt="Map Pin"
+          class="object-contain shrink-0 w-3.5 aspect-square"
+        />
+        <p class="ml-1">{{ user.home_court.address }}</p>
+      </div>
+    </a>
+    {% else %}
+    <a href="/courts">
+      <div class="flex flex-col justify-center">
+        <h2 class="text-lg">Add Home Court</h2>
+      </div>
+    </a>
+    {% endif %}
   </div>
-    </a>    
-  {% endif %}
-</div> 
-<!-- -------------------------------->
- <!-- POSTS -->
-    <main class="flex overflow-hidden flex-col justify-center w-full text-neutral-800">
+  <!-- -------------------------------->
+  <!-- POSTS -->
+  <main
+    class="flex overflow-hidden flex-col justify-center w-full text-neutral-800"
+  >
     <!-- HOME COURT POSTS SECTION  -->
     {% for post in hc_posts %}
-    <article class="flex overflow-hidden flex-col justify-center w-full text-neutral-800 shadow-sm">
+    <article
+      class="flex overflow-hidden flex-col justify-center w-full text-neutral-800 shadow-sm"
+    >
       <div class="flex flex-col p-5 w-full">
         <div class="flex gap-10 justify-between items-start w-full">
           <a href="/users/{{post.user.id}}">
-          <div class="flex gap-3 items-start min-w-[240px] w-[242px]">
-            <img loading="lazy" src="{{ post.user.profile_image }}" alt="User profile picture" class="object-cover rounded-full shrink-0 aspect-square w-[30px]" />
-            <div class="flex flex-col">
-              <h4 class="self-start text-base">{{ post.user.first_name }} {{ post.user.last_name }}</h4>
-              <p class="text-xs">{{ post.user.city }}, {{ post.user.state }}</p>
+            <div class="flex gap-3 items-start min-w-[240px] w-[242px]">
+              <img
+                loading="lazy"
+                src="{{ post.user.profile_image }}"
+                alt="User profile picture"
+                class="object-cover rounded-full shrink-0 aspect-square w-[30px]"
+              />
+              <div class="flex flex-col">
+                <h4 class="self-start text-base">
+                  {{ post.user.first_name }} {{ post.user.last_name }}
+                </h4>
+                <p class="text-xs">
+                  {{ post.user.city }}, {{ post.user.state }}
+                </p>
+              </div>
             </div>
-          </div>
-        </a>
+          </a>
           <p class="text-xs text-right">Skill {{ post.user.skill }}</p>
         </div>
         <p class="mt-5 text-base">{{ post.content }}</p>
         <!-- LIKES AND COMMENTS COUNT  -->
-        <div class="flex flex-row justify-between mt-4 max-w-full min-h-0 w-full text-xs text-gray-400" aria-hidden="true"><span>{{ post.likes | length }} likes</span><a href="/posts/{{ post.id }}/comment/list">{{ post.comments | length }} comments</a></div>
+        <div
+          class="flex flex-row justify-between mt-4 max-w-full min-h-0 w-full text-xs text-gray-400"
+          aria-hidden="true"
+        >
+          <span>{{ post.likes | length }} likes</span
+          ><span class="text-xs font-light text-gray-400">{{post.timestamp.strftime("%A, %B %d, %Y, %I:%M %p")}}</span><a href="/posts/{{ post.id }}/comment/list"
+            >{{ post.comments | length }} comments</a
+          >
+        </div>
       </div>
-      <div class="post flex overflow-hidden gap-10 justify-between items-center px-5 w-full text-xs whitespace-nowrap border-t border-b bg-gray-600 bg-opacity-10 border-gray-600 border-opacity-10 min-h-[38px]">
-        <button class="like-button flex gap-2.5 self-stretch my-auto w-[50px]" data-post-id="{{ post.id }}" onclick="likePost(this)">
-          <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/8f00393c98e110eecbcd9e54fbd359cb89ea9552e254ce44de0ab4cda883194c?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="like-heart object-contain shrink-0 aspect-square w-[18px]" />
-          <span class="like-text">{{ 'Like' if post.id not in post_likes else 'Liked' }}</span>
-        </button>   
-        <a href="/posts/{{post.id}}/comment" class="flex gap-2.5 self-stretch my-auto w-[81px]">
-          <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/3bb0686157f570aa325a48bed77d4fdc4cf7178988d41088def114144b7231f3?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain shrink-0 aspect-square w-[18px]" />
+      <div
+        class="post flex overflow-hidden gap-10 justify-between items-center px-5 w-full text-xs whitespace-nowrap border-t border-b bg-gray-600 bg-opacity-10 border-gray-600 border-opacity-10 min-h-[38px]"
+      >
+        <button
+          class="like-button flex gap-2.5 self-stretch my-auto w-[50px]"
+          data-post-id="{{ post.id }}"
+          onclick="likePost(this)"
+        >
+          <img
+            loading="lazy"
+            src="https://cdn.builder.io/api/v1/image/assets/TEMP/8f00393c98e110eecbcd9e54fbd359cb89ea9552e254ce44de0ab4cda883194c?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4"
+            alt=""
+            class="like-heart object-contain shrink-0 aspect-square w-[18px]"
+          />
+          <span class="like-text"
+            >{{ 'Like' if post.id not in post_likes else 'Liked' }}</span
+          >
+        </button>
+        <a
+          href="/posts/{{post.id}}/comment"
+          class="flex gap-2.5 self-stretch my-auto w-[81px]"
+        >
+          <img
+            loading="lazy"
+            src="https://cdn.builder.io/api/v1/image/assets/TEMP/3bb0686157f570aa325a48bed77d4fdc4cf7178988d41088def114144b7231f3?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4"
+            alt=""
+            class="object-contain shrink-0 aspect-square w-[18px]"
+          />
           <span>Comment</span>
         </a>
       </div>
     </article>
-    {% endfor %}
-
-{% for court in followed_courts %}
-{% if court.id != user.home_court_id %}
-              <!-- court specifier  -->
-<div class="flex flex-col justify-center items-center px-4 py-2.5 w-full text-center bg-light-green min-h-[60px] text-neutral-800 shadow-sm">
-  <a href="/courts/{{ court.id }}">
-  <h2 class="text-lg">{{ court.name }}</h2>
-    <div class="flex items-center mt-1.5 text-xs">
-      <img loading="lazy" src="static/images/icon-map-pin.png" alt="Map Pin" class="object-contain shrink-0 w-3.5 aspect-square" />
-      <p class="ml-1">{{ court.address }}</p>
+    {% endfor %} {% for court in followed_courts %} {% if court.id !=
+    user.home_court_id and court.posts %}
+    <!-- court specifier  -->
+    <div
+      class="flex flex-col justify-center items-center px-4 py-2.5 w-full text-center bg-light-green min-h-[60px] text-neutral-800 shadow-sm"
+    >
+      <a href="/courts/{{ court.id }}">
+        <h2 class="text-lg">{{ court.name }}</h2>
+        <div class="flex items-center mt-1.5 text-xs">
+          <img
+            loading="lazy"
+            src="static/images/icon-map-pin.png"
+            alt="Map Pin"
+            class="object-contain shrink-0 w-3.5 aspect-square"
+          />
+          <p class="ml-1">{{ court.address }}</p>
+        </div>
+      </a>
     </div>
-  </a>  
-  </div>  
-  
-<!-- -------------------------------->
+
+    <!-- -------------------------------->
     <!-- FOLLOWING COURTS POSTS  -->
-         {% for post in court.posts %}
-    <article class="flex overflow-hidden flex-col justify-center w-full text-neutral-800 shadow-sm">
+    {% for post in court.posts %}
+    <article
+      class="flex overflow-hidden flex-col justify-center w-full text-neutral-800 shadow-sm"
+    >
       <div class="flex flex-col p-5 w-full">
         <div class="flex gap-10 justify-between items-start w-full">
           <a href="/users/{{post.user.id}}">
             <div class="flex gap-3 items-start min-w-[240px] w-[242px]">
-              <img loading="lazy" src="{{ post.user.profile_image }}" alt="User profile picture" class="object-cover rounded-full shrink-0 aspect-square w-[30px]" />
+              <img
+                loading="lazy"
+                src="{{ post.user.profile_image }}"
+                alt="User profile picture"
+                class="object-cover rounded-full shrink-0 aspect-square w-[30px]"
+              />
               <div class="flex flex-col">
-                <h4 class="self-start text-base">{{ post.user.first_name }} {{ post.user.last_name }}</h4>
-                <p class="text-xs">{{ post.user.city }}, {{ post.user.state }}</p>
+                <h4 class="self-start text-base">
+                  {{ post.user.first_name }} {{ post.user.last_name }}
+                </h4>
+                <p class="text-xs">
+                  {{ post.user.city }}, {{ post.user.state }}
+                </p>
               </div>
             </div>
           </a>
@@ -98,72 +197,147 @@
         </div>
         <p class="mt-5 text-base">{{ post.content }}</p>
         <!-- LIKES AND COMMENTS COUNT  -->
-        <div class="flex flex-row justify-between mt-4 max-w-full min-h-0 w-full text-xs text-gray-400" aria-hidden="true"><span>{{ post.likes | length }} likes</span><a href="/posts/{{ post.id }}/comment/list">{{ post.comments | length }} comments</a></div>
+        <div
+          class="flex flex-row justify-between mt-4 max-w-full min-h-0 w-full text-xs text-gray-400"
+          aria-hidden="true"
+        >
+          <span>{{ post.likes | length }} likes</span
+          ><span class="text-xs font-light text-gray-400">{{post.timestamp.strftime("%A, %B %d, %Y, %I:%M %p")}}</span><a href="/posts/{{ post.id }}/comment/list"
+            >{{ post.comments | length }} comments</a
+          >
+        </div>
       </div>
-      <div class="post flex overflow-hidden gap-10 justify-between items-center px-5 w-full text-xs whitespace-nowrap border-t border-b bg-gray-600 bg-opacity-10 border-gray-600 border-opacity-10 min-h-[38px]">
-        <button class="like-button flex gap-2.5 self-stretch my-auto w-[50px]" data-post-id="{{ post.id }}" onclick="likePost(this)">
-          <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/8f00393c98e110eecbcd9e54fbd359cb89ea9552e254ce44de0ab4cda883194c?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="like-heart object-contain shrink-0 aspect-square w-[18px]" />
-          <span class="like-text">{{ 'Like' if post.id not in post_likes else 'Liked' }}</span>
-        </button>  
-        <a href="/posts/{{post.id}}/comment" class="flex gap-2.5 self-stretch my-auto w-[81px]">
-          <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/3bb0686157f570aa325a48bed77d4fdc4cf7178988d41088def114144b7231f3?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain shrink-0 aspect-square w-[18px]" />
+      <div
+        class="post flex overflow-hidden gap-10 justify-between items-center px-5 w-full text-xs whitespace-nowrap border-t border-b bg-gray-600 bg-opacity-10 border-gray-600 border-opacity-10 min-h-[38px]"
+      >
+        <button
+          class="like-button flex gap-2.5 self-stretch my-auto w-[50px]"
+          data-post-id="{{ post.id }}"
+          onclick="likePost(this)"
+        >
+          <img
+            loading="lazy"
+            src="https://cdn.builder.io/api/v1/image/assets/TEMP/8f00393c98e110eecbcd9e54fbd359cb89ea9552e254ce44de0ab4cda883194c?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4"
+            alt=""
+            class="like-heart object-contain shrink-0 aspect-square w-[18px]"
+          />
+          <span class="like-text"
+            >{{ 'Like' if post.id not in post_likes else 'Liked' }}</span
+          >
+        </button>
+        <a
+          href="/posts/{{post.id}}/comment"
+          class="flex gap-2.5 self-stretch my-auto w-[81px]"
+        >
+          <img
+            loading="lazy"
+            src="https://cdn.builder.io/api/v1/image/assets/TEMP/3bb0686157f570aa325a48bed77d4fdc4cf7178988d41088def114144b7231f3?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4"
+            alt=""
+            class="object-contain shrink-0 aspect-square w-[18px]"
+          />
           <span>Comment</span>
         </a>
       </div>
     </article>
-    {% endfor %}
-    {% endif %}
-    {% endfor %}
-<!-- ----------------- -->
- <!-- SUGGESTED POSTS  -->
-<div class="flex flex-col justify-center items-center px-4 py-2.5 w-full text-center bg-light-green min-h-[60px] text-neutral-800 shadow-sm">
-  <h2 class="text-lg">Suggested Posts</h2>
-  </div>  
-<!-- ALL POSTS  -->
-     {% for post in all_posts %}
-     {% if post not in hc_posts and post.court not in followed_courts %}
-     <article class="flex overflow-hidden flex-col justify-center w-full text-neutral-800 shadow-sm">
-       <div class="flex flex-col p-5 w-full">
-         <div class="flex gap-10 justify-between items-start w-full">
+    {% endfor %}{% endif %} {% endfor %}
+    <!-- ----------------- -->
+    <!-- SUGGESTED POSTS  -->
+    <div
+      class="flex flex-col justify-center items-center px-4 py-2.5 w-full text-center bg-light-green min-h-[60px] text-neutral-800 shadow-sm"
+    >
+      <h2 class="text-lg">Suggested Posts</h2>
+    </div>
+    <!-- ALL POSTS  -->
+    {% for post in all_posts %} {% if post not in hc_posts and post.court not in
+    followed_courts %}
+    <article
+      class="flex overflow-hidden flex-col justify-center w-full text-neutral-800 shadow-sm"
+    >
+      <div class="flex flex-col p-5 w-full">
+        <div class="flex gap-10 justify-between items-start w-full">
           <a href="/users/{{post.user.id}}">
             <div class="flex gap-3 items-start min-w-[240px] w-[242px]">
-              <img loading="lazy" src="{{ post.user.profile_image }}" alt="User profile picture" class="object-cover rounded-full shrink-0 aspect-square w-[30px]" />
+              <img
+                loading="lazy"
+                src="{{ post.user.profile_image }}"
+                alt="User profile picture"
+                class="object-cover rounded-full shrink-0 aspect-square w-[30px]"
+              />
               <div class="flex flex-col">
-                <h4 class="self-start text-base">{{ post.user.first_name }} {{ post.user.last_name }}</h4>
-                <p class="text-xs">{{ post.user.city }}, {{ post.user.state }}</p>
+                <h4 class="self-start text-base">
+                  {{ post.user.first_name }} {{ post.user.last_name }}
+                </h4>
+                <p class="text-xs">
+                  {{ post.user.city }}, {{ post.user.state }}
+                </p>
               </div>
             </div>
           </a>
-           <p class="text-xs text-right">Skill {{ post.user.skill }}</p>
-         </div>
-         <p class="mt-5 text-base">{{ post.content }}</p>
+          <p class="text-xs text-right">Skill {{ post.user.skill }}</p>
+        </div>
+        <p class="mt-5 text-base">{{ post.content }}</p>
+        <p class="text-light text-sm text-right text-blue-500"><a href="/courts/{{post.court.id}}">{{ post.court.name }}</a></p>
         <!-- LIKES AND COMMENTS COUNT  -->
-        <div class="flex flex-row justify-between mt-4 max-w-full min-h-0 w-full text-xs text-gray-400" aria-hidden="true"><span>{{ post.likes | length }} likes</span><a href="/posts/{{ post.id }}/comment/list">{{ post.comments | length }} comments</a></div>
+        <div
+          class="flex flex-row justify-between mt-4 max-w-full min-h-0 w-full text-xs text-gray-400"
+          aria-hidden="true"
+        >
+          <span>{{ post.likes | length }} likes</span
+          ><span class="text-xs font-light text-gray-400">{{post.timestamp.strftime("%A, %B %d, %Y, %I:%M %p")}}</span>
+          <a href="/posts/{{ post.id }}/comment/list"
+            >{{ post.comments | length }} comments</a
+          >
+        </div>
       </div>
-      <div class="post flex overflow-hidden gap-10 justify-between items-center px-5 w-full text-xs whitespace-nowrap border-t border-b bg-gray-600 bg-opacity-10 border-gray-600 border-opacity-10 min-h-[38px]">
-        <button class="like-button flex gap-2.5 self-stretch my-auto w-[50px]" data-post-id="{{ post.id }}" onclick="likePost(this)">
-          <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/8f00393c98e110eecbcd9e54fbd359cb89ea9552e254ce44de0ab4cda883194c?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="like-heart object-contain shrink-0 aspect-square w-[18px]" />
-          <span class="like-text">{{ 'Like' if post.id not in post_likes else 'Liked' }}</span>
-        </button>  
-        <a href="/posts/{{post.id}}/comment" class="flex gap-2.5 self-stretch my-auto w-[81px]">
-          <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/3bb0686157f570aa325a48bed77d4fdc4cf7178988d41088def114144b7231f3?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4" alt="" class="object-contain shrink-0 aspect-square w-[18px]" />
+      <div
+        class="post flex overflow-hidden gap-10 justify-between items-center px-5 w-full text-xs whitespace-nowrap border-t border-b bg-gray-600 bg-opacity-10 border-gray-600 border-opacity-10 min-h-[38px]"
+      >
+        <button
+          class="like-button flex gap-2.5 self-stretch my-auto w-[50px]"
+          data-post-id="{{ post.id }}"
+          onclick="likePost(this)"
+        >
+          <img
+            loading="lazy"
+            src="https://cdn.builder.io/api/v1/image/assets/TEMP/8f00393c98e110eecbcd9e54fbd359cb89ea9552e254ce44de0ab4cda883194c?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4"
+            alt=""
+            class="like-heart object-contain shrink-0 aspect-square w-[18px]"
+          />
+          <span class="like-text"
+            >{{ 'Like' if post.id not in post_likes else 'Liked' }}</span
+          >
+        </button>
+        <a
+          href="/posts/{{post.id}}/comment"
+          class="flex gap-2.5 self-stretch my-auto w-[81px]"
+        >
+          <img
+            loading="lazy"
+            src="https://cdn.builder.io/api/v1/image/assets/TEMP/3bb0686157f570aa325a48bed77d4fdc4cf7178988d41088def114144b7231f3?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4"
+            alt=""
+            class="object-contain shrink-0 aspect-square w-[18px]"
+          />
           <span>Comment</span>
         </a>
-       </div>
-     </article>
-     {% endif %}
-     {% endfor %}
- <!-- ----------------- -->
- 
-    </main>
-        <!-- CREATE POST FIXED BUTTON  -->
-        <a href="/courts/0/posts" class="fixed bottom-[120px] left-1/2 transform -translate-x-1/2 z-20">
-          <img id="court-post-btn" loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/9ab9f807e49eaaf05d9b03a93bb724b8ffbfa6eca8dac7ada1a55830674774dc?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4"
-               class="object-contain self-stretch my-auto aspect-square w-[55px] cursor-pointer" alt="Add Post Button" />
-      </a>   
-    <script src="/static/js/like-post.js"></script>
-  {% endblock %}
-  {% block user_img_src %}
-  {{ user.profile_image }}
-  {% endblock %}
+      </div>
+    </article>
+    {% endif %} {% endfor %}
+    <!-- ----------------- -->
+  </main>
+  <!-- CREATE POST FIXED BUTTON  -->
+  <a
+    href="/courts/0/posts"
+    class="fixed bottom-[120px] left-1/2 transform -translate-x-1/2 z-20"
+  >
+    <img
+      id="court-post-btn"
+      loading="lazy"
+      src="https://cdn.builder.io/api/v1/image/assets/TEMP/9ab9f807e49eaaf05d9b03a93bb724b8ffbfa6eca8dac7ada1a55830674774dc?placeholderIfAbsent=true&apiKey=151c931d8a0e4ce6ac7d5b7ceb0c67c4"
+      class="object-contain self-stretch my-auto aspect-square w-[55px] cursor-pointer"
+      alt="Add Post Button"
+    />
+  </a>
+  <script src="/static/js/like-post.js"></script>
+  {% endblock %} {% block user_img_src %} {{ user.profile_image }} {% endblock
+  %}
 </section>

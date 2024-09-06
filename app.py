@@ -21,9 +21,12 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static/uploads')
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///picklepal-test' #testing
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+app.config['TESTING'] = True
+# app.config['SECRET_KEY'] = 'secret' #testing
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.config['DEBUG'] = False
 app.config['SESSION_COOKIE_SECURE'] = True
@@ -59,7 +62,7 @@ def add_user_to_g_and_require_login():
         g.user = None
 
     # List of routes that don't require login
-    allowed_routes = ['/', '/login', '/register', '/user-info', '/logout']
+    allowed_routes = ['/', '/login', '/register', '/user-info', '/logout', '/login/demo']
 
     # Check if the request path is not in the allowed routes and does not start with '/static/'
     if not g.user and request.path not in allowed_routes and not request.path.startswith('/static/'):
@@ -70,11 +73,13 @@ def add_user_to_g_and_require_login():
 def login_user(user):
     """login user and add them to session"""
     session[CURR_USER_KEY] = user.id
+    print(f'{user.id}')
 
 def logout_user():
     """Logout the current user by popping the user ID from the session."""
     if CURR_USER_KEY in session:
         session.pop(CURR_USER_KEY)
+        g.user = None
 
 
 @app.route('/')
@@ -84,6 +89,7 @@ def get_home_page():
         return redirect('/home')
 
     return redirect('/login')
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def get_register_form():
@@ -171,12 +177,24 @@ def get_login_form():
         flash('Invalid Email and/or Password')
     return render_template('login.html', form=form)
 
+@app.route('/login/demo', methods=['POST'])
+def login_demo_user():
+    """log user into demo account"""
+    email = 'demo@gmail.com'
+    password = 'password'
+    user = User.authenticate(email, password)
+    if user:
+        login_user(user)
+        return redirect('/home')
+    flash ('Something went wrong. Please Signup', 'danger')
+    return redirect('/register')
+    
+
 @app.route('/logout', methods=['POST'])
 def handle_logout():
     """handle user logout and redirect to home page"""
-    if CURR_USER_KEY in session:
-        session.pop(CURR_USER_KEY)
-        return redirect('/')
+    logout_user()
+    return redirect('/')
 
 @app.route('/home', methods=['GET', 'POST'])
 def show_user_home():
@@ -323,7 +341,7 @@ def get_make_post_form(court_id):
         else:
             return redirect('/')
     
-    return render_template('court-post.html', user=user, court=court, form=form)
+    return render_template('court-post.html', user=user, court=court, form=form, court_id=court_id)
 
 @app.route('/posts/<int:post_id>/like', methods=['POST'])
 def like_post(post_id):
@@ -413,9 +431,9 @@ def show_group_profile(group_id):
     user_groups = [membership.group_id for membership in user.groups]
     
     for membership in group.memberships:
-        user = User.query.get_or_404(membership.user_id)
-        if user.skill != 'Beginner':
-            skill_lvl = float(user.skill)
+        u = User.query.get_or_404(membership.user_id)
+        if u.skill != 'Beginner':
+            skill_lvl = float(u.skill)
             skills.append(skill_lvl)
 
     if skills:
@@ -487,7 +505,7 @@ def show_create_group_form():
 
         db.session.commit()
 
-        return redirect('/profile')
+        return redirect(f'/groups/{new_group.id}')
 
     return render_template('create-group.html', form=form, user=user)
 

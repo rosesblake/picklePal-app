@@ -53,7 +53,7 @@ class CourtReviewForm(FlaskForm):
 
 # Form for creating a new post or comment in a social feed
 class UserPostForm(FlaskForm):
-    content = TextAreaField('Comment', validators=[InputRequired()])  # Content of the post or comment
+    content = TextAreaField('Content', validators=[InputRequired()])  # Content of the post or comment
 
 # Form for reporting issues with the application for development
 class ReportIssuesForm(FlaskForm):
