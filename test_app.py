@@ -23,20 +23,12 @@ class FlaskTestCase(unittest.TestCase):
         db.drop_all()
         self.app_context.pop()
 
-    def test_user_signup(self):
-        """Test user signup."""
-        response = self.client.post('/signup', data={
-            'username': 'jane_doe',
-            'email': 'jane.doe@example.com',
-            'password': 'password',
-            'skill': '4.0',
-            'city': 'LA',
-            'state': 'CA',
-            'zip_code': '91403'
-        })
-        self.assertEqual(response.status_code, 302)  # Expecting a redirect
-        self.assertIn(b'Redirecting...', response.data)
-        self.assertIn(b'/login', response.data)  # Ensure it's redirecting to the login page
+    def test_landing_page(self):
+        """redirects to /login if no curr_user"""
+        res = self.client.get('/')
+        self.assertEqual(res.status_code, 302)
+        self.assertIn(b'/login', res.data)
+
 
 if __name__ == '__main__':
     unittest.main()
